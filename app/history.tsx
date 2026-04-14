@@ -67,9 +67,11 @@ export default function HistoryScreen() {
           <Text style={styles.emptyText}>Loading invoices...</Text>
         ) : invoices.length === 0 ? (
           <View style={styles.emptyBlock}>
-            <Text style={styles.emptyTitle}>No invoices yet.</Text>
-            <Text style={styles.emptyText}>Finished invoices show up here.</Text>
-            <FieldBillButton label="START JOB" onPress={() => router.push('/start-job')} primary />
+            <Text style={styles.emptyTitle}>Nothing here yet.</Text>
+            <Text style={styles.emptyText}>
+              Once you finish a job, its invoice history will show up here automatically.
+            </Text>
+            <FieldBillButton label="Start Job" onPress={() => router.push('/start-job')} primary />
           </View>
         ) : (
           invoices.map((invoice) => (

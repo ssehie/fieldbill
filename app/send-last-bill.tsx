@@ -484,9 +484,11 @@ export default function SendLastBillScreen() {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.emptyState}>
-          <Text style={styles.emptyTitle}>No invoice yet.</Text>
-          <Text style={styles.emptyText}>Your next invoice will show here.</Text>
-          <FieldBillButton label="GO HOME" onPress={() => router.replace('/')} primary />
+          <Text style={styles.emptyTitle}>No invoice ready.</Text>
+          <Text style={styles.emptyText}>
+            Finish a job first, then the invoice will land here ready to review.
+          </Text>
+          <FieldBillButton label="Go Home" onPress={() => router.replace('/')} primary />
         </View>
       </SafeAreaView>
     );
@@ -581,7 +583,7 @@ export default function SendLastBillScreen() {
           <View style={styles.section}>
             <Text style={styles.metaLabel}>Parts</Text>
             {invoice.parts.length === 0 ? (
-              <Text style={styles.noteText}>No parts on this invoice.</Text>
+              <Text style={styles.noteText}>No parts added for this visit.</Text>
             ) : (
               <View style={styles.partsList}>
                 {invoice.parts.map((part) => (
@@ -634,7 +636,7 @@ export default function SendLastBillScreen() {
         />
 
         <View style={styles.editCard}>
-          <Text style={styles.cardTitle}>Your Details</Text>
+          <Text style={styles.cardTitle}>Business Details</Text>
 
           <LabeledInput label="Business Name" value={businessName} onChangeText={setBusinessName} />
           <LabeledInput label="Phone" value={phone} onChangeText={setPhone} />
@@ -669,20 +671,20 @@ export default function SendLastBillScreen() {
 
         <View style={styles.actions}>
           <FieldBillButton
-            label={isEmailing ? 'OPENING EMAIL...' : 'OPEN EMAIL'}
+            label={isEmailing ? 'Opening Email...' : 'Email Invoice'}
             onPress={() => void handleEmailToMe()}
             primary
             disabled={isEmailing || isSending || isMarkingPaid}
           />
           <FieldBillButton
-            label={isSending ? 'MARKING SENT...' : 'MARK SENT'}
+            label={isSending ? 'Marking Sent...' : 'Mark as Sent'}
             onPress={() => void handleMarkSent()}
             disabled={
               isEmailing || isSending || isMarkingPaid || invoice.status === 'sent' || invoice.status === 'paid'
             }
           />
           <FieldBillButton
-            label={isMarkingPaid ? 'MARKING PAID...' : 'MARK PAID'}
+            label={isMarkingPaid ? 'Marking Paid...' : 'Mark as Paid'}
             onPress={() => void handleMarkPaid()}
             disabled={isEmailing || isSending || isMarkingPaid || invoice.status === 'paid'}
           />
@@ -766,7 +768,7 @@ function buildDraftKey(
 }
 
 function buildEmailSubject(invoice: InvoiceReview): string {
-  return `FieldBill Invoice ${invoice.invoice_number ?? 'Pending'} for ${invoice.customer_name}`;
+  return `Invoice ${invoice.invoice_number ?? 'Pending'} for ${invoice.customer_name}`;
 }
 
 function buildEmailBody(
@@ -790,29 +792,33 @@ function buildEmailBody(
     businessProfile.phone.trim() ? `Phone: ${businessProfile.phone.trim()}` : '',
     businessProfile.email.trim() ? `Email: ${businessProfile.email.trim()}` : '',
     '',
-    `Invoice Number: ${invoice.invoice_number ?? 'Pending'}`,
+    `Invoice: ${invoice.invoice_number ?? 'Pending'}`,
     `Status: ${formatInvoiceStatus(invoice.status)}`,
     '',
-    `Customer: ${invoice.customer_name}`,
+    `Bill To: ${invoice.customer_name}`,
     ...customerAddressLines.map((line, index) => (index === 0 ? `Address: ${line}` : `         ${line}`)),
-    `Job date: ${formatDate(invoice.start_time)}`,
-    `Job time: ${formatTimeRange(invoice.start_time, invoice.end_time)}`,
-    `Labor hours: ${formatHours(invoice.laborHours)}`,
-    `Hourly rate: ${formatMoney(invoice.hourlyRate, invoice.currency)}`,
-    `Labor total: ${formatMoney(invoice.laborTotal, invoice.currency)}`,
-    `Parts subtotal: ${formatMoney(invoice.partsSubtotal, invoice.currency)}`,
+    `Service Date: ${formatDate(invoice.start_time)}`,
+    `Service Time: ${formatTimeRange(invoice.start_time, invoice.end_time)}`,
+    '',
+    'Summary',
+    `Labor Hours: ${formatHours(invoice.laborHours)}`,
+    `Hourly Rate: ${formatMoney(invoice.hourlyRate, invoice.currency)}`,
+    `Labor Total: ${formatMoney(invoice.laborTotal, invoice.currency)}`,
+    `Parts Subtotal: ${formatMoney(invoice.partsSubtotal, invoice.currency)}`,
+    `Discount: ${formatMoney(invoice.discountAmount, invoice.currency)}`,
+    `Tax: ${formatNumber(invoice.taxPercent)}% = ${formatMoney(invoice.taxAmount, invoice.currency)}`,
+    `Total Due: ${formatMoney(invoice.total, invoice.currency)}`,
+    '',
+    'Notes',
     businessProfile.showNotes && invoice.note?.trim() ? `Notes: ${invoice.note.trim()}` : '',
     audioNote
       ? `Audio note: Attached${audioNote.duration_ms ? ` (${formatDurationMillis(audioNote.duration_ms)})` : ''}`
       : 'Audio note: None',
-    `Payment terms: ${invoice.payment_note?.trim() || DEFAULT_PAYMENT_NOTE}`,
-    `Discount: ${formatMoney(invoice.discountAmount, invoice.currency)}`,
-    `Tax: ${formatNumber(invoice.taxPercent)}% = ${formatMoney(invoice.taxAmount, invoice.currency)}`,
-    `Grand total: ${formatMoney(invoice.total, invoice.currency)}`,
+    `Payment Terms: ${invoice.payment_note?.trim() || DEFAULT_PAYMENT_NOTE}`,
   ].filter(Boolean);
 
   if (invoice.parts.length > 0) {
-    lines.push('', 'Parts:');
+    lines.push('', 'Parts');
     invoice.parts.forEach((part) => {
       lines.push(
         `- ${part.name}: ${formatNumber(part.quantity)} x ${formatMoney(part.unit_price, invoice.currency)} = ${formatMoney(getPartLineTotal(part), invoice.currency)}`
@@ -1117,5 +1123,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: FieldBillColors.mutedText,
     textAlign: 'center',
+    lineHeight: 26,
   },
 });

@@ -14,16 +14,28 @@ import {
   getBusinessProfile,
   getLatestUnsentInvoice,
   isBusinessSetupComplete,
+  listInvoiceHistory,
   type InvoiceSummary,
   type JobRecord,
 } from '@/lib/fieldbill-db';
 import { formatMoney } from '@/lib/fieldbill-format';
+
+type HomeSnapshot = {
+  readyToSendCount: number;
+  awaitingPaymentCount: number;
+  openBalance: number;
+};
 
 export default function HomeScreen() {
   const db = useFieldBillDb();
   const router = useRouter();
   const [activeJob, setActiveJob] = React.useState<JobRecord | null>(null);
   const [latestUnsentInvoice, setLatestUnsentInvoice] = React.useState<InvoiceSummary | null>(null);
+  const [snapshot, setSnapshot] = React.useState<HomeSnapshot>({
+    readyToSendCount: 0,
+    awaitingPaymentCount: 0,
+    openBalance: 0,
+  });
   const [isLoading, setIsLoading] = React.useState(true);
   const [isScheduling, setIsScheduling] = React.useState(false);
 
@@ -34,9 +46,10 @@ export default function HomeScreen() {
       const loadHomeState = async () => {
         setIsLoading(true);
 
-        const [job, invoice, businessProfile] = await Promise.all([
+        const [job, invoice, history, businessProfile] = await Promise.all([
           getActiveJob(db),
           getLatestUnsentInvoice(db),
+          listInvoiceHistory(db),
           getBusinessProfile(db),
         ]);
 
@@ -60,6 +73,7 @@ export default function HomeScreen() {
 
         setActiveJob(job);
         setLatestUnsentInvoice(invoice);
+        setSnapshot(buildHomeSnapshot(history));
         setIsLoading(false);
       };
 
@@ -122,7 +136,7 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>FieldBill</Text>
-          <Text style={styles.subtitle}>Field work in. Clean invoice out.</Text>
+          <Text style={styles.subtitle}>Run the job. Wrap it clean. Get paid.</Text>
         </View>
 
         {isLoading ? (
@@ -149,48 +163,80 @@ export default function HomeScreen() {
                 {activeJob
                   ? activeJob.address
                   : latestUnsentInvoice
-                    ? `${latestUnsentInvoice.invoice_number ?? 'Pending'} • ${formatMoney(latestUnsentInvoice.total, latestUnsentInvoice.currency)} waiting to send`
-                    : 'Start a job, track the work, and send the invoice before you leave.'}
+                    ? `${latestUnsentInvoice.invoice_number ?? 'Pending'} • ${formatMoney(latestUnsentInvoice.total, latestUnsentInvoice.currency)} ready to send`
+                    : 'Start the next job, keep notes as you work, and send the invoice before you leave.'}
               </Text>
             </View>
 
+            <View style={styles.glanceCard}>
+              <Text style={styles.sectionKicker}>At a Glance</Text>
+              <View style={styles.glanceGrid}>
+                <View style={styles.glanceTile}>
+                  <Text style={styles.glanceValue}>{activeJob ? '1' : '0'}</Text>
+                  <Text style={styles.glanceLabel}>In Progress</Text>
+                </View>
+                <View style={styles.glanceTile}>
+                  <Text style={styles.glanceValue}>{snapshot.readyToSendCount}</Text>
+                  <Text style={styles.glanceLabel}>To Send</Text>
+                </View>
+                <View style={styles.glanceTile}>
+                  <Text style={styles.glanceValue}>{snapshot.awaitingPaymentCount}</Text>
+                  <Text style={styles.glanceLabel}>Awaiting Payment</Text>
+                </View>
+                <View style={[styles.glanceTile, styles.balanceTile]}>
+                  <Text style={styles.glanceValue}>
+                    {formatMoney(snapshot.openBalance, latestUnsentInvoice?.currency ?? 'USD')}
+                  </Text>
+                  <Text style={styles.glanceLabel}>Open Balance</Text>
+                </View>
+              </View>
+            </View>
+
             <View style={styles.actions}>
-            {activeJob ? (
-              <FieldBillButton
-                label="Continue Job"
-                detail={`${activeJob.customer_name}\n${activeJob.address}`}
-                onPress={() => router.push('/active-job')}
-                primary
-              />
-            ) : (
-              <FieldBillButton
-                label={latestUnsentInvoice ? 'Start Job' : 'Create First Invoice'}
-                detail={latestUnsentInvoice ? undefined : 'Start a job and open the first invoice.'}
-                onPress={() => router.push('/start-job')}
-                primary
-              />
-            )}
+              {activeJob ? (
+                <FieldBillButton
+                  label="Continue Job"
+                  detail={`${activeJob.customer_name}\n${activeJob.address}`}
+                  onPress={() => router.push('/active-job')}
+                  primary
+                />
+              ) : (
+                <FieldBillButton
+                  label="Start Job"
+                  detail={
+                    latestUnsentInvoice
+                      ? 'Start another visit and keep today moving.'
+                      : 'Start a visit, track the work, and send the invoice when you are done.'
+                  }
+                  onPress={() => router.push('/start-job')}
+                  primary
+                />
+              )}
 
-            {latestUnsentInvoice ? (
-              <FieldBillButton
-                label="Send Last Bill"
-                detail={`${latestUnsentInvoice.customer_name}\n${latestUnsentInvoice.invoice_number ?? 'Pending'} • ${formatMoney(latestUnsentInvoice.total, latestUnsentInvoice.currency)}`}
-                onPress={() => router.push('/send-last-bill')}
-              />
-            ) : null}
+              {latestUnsentInvoice ? (
+                <FieldBillButton
+                  label="Open Draft Invoice"
+                  detail={`${latestUnsentInvoice.customer_name}\n${latestUnsentInvoice.invoice_number ?? 'Pending'} • ${formatMoney(latestUnsentInvoice.total, latestUnsentInvoice.currency)}`}
+                  onPress={() => router.push('/send-last-bill')}
+                />
+              ) : null}
 
-              <FieldBillButton label="History" onPress={() => router.push('/history')} />
+              <FieldBillButton
+                label="Invoice History"
+                detail="Past jobs, sent invoices, and paid work."
+                onPress={() => router.push('/history')}
+              />
             </View>
 
             <View style={styles.schedulePanel}>
               <Text style={styles.sectionKicker}>Calendar</Text>
               <Text style={styles.sectionTitle}>Block the next visit fast</Text>
               <Text style={styles.sectionBody}>
-                Open the phone calendar with a prefilled follow-up event, then tweak it and save.
+                Open the phone calendar with the event already filled in, adjust it if needed, and save.
               </Text>
               <FieldBillButton
-                label="Schedule Job"
-                detail="Opens the calendar app with a new event ready to save."
+                label="Add to Calendar"
+                detail="Creates a follow-up event in the phone calendar."
                 onPress={handleScheduleOnCalendar}
                 disabled={isScheduling}
                 style={styles.scheduleButton}
@@ -227,6 +273,42 @@ const styles = StyleSheet.create({
     backgroundColor: '#e7efe6',
     padding: 18,
     gap: 10,
+  },
+  glanceCard: {
+    borderRadius: 24,
+    backgroundColor: FieldBillColors.surface,
+    borderWidth: 1,
+    borderColor: FieldBillColors.border,
+    padding: 18,
+    gap: 12,
+  },
+  glanceGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  glanceTile: {
+    minWidth: 140,
+    flex: 1,
+    borderRadius: 18,
+    backgroundColor: '#f0eadf',
+    padding: 14,
+    gap: 4,
+  },
+  balanceTile: {
+    backgroundColor: '#edf3ee',
+  },
+  glanceValue: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: FieldBillColors.text,
+  },
+  glanceLabel: {
+    fontSize: 13,
+    fontWeight: '800',
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    color: FieldBillColors.mutedText,
   },
   schedulePanel: {
     padding: 16,
@@ -282,3 +364,24 @@ const styles = StyleSheet.create({
     gap: FieldBillSpacing.buttonGap,
   },
 });
+
+function buildHomeSnapshot(history: InvoiceSummary[]): HomeSnapshot {
+  return history.reduce<HomeSnapshot>(
+    (summary, invoice) => {
+      if (invoice.status === 'draft' || invoice.status === 'ready_to_send') {
+        summary.readyToSendCount += 1;
+        summary.openBalance += invoice.total;
+      } else if (invoice.status === 'sent') {
+        summary.awaitingPaymentCount += 1;
+        summary.openBalance += invoice.total;
+      }
+
+      return summary;
+    },
+    {
+      readyToSendCount: 0,
+      awaitingPaymentCount: 0,
+      openBalance: 0,
+    }
+  );
+}
