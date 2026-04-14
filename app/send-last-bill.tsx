@@ -419,25 +419,13 @@ export default function SendLastBillScreen() {
       const composeOptions: MailComposer.MailComposerOptions = {
         recipients: [trimmedEmail],
         subject: buildEmailSubject(refreshedReview),
-        body: buildEmailBody(refreshedReview, businessProfile, audioNote),
+        body: buildEmailBody(refreshedReview, businessProfile),
       };
       fieldBillDebugLog('invoice.share.email', {
         invoiceId: refreshedReview.id,
         recipient: trimmedEmail,
-        hasAudioAttachment: Boolean(audioNote?.file_uri),
+        hasAudioAttachment: false,
       });
-
-      if (audioNote?.file_uri) {
-        try {
-          await MailComposer.composeAsync({
-            ...composeOptions,
-            attachments: [audioNote.file_uri],
-          });
-          return;
-        } catch {
-          setError("Couldn't attach audio note.");
-        }
-      }
 
       await MailComposer.composeAsync(composeOptions);
     } catch {
@@ -614,11 +602,11 @@ export default function SendLastBillScreen() {
           ) : null}
 
           <View style={styles.section}>
-            <Text style={styles.metaLabel}>Audio Note</Text>
+            <Text style={styles.metaLabel}>Internal Audio Note</Text>
             <Text style={styles.noteText}>
               {audioNote
-                ? `Audio note attached${audioNote.duration_ms ? ` • ${formatDurationMillis(audioNote.duration_ms)}` : ''}`
-                : 'No audio note.'}
+                ? `Saved for this job only${audioNote.duration_ms ? ` • ${formatDurationMillis(audioNote.duration_ms)}` : ''}`
+                : 'No internal audio note saved.'}
             </Text>
           </View>
 
@@ -773,8 +761,7 @@ function buildEmailSubject(invoice: InvoiceReview): string {
 
 function buildEmailBody(
   invoice: InvoiceReview,
-  businessProfile: BusinessProfile,
-  audioNote: JobAudioNoteRecord | null
+  businessProfile: BusinessProfile
 ): string {
   const businessAddressLines = formatStructuredAddressLines(businessProfile);
   const customerAddressLines = businessProfile.showJobAddress
@@ -811,9 +798,6 @@ function buildEmailBody(
     '',
     'Notes',
     businessProfile.showNotes && invoice.note?.trim() ? `Notes: ${invoice.note.trim()}` : '',
-    audioNote
-      ? `Audio note: Attached${audioNote.duration_ms ? ` (${formatDurationMillis(audioNote.duration_ms)})` : ''}`
-      : 'Audio note: None',
     `Payment Terms: ${invoice.payment_note?.trim() || DEFAULT_PAYMENT_NOTE}`,
   ].filter(Boolean);
 
