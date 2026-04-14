@@ -764,6 +764,8 @@ function buildEmailBody(
   businessProfile: BusinessProfile
 ): string {
   const businessAddressLines = formatStructuredAddressLines(businessProfile);
+  const customerNote =
+    businessProfile.showNotes && invoice.note?.trim() ? `Notes: ${invoice.note.trim()}` : '';
   const customerAddressLines = businessProfile.showJobAddress
     ? formatStructuredAddressLines({
         formattedAddress: invoice.address,
@@ -795,9 +797,7 @@ function buildEmailBody(
     `Discount: ${formatMoney(invoice.discountAmount, invoice.currency)}`,
     `Tax: ${formatNumber(invoice.taxPercent)}% = ${formatMoney(invoice.taxAmount, invoice.currency)}`,
     `Total Due: ${formatMoney(invoice.total, invoice.currency)}`,
-    '',
-    'Notes',
-    businessProfile.showNotes && invoice.note?.trim() ? `Notes: ${invoice.note.trim()}` : '',
+    ...(customerNote ? ['', 'Notes', customerNote] : []),
     `Payment Terms: ${invoice.payment_note?.trim() || DEFAULT_PAYMENT_NOTE}`,
   ].filter(Boolean);
 
