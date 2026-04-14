@@ -33,10 +33,11 @@ export default function RootLayout() {
             headerStyle: { backgroundColor: FieldBillColors.background },
             headerShadowVisible: false,
             contentStyle: { backgroundColor: FieldBillColors.background },
+            headerBackButtonDisplayMode: 'minimal',
           }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false, title: 'Home' }} />
           <Stack.Screen name="setup" options={{ headerShown: false }} />
           <Stack.Screen name="start-job" options={{ title: 'Start Job' }} />
           <Stack.Screen name="active-job" options={{ title: 'Active Job' }} />
