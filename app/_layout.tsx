@@ -34,6 +34,7 @@ export default function RootLayout() {
             headerShadowVisible: false,
             contentStyle: { backgroundColor: FieldBillColors.background },
             headerBackButtonDisplayMode: 'minimal',
+            headerBackTitle: 'Home',
           }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="onboarding" options={{ headerShown: false }} />
