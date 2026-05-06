@@ -31,8 +31,12 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
+*.apk
+*.aab
+*.ipa
 
 # local env files
+.env
 .env*.local
 
 # typescript
@@ -43,3 +47,17 @@ app-example
 # generated native folders
 /ios
 /android
+
+config/*.local.json
+logs/
+reports/
+archive/
+.edge-*/
+*.pid
+*.png
+*.jpg
+*.jpeg
+*.xml
+*.log
+*.tmp
+firmware/*.bin

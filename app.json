@@ -10,12 +10,14 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
+      "buildNumber": "4",
       "bundleIdentifier": "com.fieldbill.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
+      "versionCode": 5,
       "package": "com.fieldbill.app",
       "adaptiveIcon": {
         "backgroundColor": "#F6F1E7",
@@ -38,7 +40,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/android-icon-foreground.png",
+          "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#F6F1E7"
