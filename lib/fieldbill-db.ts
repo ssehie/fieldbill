@@ -392,14 +392,14 @@ export async function saveCustomer(
     structuredAddress?: StructuredAddress;
   }
 ): Promise<CustomerRecord | null> {
-  const trimmedName = input.name.trim();
+  const trimmedName = normalizeCustomerLookupValue(input.name);
   const normalizedAddress = normalizeStoredAddress(input.address, input.structuredAddress);
-  const trimmedAddress = normalizedAddress.address;
+  const trimmedAddress = normalizeCustomerLookupValue(normalizedAddress.address);
 
   const existingCustomer = await db.getFirstAsync<CustomerRecord>(
     `SELECT id, name, address, street1, city, state, postal_code, default_hourly_rate
      FROM customers
-     WHERE lower(name) = lower(?) AND lower(address) = lower(?)
+     WHERE lower(trim(name)) = lower(?) AND lower(trim(address)) = lower(?)
      LIMIT 1`,
     trimmedName,
     trimmedAddress
@@ -446,11 +446,13 @@ export async function saveCustomer(
 }
 
 export async function listCustomers(db: DatabaseClient): Promise<CustomerRecord[]> {
-  return db.getAllAsync<CustomerRecord>(
+  const customers = await db.getAllAsync<CustomerRecord>(
     `SELECT id, name, address, street1, city, state, postal_code, default_hourly_rate
      FROM customers
      ORDER BY name ASC, address ASC`
   );
+
+  return dedupeCustomers(customers);
 }
 
 export async function listRecentCustomerOptions(
@@ -467,7 +469,7 @@ export async function listRecentCustomerOptions(
   const recentCustomers: RecentCustomerOption[] = [];
 
   for (const job of jobs) {
-    const key = `${job.customer_name.toLowerCase()}::${job.address.toLowerCase()}`;
+    const key = buildCustomerLookupKey(job.customer_name, job.address);
 
     if (seen.has(key)) {
       continue;
@@ -1326,6 +1328,32 @@ function normalizeStoredAddress(
     state: normalizedStructuredAddress.state,
     postal_code: normalizedStructuredAddress.postalCode,
   };
+}
+
+function normalizeCustomerLookupValue(value: string): string {
+  return value.trim().replace(/\s+/g, ' ');
+}
+
+function buildCustomerLookupKey(name: string, address: string): string {
+  return `${normalizeCustomerLookupValue(name).toLowerCase()}::${normalizeCustomerLookupValue(address).toLowerCase()}`;
+}
+
+function dedupeCustomers(customers: CustomerRecord[]): CustomerRecord[] {
+  const seen = new Set<string>();
+  const dedupedCustomers: CustomerRecord[] = [];
+
+  for (const customer of customers) {
+    const key = buildCustomerLookupKey(customer.name, customer.address);
+
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    dedupedCustomers.push(customer);
+  }
+
+  return dedupedCustomers;
 }
 
 function normalizePaymentNote(

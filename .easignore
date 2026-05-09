@@ -1,0 +1,38 @@
+# Dependencies and local Expo state
+node_modules/
+.expo/
+.expo/**
+dist/
+web-build/
+
+# Generated native projects
+/android/
+/android/**
+/ios/
+/ios/**
+
+# Local build artifacts and smoke-test output
+/builds/
+/builds/**
+*.apk
+*.aab
+*.apks
+*.ipa
+.screenshots/
+
+# Local secrets and credentials
+.env
+.env*.local
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+# Local logs and temp files
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.tsbuildinfo
+.metro-health-check*

@@ -10,14 +10,14 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "4",
+      "buildNumber": "5",
       "bundleIdentifier": "com.fieldbill.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "versionCode": 5,
+      "versionCode": 7,
       "package": "com.fieldbill.app",
       "adaptiveIcon": {
         "backgroundColor": "#F6F1E7",
@@ -62,7 +62,8 @@
       "expo-sqlite",
       "expo-mail-composer",
       "expo-audio",
-      "expo-asset"
+      "expo-asset",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

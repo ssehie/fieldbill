@@ -40,8 +40,6 @@ import {
 } from '@/lib/fieldbill-db';
 import { formatDate } from '@/lib/fieldbill-format';
 
-type StartMode = 'saved' | 'new';
-
 export default function StartJobScreen() {
   const db = useFieldBillDb();
   const router = useRouter();
@@ -50,8 +48,8 @@ export default function StartJobScreen() {
   const [recentCustomers, setRecentCustomers] = React.useState<RecentCustomerOption[]>([]);
   const [lastCustomer, setLastCustomer] = React.useState<RecentCustomerOption | null>(null);
   const [businessDefaultHourlyRate, setBusinessDefaultHourlyRate] = React.useState(DEFAULT_HOURLY_RATE);
-  const [mode, setMode] = React.useState<StartMode>('new');
   const [selectedCustomerId, setSelectedCustomerId] = React.useState<string | null>(null);
+  const [isCustomerPickerOpen, setIsCustomerPickerOpen] = React.useState(false);
   const [customerName, setCustomerName] = React.useState('');
   const [address, setAddress] = React.useState('');
   const [structuredAddress, setStructuredAddress] = React.useState<StructuredAddress>(
@@ -94,9 +92,6 @@ export default function StartJobScreen() {
         setCustomers(savedCustomers);
         setRecentCustomers(recentOptions);
         setLastCustomer(mostRecentOption);
-        if (savedCustomers.length === 0) {
-          setMode('new');
-        }
         const defaultLaborRate = businessProfile.defaultLaborRate ?? DEFAULT_HOURLY_RATE;
         setBusinessDefaultHourlyRate(defaultLaborRate);
         setHourlyRate(String(defaultLaborRate));
@@ -139,8 +134,8 @@ export default function StartJobScreen() {
   };
 
   const handleSelectCustomer = (customer: CustomerRecord) => {
-    setMode('saved');
     setSelectedCustomerId(customer.id);
+    setIsCustomerPickerOpen(false);
     applyCustomerValues({
       customerName: customer.name,
       address: customer.address,
@@ -156,8 +151,8 @@ export default function StartJobScreen() {
   };
 
   const handleUseRecentCustomer = (customer: RecentCustomerOption) => {
-    setMode('new');
     setSelectedCustomerId(null);
+    setIsCustomerPickerOpen(false);
     applyCustomerValues({
       customerName: customer.customer_name,
       address: customer.address,
@@ -173,8 +168,8 @@ export default function StartJobScreen() {
   };
 
   const handleNewCustomer = () => {
-    setMode('new');
     setSelectedCustomerId(null);
+    setIsCustomerPickerOpen(false);
     setCustomerName('');
     setAddress('');
     setStructuredAddress(emptyStructuredAddress());
@@ -242,6 +237,16 @@ export default function StartJobScreen() {
     }
   };
 
+  const selectedCustomerSummary = customerName.trim()
+    ? `${customerName.trim()}${address.trim() ? `\n${address.trim()}` : ''}`
+    : 'No customer selected';
+  const recentCustomerOptions = recentCustomers
+    .filter((customer) => !isSameCustomerOption(customer, lastCustomer))
+    .slice(0, 3);
+  const savedCustomerOptions = customers.filter(
+    (customer) => !isSameSavedCustomer(customer, lastCustomer)
+  );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -268,60 +273,65 @@ export default function StartJobScreen() {
             </Pressable>
           ) : null}
 
-          {customers.length > 0 ? (
+          {savedCustomerOptions.length > 0 || recentCustomerOptions.length > 0 ? (
             <View style={styles.existingCard}>
-              <Text style={styles.sectionLabel}>Choose Existing Customer</Text>
-              {recentCustomers.slice(0, 3).map((customer) => (
+              <View style={styles.pickerHeader}>
+                <View style={styles.pickerHeaderText}>
+                  <Text style={styles.sectionLabel}>Customer</Text>
+                  <Text style={styles.selectedCustomerSummary}>{selectedCustomerSummary}</Text>
+                </View>
                 <Pressable
-                  key={`${customer.customer_name}-${customer.address}-${customer.last_job_at}`}
-                  onPress={() => handleUseRecentCustomer(customer)}
-                  style={styles.recentButton}>
-                  <Text style={styles.recentButtonTitle}>{customer.customer_name}</Text>
-                  <Text style={styles.recentButtonDetail}>{customer.address}</Text>
-                </Pressable>
-              ))}
-
-              <View style={styles.modeRow}>
-                <Pressable
-                  onPress={() => setMode('saved')}
-                  style={[styles.modeButton, mode === 'saved' && styles.modeButtonActive]}>
-                  <Text
-                    style={[styles.modeButtonText, mode === 'saved' && styles.modeButtonTextActive]}>
-                    Saved Customers
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={handleNewCustomer}
-                  style={[styles.modeButton, mode === 'new' && styles.modeButtonActive]}>
-                  <Text style={[styles.modeButtonText, mode === 'new' && styles.modeButtonTextActive]}>
-                    New Customer
+                  onPress={() => setIsCustomerPickerOpen((value) => !value)}
+                  style={styles.pickerToggle}>
+                  <Text style={styles.pickerToggleText}>
+                    {isCustomerPickerOpen ? 'Hide' : 'Choose'}
                   </Text>
                 </Pressable>
               </View>
-            </View>
-          ) : null}
 
-          {mode === 'saved' ? (
-            <View style={styles.savedSection}>
-              {customers.length === 0 ? (
-                <Text style={styles.savedEmptyText}>No saved customers yet. Start with a new customer.</Text>
-              ) : (
-                customers.map((customer) => (
-                  <Pressable
-                    key={customer.id}
-                    onPress={() => handleSelectCustomer(customer)}
-                    style={[
-                      styles.customerButton,
-                      selectedCustomerId === customer.id && styles.customerButtonActive,
-                    ]}>
-                    <Text style={styles.customerButtonTitle}>{customer.name}</Text>
-                    <Text style={styles.customerButtonDetail}>{customer.address}</Text>
-                    <Text style={styles.customerButtonDetail}>
-                      Default rate {customer.default_hourly_rate}/hr
-                    </Text>
+              {isCustomerPickerOpen ? (
+                <View style={styles.customerDropdown}>
+                  {recentCustomerOptions.length > 0 ? (
+                    <View style={styles.dropdownGroup}>
+                      <Text style={styles.dropdownLabel}>Recent</Text>
+                      {recentCustomerOptions.map((customer) => (
+                        <Pressable
+                          key={`${customer.customer_name}-${customer.address}-${customer.last_job_at}`}
+                          onPress={() => handleUseRecentCustomer(customer)}
+                          style={styles.recentButton}>
+                          <Text style={styles.recentButtonTitle}>{customer.customer_name}</Text>
+                          <Text style={styles.recentButtonDetail}>{customer.address}</Text>
+                        </Pressable>
+                      ))}
+                    </View>
+                  ) : null}
+
+                  {savedCustomerOptions.length > 0 ? (
+                    <View style={styles.dropdownGroup}>
+                      <Text style={styles.dropdownLabel}>Saved</Text>
+                      {savedCustomerOptions.map((customer) => (
+                        <Pressable
+                          key={customer.id}
+                          onPress={() => handleSelectCustomer(customer)}
+                          style={[
+                            styles.customerButton,
+                            selectedCustomerId === customer.id && styles.customerButtonActive,
+                          ]}>
+                          <Text style={styles.customerButtonTitle}>{customer.name}</Text>
+                          <Text style={styles.customerButtonDetail}>{customer.address}</Text>
+                          <Text style={styles.customerButtonDetail}>
+                            Default rate {customer.default_hourly_rate}/hr
+                          </Text>
+                        </Pressable>
+                      ))}
+                    </View>
+                  ) : null}
+
+                  <Pressable onPress={handleNewCustomer} style={styles.newCustomerButton}>
+                    <Text style={styles.newCustomerButtonText}>New Customer</Text>
                   </Pressable>
-                ))
-              )}
+                </View>
+              ) : null}
             </View>
           ) : null}
 
@@ -451,8 +461,44 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: FieldBillColors.mutedText,
   },
-  recentSection: {
+  pickerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  pickerHeaderText: {
+    flex: 1,
+    gap: 6,
+  },
+  selectedCustomerSummary: {
+    fontSize: 18,
+    color: FieldBillColors.text,
+    lineHeight: 25,
+  },
+  pickerToggle: {
+    minHeight: 52,
+    borderRadius: 16,
+    backgroundColor: FieldBillColors.primaryStrong,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 18,
+  },
+  pickerToggleText: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: FieldBillColors.background,
+  },
+  customerDropdown: {
+    gap: 14,
+  },
+  dropdownGroup: {
     gap: 10,
+  },
+  dropdownLabel: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: FieldBillColors.mutedText,
+    textTransform: 'uppercase',
   },
   sectionLabel: {
     fontSize: 16,
@@ -478,41 +524,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: FieldBillColors.mutedText,
   },
-  modeRow: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  modeButton: {
-    flex: 1,
-    minHeight: 60,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: FieldBillColors.border,
-    backgroundColor: FieldBillColors.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 12,
-  },
-  modeButtonActive: {
-    backgroundColor: FieldBillColors.primaryStrong,
-    borderColor: FieldBillColors.primaryStrong,
-  },
-  modeButtonText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: FieldBillColors.text,
-    textAlign: 'center',
-  },
-  modeButtonTextActive: {
-    color: FieldBillColors.background,
-  },
-  savedSection: {
-    gap: 12,
-  },
-  savedEmptyText: {
-    fontSize: 18,
-    color: FieldBillColors.mutedText,
-  },
   customerButton: {
     borderRadius: 18,
     borderWidth: 1,
@@ -533,6 +544,20 @@ const styles = StyleSheet.create({
   customerButtonDetail: {
     fontSize: 17,
     color: FieldBillColors.mutedText,
+  },
+  newCustomerButton: {
+    minHeight: 58,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: FieldBillColors.primaryStrong,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
+  newCustomerButtonText: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: FieldBillColors.primaryStrong,
   },
   form: {
     gap: 18,
@@ -556,12 +581,43 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: FieldBillColors.text,
   },
-  tallInput: {
-    minHeight: 108,
-    textAlignVertical: 'top',
-  },
   errorText: {
     fontSize: 17,
     color: '#8a2d2d',
   },
 });
+
+function isSameCustomerOption(
+  customer: RecentCustomerOption,
+  comparison: RecentCustomerOption | null
+): boolean {
+  if (!comparison) {
+    return false;
+  }
+
+  return (
+    normalizeCustomerDisplayKey(customer.customer_name, customer.address) ===
+    normalizeCustomerDisplayKey(comparison.customer_name, comparison.address)
+  );
+}
+
+function isSameSavedCustomer(
+  customer: CustomerRecord,
+  comparison: RecentCustomerOption | null
+): boolean {
+  if (!comparison) {
+    return false;
+  }
+
+  return (
+    normalizeCustomerDisplayKey(customer.name, customer.address) ===
+    normalizeCustomerDisplayKey(comparison.customer_name, comparison.address)
+  );
+}
+
+function normalizeCustomerDisplayKey(name: string, address: string): string {
+  return `${name.trim().replace(/\s+/g, ' ').toLowerCase()}::${address
+    .trim()
+    .replace(/\s+/g, ' ')
+    .toLowerCase()}`;
+}
