@@ -136,6 +136,17 @@
   `Improved Talk Note microphone-permission handling. If microphone access is denied, FieldBill now shows a clearer recovery path, lets the tech continue without audio, and offers an Open Settings action.`
 - Cost note: EAS build may consume Expo/EAS build credits/minutes depending on account plan. No direct dollar charge or card prompt was shown.
 
+## 2026-05-09 active-maintenance update 1 Play upload
+
+- Retried the Play Console upload in the user's Edge session.
+- Uploaded/attached `builds/FieldBill-1.0.0-android-v9-play.aab` to FieldBill `Closed testing - Alpha`.
+- Release details accepted for version `9 (1.0.0)` with release notes:
+  `Improved Talk Note microphone-permission handling. If microphone access is denied, FieldBill now shows a clearer recovery path, lets the tech continue without audio, and offers an Open Settings action.`
+- Play Console review step showed 1 warning and no device support changes. The warning was non-blocking; release was saved.
+- Sent `1 change for review` from Publishing overview. Current Play Console state after submission: `Changes in review`, item `Closed testing - Alpha`, version `9 (1.0.0)`, description `Start full rollout`.
+- Google Play quick checks were still running at submission time, with Play saying the changes will be sent for review as soon as checks complete successfully.
+- Cost note: no new payment/card prompt was reached during Play Console upload/submission.
+
 
 ## 2026-05-03 13:18 AgentArch note
 
