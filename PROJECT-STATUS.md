@@ -166,6 +166,16 @@
 - Stopped at payment method selection because the next step needs payment/card or payment-provider action.
 - Cost note: no payment was submitted in this pass.
 
+## 2026-05-09 live tester/release status check
+
+- Google Play Console app list: FieldBill is `Closed testing`, installed audience `2`, last updated `May 9, 2026`.
+- Google Play Console notification panel shows `App update published. Users should see changes immediately but may take longer.` dated `May 9`.
+- FieldBill Play `Closed testing - Alpha` track is `Active`; latest release is `9 (1.0.0)`, available to selected testers, released `May 9 5:10 AM`, `177 countries / regions`.
+- Play tester access still uses Google Groups and includes both `testmyappscommunity@googlegroups.com` and `testmyappshub@googlegroups.com`.
+- TestFi dashboard: FieldBill iOS campaign is `ACTIVE`, `4 testers`, `0 testers recruited`, total spent `$7.96`; campaign card shows `$1.00/tester`.
+- Gmail check found no new Apple/TestFlight approval email and no new TestMyApps results after the earlier Clyrolabs `testing in progress` message.
+- App Store Connect browser check could not verify iOS status because the session is no longer logged in and is showing the Apple login page.
+
 
 ## 2026-05-03 13:18 AgentArch note
 
