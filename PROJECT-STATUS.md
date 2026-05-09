@@ -147,6 +147,15 @@
 - Google Play quick checks were still running at submission time, with Play saying the changes will be sent for review as soon as checks complete successfully.
 - Cost note: no new payment/card prompt was reached during Play Console upload/submission.
 
+## 2026-05-09 next release/tester checks
+
+- Next Android check: verify Google Play quick checks/review finished for closed-testing version `9 (1.0.0)`.
+- Next TestMyApps/Clyrolabs check: monitor Gmail for tester assignment/results and check Play installed audience/tester activity.
+- Next iOS check: wait for Apple Beta App Review approval on TestFlight build `1.0.0 (5)` before sending testers to the public link.
+- If ReliableQA replies after Apple approval, send/use the public TestFlight link `https://testflight.apple.com/join/dYdE2Gcw`; otherwise TestFi remains the fallback iOS tester option.
+- Prepare active-maintenance update 2 after v9 clears review or when TestMyApps feedback arrives. Candidate: small invoice/history polish or clearer customer dropdown wording, then Android `versionCode` `10`.
+- Cost note: TestFi iOS fallback starts at `$1.99/tester` for written feedback or `$3.99/tester` for video feedback. No new cost was incurred by this logging step.
+
 
 ## 2026-05-03 13:18 AgentArch note
 
