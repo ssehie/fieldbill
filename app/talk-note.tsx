@@ -10,7 +10,7 @@ import {
   useAudioRecorder,
   useAudioRecorderState,
 } from 'expo-audio';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FieldBillButton } from '@/components/fieldbill-button';
@@ -121,10 +121,20 @@ export default function TalkNoteScreen() {
     setPermissionBlocked(!granted);
 
     if (!granted) {
-      setError('Microphone permission is off. Allow it and try again.');
+      setError('Microphone permission is off. Open Settings, allow microphone access, then come back here.');
     }
 
     return granted;
+  };
+
+  const handleOpenSettings = async () => {
+    setError('');
+
+    try {
+      await Linking.openSettings();
+    } catch {
+      setError('Could not open Settings. Open your phone settings and allow microphone access for FieldBill.');
+    }
   };
 
   const pausePlayback = async () => {
@@ -345,6 +355,17 @@ export default function TalkNoteScreen() {
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
+        {permissionBlocked ? (
+          <View style={styles.permissionCard}>
+            <Text style={styles.permissionTitle}>Microphone access is off</Text>
+            <Text style={styles.permissionText}>
+              FieldBill can still finish the job without audio. To save a talk note, allow microphone
+              access in Settings and return to this screen.
+            </Text>
+            <FieldBillButton label="OPEN SETTINGS" onPress={() => void handleOpenSettings()} />
+          </View>
+        ) : null}
+
         <View style={styles.stateCard}>
           <Text style={styles.stateLabel}>Current State</Text>
           <Text style={styles.stateValue}>
@@ -521,6 +542,24 @@ const styles = StyleSheet.create({
   },
   actions: {
     gap: FieldBillSpacing.buttonGap,
+  },
+  permissionCard: {
+    borderRadius: 20,
+    backgroundColor: '#fff8df',
+    borderWidth: 1,
+    borderColor: '#e3c761',
+    padding: 18,
+    gap: 10,
+  },
+  permissionTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: FieldBillColors.text,
+  },
+  permissionText: {
+    fontSize: 16,
+    lineHeight: 22,
+    color: FieldBillColors.mutedText,
   },
   errorText: {
     fontSize: 17,

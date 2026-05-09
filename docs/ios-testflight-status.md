@@ -1,6 +1,6 @@
 # iOS TestFlight Status
 
-Last updated: 2026-04-26
+Last updated: 2026-05-09
 
 ## Current Build
 
@@ -8,13 +8,21 @@ Last updated: 2026-04-26
 - App Store Connect app id: `6762166246`
 - Bundle identifier: `com.fieldbill.app`
 - Version: `1.0.0`
-- Latest iOS build number: `4`
-- EAS build id: `3029642b-e17e-4601-aef7-5d4e305ba3f0`
-- EAS submission id: `52d71e57-4255-460d-b965-657ecf82a0c8`
-- IPA artifact: https://expo.dev/artifacts/eas/6WWq4WXeg9ehc3mXBJtwW5.ipa
+- Latest iOS build number: `5`
+- EAS build id: `17ee3fd2-41d0-402c-a54b-f897d3bd1cf4`
+- EAS submission ids attempted: `6a740efc-905c-4b68-b033-e18d8ba88f43`, `d281b7ba-6d5e-4be8-96cc-abb7121e90bf`, `5489c26f-46e5-4bb8-bfb9-3eb11e9cea9a`
+- IPA artifact: https://expo.dev/artifacts/eas/3XoPFBKKCcTVzkcLeYKSeA.ipa
 - App Store Connect TestFlight page: https://appstoreconnect.apple.com/apps/6762166246/testflight/ios
 
-The `1.0.0 (4)` binary was built and submitted to App Store Connect on 2026-04-26. Apple still has to finish processing before it can be selected for TestFlight testing.
+The `1.0.0 (5)` binary is visible in App Store Connect TestFlight and attached to the external group `ReliableQA iOS`. As of 2026-05-09 03:52 America/Chicago, build `1.0.0 (5)` is still `Waiting for Review`, with 1 invite and no install/session data yet.
+
+The external group `ReliableQA iOS` currently shows `0 Testers` and `1 Build`. A public TestFlight link was created for the group:
+
+```text
+https://testflight.apple.com/join/dYdE2Gcw
+```
+
+App Store Connect warns that testers cannot join the public link until the group has an approved build, so Apple Beta App Review remains the blocking item before any iOS paid tester marketplace can start.
 
 ## Verification Done Before Build
 
@@ -60,12 +68,13 @@ EAS reported that the account had used `100%` of included build credits for the 
 
 ## Next Manual Steps
 
-1. Wait for Apple processing to finish.
+1. Wait for Apple Beta App Review to finish for build `1.0.0 (5)`.
 2. Open App Store Connect TestFlight: https://appstoreconnect.apple.com/apps/6762166246/testflight/ios
-3. Confirm build `1.0.0 (4)` appears under iOS builds.
-4. Add internal testers or the intended TestFlight group.
+3. Confirm build `1.0.0 (5)` moves beyond `Waiting for Review`.
+4. Share public link `https://testflight.apple.com/join/dYdE2Gcw` or add tester emails to `ReliableQA iOS` once the build is approved.
 5. If Apple asks for export compliance, keep the declaration aligned with `ITSAppUsesNonExemptEncryption=false`.
 6. Smoke test on a real iPhone through TestFlight.
+7. If ReliableQA has not replied, use TestFi as the alternate iOS tester route. Live pricing checked 2026-05-09: `$1.99` per written-feedback tester or `$3.99` per video-feedback tester; campaigns say they fill in 24-48h and support iOS TestFlight.
 
 ## iPhone Smoke Checklist
 
@@ -80,4 +89,3 @@ EAS reported that the account had used `100%` of included build credits for the 
 9. Return to FieldBill and confirm invoice/history still render.
 10. Open FieldBill Pro screen.
 11. Confirm the app still lets functional testing continue if RevenueCat purchase setup is unavailable.
-

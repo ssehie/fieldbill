@@ -17,7 +17,7 @@
       }
     },
     "android": {
-      "versionCode": 7,
+      "versionCode": 9,
       "package": "com.fieldbill.app",
       "adaptiveIcon": {
         "backgroundColor": "#F6F1E7",
