@@ -156,6 +156,16 @@
 - Prepare active-maintenance update 2 after v9 clears review or when TestMyApps feedback arrives. Candidate: small invoice/history polish or clearer customer dropdown wording, then Android `versionCode` `10`.
 - Cost note: TestFi iOS fallback starts at `$1.99/tester` for written feedback or `$3.99/tester` for video feedback. No new cost was incurred by this logging step.
 
+## 2026-05-09 TestFi iOS campaign checkout
+
+- Opened TestFi in Edge and completed developer onboarding far enough to build a FieldBill iOS campaign.
+- Campaign details entered: app `FieldBill`, platform `Mobile, iOS`, TestFlight link `https://testflight.apple.com/join/dYdE2Gcw`, written-feedback test type, 10-minute session, first-come-first-served tester acceptance.
+- Tester count set to `4`, estimated cost `$7.96` (`4 x $1.99`).
+- Test description asks testers to complete the FieldBill iOS TestFlight job-to-invoice workflow, watch for duplicate customer entries, confusing customer dropdown behavior, crashes, layout issues, and audio note/permission problems.
+- Proceeded to Stripe checkout for `CDrop LLC`. Checkout page shows `TestFi Campaign: FieldBill`, total due `$7.96`, contact email `ssehie@gmail.com`, and payment options including Link, Amazon Pay, Klarna, card, Cash App Pay, and bank.
+- Stopped at payment method selection because the next step needs payment/card or payment-provider action.
+- Cost note: no payment was submitted in this pass.
+
 
 ## 2026-05-03 13:18 AgentArch note
 
