@@ -186,6 +186,17 @@
 - ReliableQA Gmail search found no inbound reply. Sent a follow-up to `contact.reliableqa@gmail.com` with the FieldBill iOS public TestFlight link `https://testflight.apple.com/join/dYdE2Gcw` and asked for payment/order process, tester setup instructions, expected start time, and reporting format.
 - Cost note: no new direct cost was incurred by the follow-up. Existing TestFi/TestMyApps spend remains as previously logged.
 
+## 2026-05-10 tester dashboard check
+
+- Checked the existing Edge window only; did not open or duplicate Edge windows.
+- Google Play Console home dashboard shows FieldBill app status `Closed testing`, installed audience `13`, last updated `May 9, 2026`.
+- Google Play Console notification panel shows `App update published. Users should see changes immediately but may take longer.` dated `May 9`.
+- TestFi dashboard shows FieldBill iOS campaign `CLOSED`, `4 testers`, total spent `$7.96`, and completed campaign status visible.
+- TestMyApps dashboard shows FieldBill Android run details: app `FieldBill`, version `1.0.0`, platform `Android`, build type `Play Store`, status `SUBMITTED`, latest update `Testing Clock Started`, SLA due `May 25, 1:59 PM`.
+- TestMyApps report status still says the team is processing the run and the final report will appear once released.
+- TestMyApps dashboard also shows PsiGrid queued separately; FieldBill is the older active Android run.
+- Cost note: no new cost incurred during this dashboard check.
+
 
 ## 2026-05-03 13:18 AgentArch note
 
