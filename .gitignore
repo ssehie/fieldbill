@@ -32,8 +32,10 @@ yarn-error.*
 .DS_Store
 *.pem
 *.apk
+*.apks
 *.aab
 *.ipa
+builds/tools/
 
 # local env files
 .env

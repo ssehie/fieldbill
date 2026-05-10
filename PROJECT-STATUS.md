@@ -176,6 +176,16 @@
 - Gmail check found no new Apple/TestFlight approval email and no new TestMyApps results after the earlier Clyrolabs `testing in progress` message.
 - App Store Connect browser check could not verify iOS status because the session is no longer logged in and is showing the Apple login page.
 
+## 2026-05-09 evening FieldBill tester follow-up
+
+- Gmail check found FieldBill TestFi activity: five `Tester Joined` notifications and four `New Written Feedback Submitted` notifications.
+- TestFi joined tester names visible in Gmail: John Zaks, Akinnibi John, Vishnu, Enoiy, and Alexander.
+- TestFi feedback text is not included in Gmail; opened `https://www.testfi.app/developer_dashboard` in Edge for dashboard review.
+- TestMyApps/Clyrolabs still has only the earlier `FieldBill - TestMyApps Testing in Progress` email in Gmail; no later bug/results email was found.
+- Apple/TestFlight Gmail search found no FieldBill approval/update email.
+- ReliableQA Gmail search found no inbound reply. Sent a follow-up to `contact.reliableqa@gmail.com` with the FieldBill iOS public TestFlight link `https://testflight.apple.com/join/dYdE2Gcw` and asked for payment/order process, tester setup instructions, expected start time, and reporting format.
+- Cost note: no new direct cost was incurred by the follow-up. Existing TestFi/TestMyApps spend remains as previously logged.
+
 
 ## 2026-05-03 13:18 AgentArch note
 
