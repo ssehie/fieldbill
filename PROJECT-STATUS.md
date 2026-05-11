@@ -197,6 +197,47 @@
 - TestMyApps dashboard also shows PsiGrid queued separately; FieldBill is the older active Android run.
 - Cost note: no new cost incurred during this dashboard check.
 
+## 2026-05-10 Apple production submission prep
+
+- Ran `npm run check:tester-release`; passed TypeScript, lint, Expo Doctor `17/17`, and tester-release preflight.
+- Retried `npx eas-cli submit -p ios --latest --profile production --non-interactive --verbose`.
+  - EAS found App Store Connect API key `[Expo] EAS Submit 6AJs6IHeJn` / key id `9TQ9HPKA6U`.
+  - EAS found existing build `17ee3fd2-41d0-402c-a54b-f897d3bd1cf4`, app version `1.0.0`, build number `5`.
+  - EAS scheduled submission `4129c41c-03b8-4044-a937-d526eedba142`.
+  - Apple/EAS still returned only `Something went wrong when submitting your app to Apple App Store Connect`.
+- Created App Store production packet: `C:\fieldbill\docs\app-store-production-submission.md`.
+- Generated App Store-sized screenshots from the existing FieldBill store screenshots:
+  - iPhone 6.7 inch: `C:\fieldbill\assets\store\app-store\iphone-6.7\fieldbill-ios-01.png` through `fieldbill-ios-04.png`, each `1290 x 2796`.
+  - iPad Pro 12.9 inch landscape: `C:\fieldbill\assets\store\app-store\ipad-12.9-landscape\fieldbill-ipad-01.png` through `fieldbill-ipad-04.png`, each `2732 x 2048`.
+- Opened App Store Connect for FieldBill in Edge: `https://appstoreconnect.apple.com/apps/6762166246/appstore/ios/version/inflight`.
+- Remaining blocker: the production App Store Connect form must be completed in the logged-in browser because this session does not have a browser-control tool or a local App Store Connect API key file. Required browser steps are screenshots, metadata, App Privacy, pricing/availability, IAP/product decision, build selection, App Review info, and `Add for Review` / submit.
+- Highest review risk before clicking submit: FieldBill includes RevenueCat / FieldBill Pro code. Either configure and test Apple non-consumable `fieldbill_pro_lifetime` with RevenueCat before production review, or submit a new build that hides/defers the paid unlock path until the product is ready.
+- Cost note: no direct Apple submission cost was incurred. Extra EAS iOS rebuilds may cost money because earlier logs showed the Expo account had used `100%` of included monthly build credits.
+
+## 2026-05-10 Apple production submission completed
+
+- Completed the logged-in App Store Connect production submission for FieldBill iOS version `1.0`, build `1.0.0 (5)`.
+- Uploaded and accepted App Store screenshots:
+  - iPhone 6.5-inch slot: 3 screenshots from `assets/store/app-store/iphone-6.5/`.
+  - iPad 12.9-inch slot: 3 screenshots from `assets/store/app-store/ipad-12.9-landscape/`.
+- Filled and saved production metadata: promotional text, description, keywords, support URL, subtitle, category `Business`, copyright, and review notes.
+- Set App Privacy to `Data Not Collected` and published the privacy update in App Store Connect.
+- Set Age Ratings to `4+` / Brazil `AL` / Korea `ALL`.
+- Attached iOS build `5`, set sign-in not required, and filled review contact information for Steven Sehie.
+- Set Content Rights to no third-party content.
+- Set pricing to `$0.00` and availability to all `175` countries or regions on app release.
+- Submitted `1` item to Apple review. App Store Connect showed `1 Item Submitted`; iOS version status changed to `Waiting for Review`.
+- Cost note: no new direct Apple charge, card prompt, or EAS rebuild was incurred during the browser submission. The app was submitted as free.
+
+## 2026-05-11 monetization release gate
+
+- Added an explicit monetization gate: paid unlock is disabled unless `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true` is present and the relevant RevenueCat platform key is configured.
+- Updated the FieldBill Pro screen so a free/review build does not advertise a broken purchase button or restore flow when monetization is disabled.
+- Updated tester preflight so disabled monetization is treated as an intentional safe state, and RevenueCat keys are required only after the explicit enable flag is set.
+- Updated `docs\monetization-setup.md` with the enable flag and the rule that EAS production should not enable monetization until Apple/Google products, RevenueCat entitlement/offering, sandbox purchase, and restore are tested.
+- Release stance: current app review/tester path remains free and fail-open. Monetization path is preserved but must be enabled deliberately in a future build after store product setup is verified.
+- Cost note: no new direct cost. Future EAS rebuilds may consume paid credits if the included quota is exhausted.
+
 
 ## 2026-05-03 13:18 AgentArch note
 

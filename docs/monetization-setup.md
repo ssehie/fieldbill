@@ -28,6 +28,10 @@ Attach that product to the `pro` entitlement and place it in a current offering,
 
 ## Environment Variables
 
+Monetization is off by default. Enable it only after the store products and RevenueCat wiring are ready:
+
+- `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true`
+
 Set these before building:
 
 - `EXPO_PUBLIC_REVENUECAT_APPLE_API_KEY`
@@ -52,6 +56,8 @@ RevenueCat purchase testing requires a native build. Expo Go is not enough for r
 
 FieldBill prefers the test-store keys in `__DEV__` when they are provided, and falls back to the platform public SDK keys otherwise. For release builds, use only the real platform public SDK keys.
 
+Do not set `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true` in EAS production until the Apple non-consumable, Google one-time product, RevenueCat entitlement, offering, sandbox purchase, and restore flow have all passed.
+
 Recommended flow:
 
 1. Configure the RevenueCat project, products, entitlement, and offering.
@@ -72,13 +78,14 @@ Examples:
 - Android Play build: `npx eas-cli build -p android --profile production`
 - iOS TestFlight build: `npx eas-cli build -p ios --profile production`
 
-The app fails open when RevenueCat is unavailable so early testers are not blocked from creating invoices.
+The app fails open when monetization is disabled or RevenueCat is unavailable, so early testers and store reviewers are not blocked from creating invoices.
 
 ## Current App Behavior
 
 - Home shows remaining free invoices.
-- After `3` invoices, the app routes to `FieldBill Pro` only when a purchasable package is loaded.
-- If RevenueCat is missing, offline, or misconfigured, FieldBill fails open so testers can keep creating invoices.
+- Monetization is hidden unless `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true` and a purchasable package is loaded.
+- After `3` invoices, the app routes to `FieldBill Pro` only when monetization is enabled and a purchasable package is loaded.
+- If monetization is disabled, RevenueCat is missing, offline, or misconfigured, FieldBill fails open so testers can keep creating invoices.
 - Active jobs are not deleted when the user hits the limit.
 - Old invoices remain viewable whether or not Pro is unlocked.
 - Restore flow is available from the upgrade screen.

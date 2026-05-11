@@ -128,11 +128,22 @@ function checkDependencies() {
 }
 
 function checkLocalEnv() {
+  const monetizationEnabled = localEnv.values.EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED === 'true';
+
   if (!localEnv.exists) {
     push(
       WARN,
       'No local .env file found.',
-      'This is fine for a plain tester APK, but purchase testing needs RevenueCat keys in EAS and usually in a local .env too.'
+      'Monetization defaults off without EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true. This is safe for a free tester/review build.'
+    );
+    return;
+  }
+
+  if (!monetizationEnabled) {
+    push(
+      PASS,
+      'Monetization is disabled for this local build.',
+      'Set EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true only after RevenueCat and store products are configured and tested.'
     );
     return;
   }

@@ -19,6 +19,7 @@ import { fieldBillDebugLog } from '@/lib/fieldbill-debug';
 import {
   FIELD_BILL_PRO_ENTITLEMENT_ID,
   FIELD_BILL_PRO_FALLBACK_PRICE,
+  isFieldBillMonetizationEnabled,
 } from '@/lib/fieldbill-monetization';
 
 type FieldBillBillingContextValue = {
@@ -52,6 +53,7 @@ export function FieldBillBillingProvider({ children }: { children: React.ReactNo
   const configuredRef = React.useRef(false);
   const customerInfoListenerRef = React.useRef<((customerInfo: CustomerInfo) => void) | null>(null);
 
+  const monetizationEnabled = React.useMemo(() => isFieldBillMonetizationEnabled(), []);
   const platformApiKey = React.useMemo(() => getRevenueCatApiKey(), []);
   const entitlementId = React.useMemo(
     () => process.env.EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID?.trim() || FIELD_BILL_PRO_ENTITLEMENT_ID,
@@ -65,7 +67,7 @@ export function FieldBillBillingProvider({ children }: { children: React.ReactNo
     () => process.env.EXPO_PUBLIC_REVENUECAT_PACKAGE_ID?.trim() || null,
     []
   );
-  const isConfigured = Boolean(platformApiKey);
+  const isConfigured = monetizationEnabled && Boolean(platformApiKey);
   const isBillingEnabled = isConfigured && nativeRuntimeAvailable;
   const canGateInvoices = isBillingEnabled && (hasProAccess || packageToPurchase !== null);
 
@@ -144,7 +146,7 @@ export function FieldBillBillingProvider({ children }: { children: React.ReactNo
         setIsReady(true);
         fieldBillDebugLog('billing.disabled', {
           platform: Platform.OS,
-          reason: 'missing_api_key',
+          reason: monetizationEnabled ? 'missing_api_key' : 'monetization_disabled',
         });
         return;
       }
@@ -192,7 +194,7 @@ export function FieldBillBillingProvider({ children }: { children: React.ReactNo
         customerInfoListenerRef.current = null;
       }
     };
-  }, [applyCustomerInfo, db, isConfigured, platformApiKey, refresh]);
+  }, [applyCustomerInfo, db, isConfigured, monetizationEnabled, platformApiKey, refresh]);
 
   const purchasePro = React.useCallback(async (): Promise<boolean> => {
     if (!isBillingEnabled || !packageToPurchase) {

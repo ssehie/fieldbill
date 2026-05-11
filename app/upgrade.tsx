@@ -19,6 +19,7 @@ export default function UpgradeScreen() {
   const router = useRouter();
   const {
     isReady,
+    isConfigured,
     isBillingEnabled,
     canGateInvoices,
     hasProAccess,
@@ -73,6 +74,7 @@ export default function UpgradeScreen() {
   const freeInvoicesRemaining = getFreeInvoicesRemaining(invoiceCount);
   const invoiceLimitReached = canGateInvoices && needsProToCreateInvoice(invoiceCount, hasProAccess);
   const purchaseUnavailable = !hasProAccess && (!isBillingEnabled || !packageToPurchase);
+  const monetizationUnavailable = !hasProAccess && !isConfigured;
 
   const handlePurchase = async () => {
     const unlocked = await purchasePro();
@@ -96,11 +98,17 @@ export default function UpgradeScreen() {
         <View style={styles.heroCard}>
           <Text style={styles.kicker}>FieldBill Pro</Text>
           <Text style={styles.title}>
-            {hasProAccess ? 'Unlimited invoices are unlocked.' : 'Keep invoicing without a subscription.'}
+            {hasProAccess
+              ? 'Unlimited invoices are unlocked.'
+              : monetizationUnavailable
+                ? 'FieldBill is free in this build.'
+                : 'Keep invoicing without a subscription.'}
           </Text>
           <Text style={styles.body}>
             {hasProAccess
               ? 'This device already has Pro access. You can create as many invoices as you need.'
+              : monetizationUnavailable
+                ? 'The paid unlock is not enabled for this release, so invoice creation stays open while the store product is prepared.'
               : `Your first ${FIELD_BILL_FREE_INVOICE_LIMIT} invoices are free. Unlock unlimited invoices with one payment.`}
           </Text>
         </View>
@@ -116,11 +124,13 @@ export default function UpgradeScreen() {
           </View>
           <View style={styles.statusRow}>
             <Text style={styles.statusLabel}>Pro Unlock</Text>
-            <Text style={styles.statusValue}>{hasProAccess ? 'Active' : priceLabel}</Text>
+            <Text style={styles.statusValue}>
+              {hasProAccess ? 'Active' : monetizationUnavailable ? 'Not enabled' : priceLabel}
+            </Text>
           </View>
         </View>
 
-        {!hasProAccess ? (
+        {!hasProAccess && !monetizationUnavailable ? (
           <View style={styles.noteCard}>
             <Text style={styles.noteTitle}>
               {invoiceLimitReached ? 'You have used the free trial.' : 'You can unlock Pro any time.'}
@@ -133,7 +143,7 @@ export default function UpgradeScreen() {
           </View>
         ) : null}
 
-        {purchaseUnavailable ? (
+        {purchaseUnavailable && !monetizationUnavailable ? (
           <View style={styles.noteCard}>
             <Text style={styles.noteTitle}>Purchases are not ready yet.</Text>
             <Text style={styles.noteText}>
@@ -145,7 +155,7 @@ export default function UpgradeScreen() {
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <View style={styles.actions}>
-          {!hasProAccess ? (
+          {!hasProAccess && !monetizationUnavailable ? (
             <FieldBillButton
               label={isPurchasing ? 'Unlocking...' : `Unlock Pro ${priceLabel}`}
               detail="One-time purchase for unlimited invoices."
@@ -155,12 +165,14 @@ export default function UpgradeScreen() {
             />
           ) : null}
 
-          <FieldBillButton
-            label={isRestoring ? 'Restoring...' : 'Restore Purchase'}
-            detail="Use this if you already bought Pro on this store account."
-            onPress={() => void handleRestore()}
-            disabled={!isReady || !isBillingEnabled || isPurchasing || isRestoring}
-          />
+          {!monetizationUnavailable ? (
+            <FieldBillButton
+              label={isRestoring ? 'Restoring...' : 'Restore Purchase'}
+              detail="Use this if you already bought Pro on this store account."
+              onPress={() => void handleRestore()}
+              disabled={!isReady || !isBillingEnabled || isPurchasing || isRestoring}
+            />
+          ) : null}
 
           <FieldBillButton
             label={hasProAccess ? 'Back' : invoiceLimitReached ? 'Maybe Later' : 'Keep Free Trial'}
