@@ -2,9 +2,9 @@
 
 ## Last Action
 
-Updated: 2026-05-11T05:14:35
+Updated: 2026-05-12T18:45:00
 
-Exit checkpoint: FieldBill remains last active project. Apple confirmed receipt of iOS production submission by email on 2026-05-10 20:44 Central; current known status is submitted/waiting for review with no rejection email found during 2026-05-11 morning check. Next startup: check Gmail/App Store Connect for Apple review result, then TestMyApps/Clyrolabs Android progress.
+Exit checkpoint: Apple replied on 2026-05-12 that FieldBill iOS version `1.0` needs changes. Gmail only showed the status email, not the exact App Review issue. Next startup: open App Store Connect review submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`, read the exact rejection/feedback text, patch FieldBill, rerun tester-release checks, and resubmit. Then check TestMyApps/Clyrolabs Android progress.
 
 Check on next startup:
 - Open this handoff: `C:\fieldbill\NEXT-CODEX-STARTUP.md`

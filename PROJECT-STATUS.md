@@ -238,6 +238,14 @@
 - Release stance: current app review/tester path remains free and fail-open. Monetization path is preserved but must be enabled deliberately in a future build after store product setup is verified.
 - Cost note: no new direct cost. Future EAS rebuilds may consume paid credits if the included quota is exhausted.
 
+## 2026-05-12 Apple review changes needed
+
+- Gmail check found two App Store Connect emails for FieldBill iOS around 2026-05-12 09:28-09:29 Central: `There's an issue with your FieldBill (iOS) submission.` and `Your App Review Feedback`.
+- Apple status changed from `Waiting for Review` to `Changes needed` for FieldBill iOS version `1.0`, submitted 2026-05-10 06:44 PM PDT.
+- Submission ID: `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`; app id path in the Apple link points at `6762166246`.
+- The email did not include the specific rejection reason. Next action is to open the App Review details page in App Store Connect, read the exact issue, patch FieldBill, and resubmit.
+- Cost note: no direct cost from checking Gmail or recording the review result. A resubmission that requires a new EAS iOS build may consume paid build credits if the included quota is still exhausted.
+
 
 ## 2026-05-03 13:18 AgentArch note
 
