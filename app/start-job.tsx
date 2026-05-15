@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AddressAutocompleteInput } from '@/components/address-autocomplete-input';
 import { FieldBillButton } from '@/components/fieldbill-button';
@@ -44,6 +44,7 @@ export default function StartJobScreen() {
   const db = useFieldBillDb();
   const router = useRouter();
   const headerHeight = useHeaderHeight();
+  const insets = useSafeAreaInsets();
   const [customers, setCustomers] = React.useState<CustomerRecord[]>([]);
   const [recentCustomers, setRecentCustomers] = React.useState<RecentCustomerOption[]>([]);
   const [lastCustomer, setLastCustomer] = React.useState<RecentCustomerOption | null>(null);
@@ -254,7 +255,10 @@ export default function StartJobScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? headerHeight : 0}
         style={styles.keyboardView}>
         <ScrollView
-          contentContainerStyle={styles.content}
+          contentContainerStyle={[
+            styles.content,
+            { paddingBottom: Math.max(168, insets.bottom + 152) },
+          ]}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
@@ -384,7 +388,7 @@ export default function StartJobScreen() {
           </View>
         </ScrollView>
 
-        <View style={styles.footer}>
+        <View style={[styles.footer, { paddingBottom: Math.max(24, insets.bottom + 16) }]}>
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <FieldBillButton

@@ -3,6 +3,7 @@ import React from 'react';
 import {
   BackHandler,
   KeyboardAvoidingView,
+  Linking,
   Platform,
   Pressable,
   ScrollView,
@@ -16,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AddressAutocompleteInput } from '@/components/address-autocomplete-input';
 import { FieldBillButton } from '@/components/fieldbill-button';
-import { FieldBillColors, FieldBillSpacing } from '@/constants/fieldbill';
+import { FieldBillColors, FieldBillLegal, FieldBillSpacing } from '@/constants/fieldbill';
 import {
   emptyStructuredAddress,
   isStructuredAddressMatch,
@@ -147,6 +148,10 @@ export default function OnboardingScreen() {
     setStep((currentStep) => (currentStep > 0 ? ((currentStep - 1) as Step) : currentStep));
   };
 
+  const openLegalLink = React.useCallback((url: string) => {
+    void Linking.openURL(url);
+  }, []);
+
   const handleComplete = async () => {
     if (isSaving || !businessStepValid || !invoiceStepValid || parsedInvoiceNumber === null) {
       return;
@@ -256,6 +261,15 @@ export default function OnboardingScreen() {
                 <Text style={styles.heroPoint}>Start jobs fast.</Text>
                 <Text style={styles.heroPoint}>Add labor and materials.</Text>
                 <Text style={styles.heroPoint}>Send a clean invoice right after the job.</Text>
+              </View>
+
+              <View style={styles.legalLinks}>
+                <Pressable onPress={() => openLegalLink(FieldBillLegal.privacyUrl)} style={styles.legalLink}>
+                  <Text style={styles.legalLinkText}>Privacy Policy</Text>
+                </Pressable>
+                <Pressable onPress={() => openLegalLink(FieldBillLegal.termsUrl)} style={styles.legalLink}>
+                  <Text style={styles.legalLinkText}>Terms</Text>
+                </Pressable>
               </View>
             </View>
           ) : null}
@@ -651,6 +665,27 @@ const styles = StyleSheet.create({
   heroPoint: {
     fontSize: 18,
     color: FieldBillColors.text,
+  },
+  legalLinks: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    paddingTop: 4,
+  },
+  legalLink: {
+    minHeight: 40,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: FieldBillColors.border,
+    backgroundColor: FieldBillColors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 14,
+  },
+  legalLinkText: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: FieldBillColors.primaryStrong,
   },
   formCard: {
     backgroundColor: FieldBillColors.surface,

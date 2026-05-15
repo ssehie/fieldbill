@@ -522,6 +522,50 @@ export async function createPart(
   );
 }
 
+export async function getPartForJob(
+  db: DatabaseClient,
+  jobId: string,
+  partId: string
+): Promise<JobPartRecord | null> {
+  return (
+    (await db.getFirstAsync<JobPartRecord>(
+      `SELECT id, job_id, name, quantity, unit_price, created_at
+       FROM job_parts
+       WHERE id = ? AND job_id = ?
+       LIMIT 1`,
+      partId,
+      jobId
+    )) ?? null
+  );
+}
+
+export async function updatePart(
+  db: DatabaseClient,
+  input: { jobId: string; partId: string; name: string; quantity: number; unitPrice: number }
+): Promise<JobPartRecord | null> {
+  await db.runAsync(
+    `UPDATE job_parts
+     SET name = ?, quantity = ?, unit_price = ?
+     WHERE id = ? AND job_id = ?`,
+    input.name.trim(),
+    input.quantity,
+    input.unitPrice,
+    input.partId,
+    input.jobId
+  );
+
+  return getPartForJob(db, input.jobId, input.partId);
+}
+
+export async function deletePart(db: DatabaseClient, jobId: string, partId: string): Promise<void> {
+  await db.runAsync(
+    `DELETE FROM job_parts
+     WHERE id = ? AND job_id = ?`,
+    partId,
+    jobId
+  );
+}
+
 export async function listPartsForJob(db: DatabaseClient, jobId: string): Promise<JobPartRecord[]> {
   return db.getAllAsync<JobPartRecord>(
     `SELECT id, job_id, name, quantity, unit_price, created_at

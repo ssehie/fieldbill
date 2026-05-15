@@ -14,3 +14,8 @@ export const FieldBillSpacing = {
   buttonGap: 16,
   sectionGap: 18,
 };
+
+export const FieldBillLegal = {
+  privacyUrl: 'https://ssehie.github.io/fieldbill/privacy-policy/',
+  termsUrl: 'https://ssehie.github.io/fieldbill/terms/',
+};

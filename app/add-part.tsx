@@ -1,6 +1,7 @@
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import {
+  Alert,
   BackHandler,
   KeyboardAvoidingView,
   Platform,
@@ -17,7 +18,14 @@ import { FieldBillButton } from '@/components/fieldbill-button';
 import { FieldBillColors, FieldBillSpacing } from '@/constants/fieldbill';
 import { useFieldBillDb } from '@/lib/fieldbill-db-provider';
 import { fieldBillDebugLog } from '@/lib/fieldbill-debug';
-import { createPart, getActiveJob, type JobRecord } from '@/lib/fieldbill-db';
+import {
+  createPart,
+  deletePart,
+  getActiveJob,
+  getPartForJob,
+  updatePart,
+  type JobRecord,
+} from '@/lib/fieldbill-db';
 import { formatMoney } from '@/lib/fieldbill-format';
 
 const QUICK_PARTS = ['Outlet', 'GFCI', 'Breaker', 'Switch', 'Wire', 'Service Call'];
@@ -25,6 +33,9 @@ const QUICK_PARTS = ['Outlet', 'GFCI', 'Breaker', 'Switch', 'Wire', 'Service Cal
 export default function AddPartScreen() {
   const db = useFieldBillDb();
   const router = useRouter();
+  const params = useLocalSearchParams<{ partId?: string }>();
+  const partId = typeof params.partId === 'string' ? params.partId : '';
+  const isEditing = Boolean(partId);
   const hasSubmittedRef = React.useRef(false);
   const [job, setJob] = React.useState<JobRecord | null>(null);
   const [partName, setPartName] = React.useState('');
@@ -32,6 +43,7 @@ export default function AddPartScreen() {
   const [unitPrice, setUnitPrice] = React.useState('');
   const [error, setError] = React.useState('');
   const [isSaving, setIsSaving] = React.useState(false);
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   React.useEffect(() => {
     let isActive = true;
@@ -44,9 +56,31 @@ export default function AddPartScreen() {
       }
 
       setJob(activeJob);
+      if (activeJob && partId) {
+        const part = await getPartForJob(db, activeJob.id, partId);
+
+        if (!isActive) {
+          return;
+        }
+
+        if (!part) {
+          setError('That part is not on the active job anymore.');
+          return;
+        }
+
+        setPartName(part.name);
+        setQuantity(String(part.quantity));
+        setUnitPrice(String(part.unit_price));
+      } else if (!partId) {
+        setPartName('');
+        setQuantity('1');
+        setUnitPrice('');
+        setError('');
+      }
       fieldBillDebugLog('add-part.focus', {
         jobId: activeJob?.id ?? null,
         hasActiveJob: Boolean(activeJob),
+        editPartId: partId || null,
       });
     };
 
@@ -55,7 +89,7 @@ export default function AddPartScreen() {
     return () => {
       isActive = false;
     };
-  }, [db]);
+  }, [db, partId]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -101,12 +135,26 @@ export default function AddPartScreen() {
     setIsSaving(true);
 
     try {
-      await createPart(db, {
-        jobId: job.id,
-        name: partName,
-        quantity: parsedQuantity,
-        unitPrice: parsedUnitPrice,
-      });
+      if (isEditing) {
+        const updatedPart = await updatePart(db, {
+          jobId: job.id,
+          partId,
+          name: partName,
+          quantity: parsedQuantity,
+          unitPrice: parsedUnitPrice,
+        });
+
+        if (!updatedPart) {
+          throw new Error('Part not updated.');
+        }
+      } else {
+        await createPart(db, {
+          jobId: job.id,
+          name: partName,
+          quantity: parsedQuantity,
+          unitPrice: parsedUnitPrice,
+        });
+      }
 
       router.replace('/active-job');
     } catch {
@@ -114,6 +162,36 @@ export default function AddPartScreen() {
       setError("Couldn't save part.");
       setIsSaving(false);
     }
+  };
+
+  const deletePartNow = async () => {
+    if (!job || !partId || isDeleting) {
+      return;
+    }
+
+    setIsDeleting(true);
+    setError('');
+
+    try {
+      await deletePart(db, job.id, partId);
+      router.replace('/active-job');
+    } catch {
+      setError("Couldn't delete part.");
+      setIsDeleting(false);
+    }
+  };
+
+  const handleDeletePart = () => {
+    Alert.alert('Delete part?', 'Remove this part from the active job.', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => {
+          void deletePartNow();
+        },
+      },
+    ]);
   };
 
   if (!job) {
@@ -145,7 +223,7 @@ export default function AddPartScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
-            <Text style={styles.title}>Add Part</Text>
+            <Text style={styles.title}>{isEditing ? 'Edit Part' : 'Add Part'}</Text>
             <Text style={styles.subtitle}>{job.customer_name}</Text>
           </View>
 
@@ -215,11 +293,19 @@ export default function AddPartScreen() {
 
         <View style={styles.footer}>
           <FieldBillButton
-            label={isSaving ? 'SAVING...' : 'SAVE PART'}
+            label={isSaving ? 'SAVING...' : isEditing ? 'SAVE CHANGES' : 'SAVE PART'}
             onPress={() => void handleSavePart()}
             primary
-            disabled={isSaving}
+            disabled={isSaving || isDeleting}
           />
+          {isEditing ? (
+            <Pressable
+              disabled={isSaving || isDeleting}
+              onPress={handleDeletePart}
+              style={[styles.deleteButton, (isSaving || isDeleting) && styles.deleteButtonDisabled]}>
+              <Text style={styles.deleteButtonText}>{isDeleting ? 'DELETING...' : 'DELETE PART'}</Text>
+            </Pressable>
+          ) : null}
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -245,6 +331,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 24,
     backgroundColor: FieldBillColors.background,
+    gap: 10,
   },
   header: {
     gap: 8,
@@ -356,5 +443,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: FieldBillColors.mutedText,
     textAlign: 'center',
+  },
+  deleteButton: {
+    minHeight: 54,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#b96a5f',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: FieldBillColors.surface,
+  },
+  deleteButtonDisabled: {
+    opacity: 0.5,
+  },
+  deleteButtonText: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: '#8a2d2d',
   },
 });

@@ -2,11 +2,11 @@ import * as Calendar from 'expo-calendar';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FieldBillButton } from '@/components/fieldbill-button';
-import { FieldBillColors, FieldBillSpacing } from '@/constants/fieldbill';
+import { FieldBillColors, FieldBillLegal, FieldBillSpacing } from '@/constants/fieldbill';
 import { useFieldBillBilling } from '@/lib/fieldbill-billing';
 import { useFieldBillDb } from '@/lib/fieldbill-db-provider';
 import { fieldBillDebugLog } from '@/lib/fieldbill-debug';
@@ -139,6 +139,14 @@ export default function HomeScreen() {
       setIsScheduling(false);
     }
   };
+
+  const openLegalLink = React.useCallback(async (url: string) => {
+    try {
+      await Linking.openURL(url);
+    } catch {
+      Alert.alert('Could not open link', 'Check your browser and try again.');
+    }
+  }, []);
 
   const freeInvoicesRemaining = getFreeInvoicesRemaining(invoiceCount);
   const invoiceLimitReached = canGateInvoices && needsProToCreateInvoice(invoiceCount, hasProAccess);
@@ -285,6 +293,18 @@ export default function HomeScreen() {
                 style={styles.scheduleButton}
               />
             </View>
+
+            <View style={styles.legalPanel}>
+              <Text style={styles.sectionKicker}>Legal</Text>
+              <View style={styles.legalLinks}>
+                <Pressable onPress={() => void openLegalLink(FieldBillLegal.privacyUrl)} style={styles.legalLink}>
+                  <Text style={styles.legalLinkText}>Privacy Policy</Text>
+                </Pressable>
+                <Pressable onPress={() => void openLegalLink(FieldBillLegal.termsUrl)} style={styles.legalLink}>
+                  <Text style={styles.legalLinkText}>Terms</Text>
+                </Pressable>
+              </View>
+            </View>
           </ScrollView>
         )}
       </View>
@@ -368,6 +388,32 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: FieldBillColors.border,
     gap: 10,
+  },
+  legalPanel: {
+    padding: 16,
+    borderRadius: 22,
+    backgroundColor: '#f0eadf',
+    gap: 10,
+  },
+  legalLinks: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  legalLink: {
+    minHeight: 42,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: FieldBillColors.border,
+    backgroundColor: FieldBillColors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
+  legalLinkText: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: FieldBillColors.primaryStrong,
   },
   sectionKicker: {
     fontSize: 13,

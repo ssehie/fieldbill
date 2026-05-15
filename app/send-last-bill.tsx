@@ -7,6 +7,7 @@ import {
   BackHandler,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -673,28 +674,63 @@ export default function SendLastBillScreen() {
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <View style={styles.actions}>
-            <FieldBillButton
+            <InvoiceActionButton
               label={isEmailing ? 'Opening Email...' : 'Email Invoice'}
               onPress={() => void handleEmailToMe()}
               primary
               disabled={isEmailing || isSending || isMarkingPaid}
             />
-            <FieldBillButton
-              label={isSending ? 'Marking Sent...' : 'Mark as Sent'}
-              onPress={() => void handleMarkSent()}
-              disabled={
-                isEmailing || isSending || isMarkingPaid || invoice.status === 'sent' || invoice.status === 'paid'
-              }
-            />
-            <FieldBillButton
-              label={isMarkingPaid ? 'Marking Paid...' : 'Mark as Paid'}
-              onPress={() => void handleMarkPaid()}
-              disabled={isEmailing || isSending || isMarkingPaid || invoice.status === 'paid'}
-            />
+            <View style={styles.secondaryActionRow}>
+              <InvoiceActionButton
+                label={isSending ? 'Marking...' : 'Mark Sent'}
+                onPress={() => void handleMarkSent()}
+                disabled={
+                  isEmailing || isSending || isMarkingPaid || invoice.status === 'sent' || invoice.status === 'paid'
+                }
+              />
+              <InvoiceActionButton
+                label={isMarkingPaid ? 'Marking...' : 'Mark Paid'}
+                onPress={() => void handleMarkPaid()}
+                disabled={isEmailing || isSending || isMarkingPaid || invoice.status === 'paid'}
+              />
+            </View>
           </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
+  );
+}
+
+function InvoiceActionButton({
+  label,
+  onPress,
+  primary = false,
+  disabled = false,
+}: {
+  label: string;
+  onPress: () => void;
+  primary?: boolean;
+  disabled?: boolean;
+}) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      disabled={disabled}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.invoiceActionButton,
+        primary ? styles.invoiceActionPrimary : styles.invoiceActionSecondary,
+        pressed && !disabled && styles.invoiceActionPressed,
+        disabled && styles.invoiceActionDisabled,
+      ]}>
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.8}
+        style={[styles.invoiceActionText, primary && styles.invoiceActionPrimaryText]}>
+        {label}
+      </Text>
+    </Pressable>
   );
 }
 
@@ -1110,12 +1146,46 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: FieldBillSpacing.screenPadding,
     paddingTop: 8,
-    paddingBottom: 24,
+    paddingBottom: 18,
     gap: 10,
     backgroundColor: FieldBillColors.background,
   },
   actions: {
-    gap: FieldBillSpacing.buttonGap,
+    gap: 10,
+  },
+  secondaryActionRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  invoiceActionButton: {
+    minHeight: 52,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 14,
+    flex: 1,
+  },
+  invoiceActionPrimary: {
+    minHeight: 58,
+    backgroundColor: FieldBillColors.primaryStrong,
+  },
+  invoiceActionSecondary: {
+    backgroundColor: FieldBillColors.primary,
+  },
+  invoiceActionPressed: {
+    opacity: 0.92,
+  },
+  invoiceActionDisabled: {
+    backgroundColor: FieldBillColors.primaryDisabled,
+  },
+  invoiceActionText: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: FieldBillColors.background,
+    textAlign: 'center',
+  },
+  invoiceActionPrimaryText: {
+    fontSize: 18,
   },
   emptyState: {
     flex: 1,

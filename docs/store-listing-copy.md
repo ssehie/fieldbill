@@ -15,3 +15,8 @@ FieldBill supports a focused service-work workflow: active jobs, invoice review,
 FieldBill does not require an account and is designed to keep most job and invoice data local to your device. Optional features may use device or third-party services only when you choose them, such as address lookup, calendar events, email drafts, and purchase restoration.
 
 FieldBill is built for small service businesses that need a simple mobile invoice workflow without a complicated back-office system.
+
+## Listing links
+
+- Privacy Policy: `https://ssehie.github.io/fieldbill/privacy-policy/`
+- Terms and Conditions: `https://ssehie.github.io/fieldbill/terms/`

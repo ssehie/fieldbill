@@ -1,6 +1,6 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import React from 'react';
-import { BackHandler, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FieldBillButton } from '@/components/fieldbill-button';
@@ -11,11 +11,20 @@ import {
   getActiveJob,
   getBusinessProfile,
   getJobAudioNote,
+  getPartLineTotal,
   getPartsSubtotalForJob,
+  listPartsForJob,
   type JobAudioNoteRecord,
+  type JobPartRecord,
   type JobRecord,
 } from '@/lib/fieldbill-db';
-import { formatDurationMillis, formatElapsed, formatHours, formatMoney } from '@/lib/fieldbill-format';
+import {
+  formatDurationMillis,
+  formatElapsed,
+  formatHours,
+  formatMoney,
+  formatNumber,
+} from '@/lib/fieldbill-format';
 import { getElapsedHours, getLaborTotal, roundMoney } from '@/lib/fieldbill-math';
 
 export default function ActiveJobScreen() {
@@ -23,6 +32,7 @@ export default function ActiveJobScreen() {
   const router = useRouter();
   const [job, setJob] = React.useState<JobRecord | null>(null);
   const [audioNote, setAudioNote] = React.useState<JobAudioNoteRecord | null>(null);
+  const [parts, setParts] = React.useState<JobPartRecord[]>([]);
   const [currency, setCurrency] = React.useState('USD');
   const [partsSubtotal, setPartsSubtotal] = React.useState(0);
   const [now, setNow] = React.useState(Date.now());
@@ -44,15 +54,17 @@ export default function ActiveJobScreen() {
         if (!activeJob) {
           setJob(null);
           setAudioNote(null);
+          setParts([]);
           setPartsSubtotal(0);
           setCurrency(businessProfile.currency);
           setIsLoading(false);
           return;
         }
 
-        const [nextPartsSubtotal, nextAudioNote] = await Promise.all([
+        const [nextPartsSubtotal, nextAudioNote, nextParts] = await Promise.all([
           getPartsSubtotalForJob(db, activeJob.id),
           getJobAudioNote(db, activeJob.id),
+          listPartsForJob(db, activeJob.id),
         ]);
 
         if (!isActive) {
@@ -62,12 +74,14 @@ export default function ActiveJobScreen() {
         setJob(activeJob);
         setPartsSubtotal(nextPartsSubtotal);
         setAudioNote(nextAudioNote);
+        setParts(nextParts);
         setCurrency(businessProfile.currency);
         setIsLoading(false);
         fieldBillDebugLog('active-job.focus', {
           jobId: activeJob.id,
           hasAudioNote: Boolean(nextAudioNote),
           partsSubtotal: nextPartsSubtotal,
+          parts: nextParts.length,
         });
       };
 
@@ -182,6 +196,44 @@ export default function ActiveJobScreen() {
           </View>
         </View>
 
+        <View style={styles.partsCard}>
+          <View style={styles.partsHeader}>
+            <View>
+              <Text style={styles.infoLabel}>Parts</Text>
+              <Text style={styles.partsTitle}>
+                {parts.length > 0 ? `${parts.length} line item${parts.length === 1 ? '' : 's'}` : 'No parts yet'}
+              </Text>
+            </View>
+            <Pressable onPress={() => router.push('/add-part')} style={styles.addPartChip}>
+              <Text style={styles.addPartChipText}>Add</Text>
+            </Pressable>
+          </View>
+
+          {parts.length > 0 ? (
+            <View style={styles.partsList}>
+              {parts.map((part) => (
+                <Pressable
+                  key={part.id}
+                  onPress={() => router.push(`/add-part?partId=${encodeURIComponent(part.id)}` as never)}
+                  style={styles.partRow}>
+                  <View style={styles.partTextBlock}>
+                    <Text style={styles.partName}>{part.name}</Text>
+                    <Text style={styles.partMeta}>
+                      {formatNumber(part.quantity)} x {formatMoney(part.unit_price, currency)}
+                    </Text>
+                  </View>
+                  <View style={styles.partAmountBlock}>
+                    <Text style={styles.partTotal}>{formatMoney(getPartLineTotal(part), currency)}</Text>
+                    <Text style={styles.editHint}>Edit</Text>
+                  </View>
+                </Pressable>
+              ))}
+            </View>
+          ) : (
+            <Text style={styles.emptyPartText}>Add materials now, then tap any line here to adjust it.</Text>
+          )}
+        </View>
+
         <View style={styles.actions}>
           <FieldBillButton label="ADD PART" onPress={() => router.push('/add-part')} />
           <FieldBillButton
@@ -291,6 +343,87 @@ const styles = StyleSheet.create({
   },
   actions: {
     gap: FieldBillSpacing.buttonGap,
+  },
+  partsCard: {
+    borderRadius: 20,
+    backgroundColor: FieldBillColors.surface,
+    borderWidth: 1,
+    borderColor: FieldBillColors.border,
+    padding: 18,
+    gap: 14,
+  },
+  partsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 12,
+  },
+  partsTitle: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: FieldBillColors.text,
+  },
+  addPartChip: {
+    minHeight: 44,
+    borderRadius: 999,
+    backgroundColor: '#edf3ee',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 18,
+  },
+  addPartChipText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: FieldBillColors.primaryStrong,
+  },
+  partsList: {
+    gap: 10,
+  },
+  partRow: {
+    minHeight: 66,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: FieldBillColors.border,
+    backgroundColor: '#f7f3eb',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  partTextBlock: {
+    flex: 1,
+    gap: 3,
+  },
+  partName: {
+    fontSize: 19,
+    fontWeight: '800',
+    color: FieldBillColors.text,
+  },
+  partMeta: {
+    fontSize: 15,
+    color: FieldBillColors.mutedText,
+  },
+  partAmountBlock: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    gap: 2,
+  },
+  partTotal: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: FieldBillColors.text,
+  },
+  editHint: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: FieldBillColors.primaryStrong,
+    textTransform: 'uppercase',
+  },
+  emptyPartText: {
+    fontSize: 17,
+    lineHeight: 24,
+    color: FieldBillColors.mutedText,
   },
   emptyState: {
     flex: 1,

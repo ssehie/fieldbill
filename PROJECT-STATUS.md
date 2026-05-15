@@ -1,5 +1,51 @@
 ﻿# Project Notes
 
+## 2026-05-15 TestMyApps terms/email/build-contract check
+
+- Checked the current public TestMyApps pages for the FieldBill tester obligation:
+  - `how-it-works` describes the expected handoff as a Play Console testing link, APK, or TestFlight invite with any tester instructions needed for real-device testing.
+  - `terms-and-conditions` says TestMyApps provides tester assignment, feedback, and reporting, but does not guarantee Google Play/App Store approval or bug-free results.
+  - Terms also require that we have rights to share the app and allow TestMyApps to share the app with testers for testing purposes.
+  - Public pricing now says live package pricing is by quote; the local FieldBill run remains the already-purchased TestMyApps Premium/credit path logged on 2026-05-08.
+- Contract stance for this build: FieldBill's submitted TestMyApps run is Android / Play Store delivery, so the correct tester-facing path is Play Console `Closed testing - Alpha`, not a raw AAB handout unless Clyrolabs/TestMyApps explicitly asks for APK/AAB access.
+- Current build state is aligned with their feedback and public terms once it is uploaded to Play closed testing: Android `versionCode` `10`, local AAB `builds\FieldBill-1.0.0-android-v10-play.aab`, release notes ready.
+- Reran `npm run check:tester-release` after the terms/email check; it passed TypeScript, lint, Expo Doctor `17/17`, and tester preflight. Warnings remain expected for local EAS versioning, no local `.env`, and dirty working tree.
+- Gmail check: no new inbound Clyrolabs/TestMyApps response was found after Steve's 2026-05-15 reply `19e2da0f494fe34c`. Latest relevant inbound remains the 2026-05-14 FieldBill progress/feedback request asking for Privacy Policy and Terms links plus regular push releases.
+- Next action: upload `builds\FieldBill-1.0.0-android-v10-play.aab` to Google Play `Closed testing - Alpha`, send/save/review the release, then notify Clyrolabs/TestMyApps that testers can update. Do not claim the tester build is live until Play Console shows the new closed-testing release is sent or available.
+- Cost: no new direct cost for the web/mail/build-contract check. The prior TestMyApps purchase was already logged at `$17.00`; EAS/Play usage may consume plan credits/minutes, but no new charge prompt was shown.
+
+## 2026-05-15 TestMyApps FieldBill Feedback
+
+- Gmail check found new Clyrolabs/TestMyApps FieldBill feedback from 2026-05-14.
+- Tester observations to fix in the next Android maintenance release:
+  - onboarding profile page has confusing duplicate address search/manual behavior;
+  - Start Job button is not fully visible after profile onboarding on at least one tester device;
+  - parts can be added and viewed during an active job, but existing parts cannot be edited;
+  - final invoice review gives too much screen space to Email/Mark Sent/Mark Paid actions and too little to invoice content;
+  - TestMyApps asked for Privacy Policy and Terms/Conditions links inside the app and aligned Play listing links.
+- Replied to Clyrolabs on 2026-05-15, copied `support@testmyapps.app`, confirming the feedback was received and will be handled in the next release before notifying them to update testers. Sent Gmail message id `19e2da0f494fe34c`.
+- Apple iOS review status remains `Changes needed`; the Gmail body still does not include the exact issue, so App Store Connect review submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570` still needs direct review-page inspection.
+- Verification already run before this note: `npm run check:tester-release` passed with expected warnings for local EAS versioning and no local `.env`.
+- Cost: no direct cost for review or email reply. A new EAS build may consume Expo/EAS credits/minutes.
+
+## 2026-05-15 Android Maintenance Build v10
+
+- Implemented the TestMyApps/Clyrolabs maintenance fixes:
+  - simplified address entry by removing the confusing manual/search toggle from `AddressAutocompleteInput`;
+  - added bottom-safe Start Job footer spacing so the start action remains visible around device navigation bars;
+  - added active-job part editing through `app\active-job.tsx`, `app\add-part.tsx`, and part update/delete helpers in `lib\fieldbill-db.ts`;
+  - compacted final invoice actions so Email/Mark Sent/Mark Paid use less vertical screen space;
+  - added in-app Privacy Policy and Terms links on onboarding and Home;
+  - added hosted Terms documents under `docs\terms\` and listing-link notes in `docs\store-listing-copy.md`.
+- `npm run check:tester-release` passed before and after the build. Final check after EAS bumped Android `versionCode` to `10` passed with expected warnings for local EAS versioning, no local `.env`, and dirty working tree.
+- Built Android production AAB with EAS build `2aa2a809-d9ae-4d84-951e-adcf844620f1`.
+- EAS bumped `app.json` Android `versionCode` from `9` to `10`; commit this bump with the release patch before the next store build.
+- EAS artifact: `https://expo.dev/artifacts/eas/6gmMhdrGFzybYN7xFBiGS6.aab`.
+- Local AAB: `builds\FieldBill-1.0.0-android-v10-play.aab`.
+- Non-interactive Play submit was attempted and failed because Google service-account keys are not configured and EAS cannot set them up in `--non-interactive` mode.
+- Play release notes: `Maintenance update from tester feedback: simplified address entry, improved Start Job button visibility, added active-job part editing, compacted invoice review actions, and added in-app Privacy Policy and Terms links.`
+- Cost: EAS build may consume Expo/EAS build credits/minutes depending on account plan. No direct dollar charge or card prompt was shown.
+
 ## 2026-05-08 16:33 AgentArch tester-readiness review
 
 - Reviewed FieldBill before tester handoff with focus on Start Job customer selection and saved-customer duplication.

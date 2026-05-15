@@ -50,13 +50,12 @@ export function AddressAutocompleteInput({
   const [isLoading, setIsLoading] = React.useState(false);
   const [isLocating, setIsLocating] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
-  const [isManualMode, setIsManualMode] = React.useState(false);
   const [helperText, setHelperText] = React.useState('');
   const sessionTokenRef = React.useRef<string>(createSessionToken());
   const inputRef = React.useRef<TextInput | null>(null);
 
   React.useEffect(() => {
-    if (!GOOGLE_PLACES_API_KEY || value.trim().length < 3 || !isFocused || isManualMode) {
+    if (!GOOGLE_PLACES_API_KEY || value.trim().length < 3 || !isFocused) {
       setSuggestions([]);
       setIsLoading(false);
       return;
@@ -92,13 +91,12 @@ export function AddressAutocompleteInput({
       isActive = false;
       clearTimeout(timeoutId);
     };
-  }, [isFocused, isManualMode, value]);
+  }, [isFocused, value]);
 
   const handleSelectSuggestion = (suggestion: AddressSuggestion) => {
     onChangeText(suggestion.text);
     setSuggestions([]);
     setIsFocused(false);
-    setIsManualMode(false);
     setHelperText('Address selected. You can still edit it if Google got part of it wrong.');
 
     if (!GOOGLE_PLACES_API_KEY || !onSelectAddress) {
@@ -119,7 +117,6 @@ export function AddressAutocompleteInput({
 
   const handleUseCurrentLocation = async () => {
     setSuggestions([]);
-    setIsManualMode(true);
     setHelperText('');
     setIsLocating(true);
 
@@ -168,18 +165,6 @@ export function AddressAutocompleteInput({
     }
   };
 
-  const handleManualMode = () => {
-    setIsManualMode((current) => {
-      const next = !current;
-      setSuggestions([]);
-      setHelperText(
-        next ? 'Manual entry is on. Type whatever is closest and keep moving.' : ''
-      );
-      return next;
-    });
-    requestAnimationFrame(() => inputRef.current?.focus());
-  };
-
   return (
     <View style={style}>
       <View style={styles.inputShell}>
@@ -212,12 +197,12 @@ export function AddressAutocompleteInput({
             {isLocating ? 'Finding...' : 'Use Current Location'}
           </Text>
         </Pressable>
-        <Pressable onPress={handleManualMode} style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>{isManualMode ? 'Use Search' : 'Type Manually'}</Text>
-        </Pressable>
       </View>
 
       {helperText ? <Text style={styles.helperText}>{helperText}</Text> : null}
+      {!GOOGLE_PLACES_API_KEY && !helperText ? (
+        <Text style={styles.helperText}>Type the address manually, or use current location.</Text>
+      ) : null}
 
       {GOOGLE_PLACES_API_KEY && isFocused && suggestions.length > 0 ? (
         <View style={styles.dropdown}>
