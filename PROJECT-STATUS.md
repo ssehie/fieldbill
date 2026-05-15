@@ -14,6 +14,22 @@
 - Next action: upload `builds\FieldBill-1.0.0-android-v10-play.aab` to Google Play `Closed testing - Alpha`, send/save/review the release, then notify Clyrolabs/TestMyApps that testers can update. Do not claim the tester build is live until Play Console shows the new closed-testing release is sent or available.
 - Cost: no new direct cost for the web/mail/build-contract check. The prior TestMyApps purchase was already logged at `$17.00`; EAS/Play usage may consume plan credits/minutes, but no new charge prompt was shown.
 
+## 2026-05-15 Android v10 Play submission
+
+- Uploaded/attached Android `versionCode` `10` to Google Play Console `Closed testing - Alpha` using the Play Console browser flow.
+- Initial direct upload consumed the v10 bundle in Play's app-bundle library; Play then reported `Version code 10 has already been used`. Corrected by clearing the duplicate errored upload row and using `Add from library` to attach app bundle `10 (1.0.0)` to the draft release.
+- Release review page validated before save:
+  - New app bundle: `10 (1.0.0)`;
+  - Previous release not included: `9 (1.0.0)`;
+  - supported device counts remained unchanged: Phone `12,162`, Tablet `6,295`, TV `4`, Car `9`, Chromebook `72`, Android XR `1`;
+  - release notes matched the TestMyApps feedback update.
+- Saved the Alpha release, went to Publishing overview, clicked `Send 1 change for review`, confirmed `Send changes for review`, and waited for quick checks to complete.
+- Final Play Console state at 2026-05-15T18:35:32-05:00: `Changes in review`; message shown: `Your changes are now in review. We may find additional issues when reviewing your app.` Item changed: `Closed testing - Alpha`, `10 (1.0.0)`, `Start full rollout`.
+- Managed publishing is off, so the closed-testing update should publish automatically after Google approval.
+- Tester notice gate: do not tell Clyrolabs/TestMyApps testers can update until Play Console shows the v10 release approved/available, or until a Google Play app-update-published notification arrives.
+- Paid/pro scaffold status for this release: RevenueCat/pro code exists, but monetization remains off by default unless `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true` is set. No local `.env` exists, so the review/tester build fails open and should not block invoice creation behind an unfinished paid unlock.
+- Cost: no new direct Google Play charge or card prompt during the browser submission. Earlier EAS build credit/minute usage still applies to the already-built AAB.
+
 ## 2026-05-15 TestMyApps FieldBill Feedback
 
 - Gmail check found new Clyrolabs/TestMyApps FieldBill feedback from 2026-05-14.
