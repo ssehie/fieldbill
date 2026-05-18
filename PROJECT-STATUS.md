@@ -1,5 +1,15 @@
 ﻿# Project Notes
 
+## 2026-05-17 TestMyApps dashboard notification check
+
+- Checked the live TestMyApps dashboard after it showed `4` unread notifications. The notification summary tile did not open a separate drawer when clicked.
+- FieldBill run detail still shows `IN TESTING`, `Day 9 of 16`, `16 / 16` active testers, `0` tester submissions, and latest overview update `Testing Clock Started`.
+- Visible FieldBill client progress updates include the May 14 Praveen Kumar request to include accessible Privacy Policy and Terms and Conditions links in the app and Play Store listing, plus the older May 9 receipt/assignment update.
+- No released FieldBill report is available yet; TestMyApps still says the final report will appear once released.
+- Play Console notification checked on 2026-05-17 showed FieldBill app update published on May 15: `App update published. Users should see changes immediately but may take longer.`
+- Next action remains verifying Play Console listing legal links and App Store Connect state directly. Android v10 appears published from the Play Console notification, but the store listing legal-link fields still need direct confirmation.
+- Cost note: no new direct cost for the dashboard check.
+
 ## 2026-05-15 TestMyApps terms/email/build-contract check
 
 - Checked the current public TestMyApps pages for the FieldBill tester obligation:
@@ -316,3 +326,10 @@
 ## 2026-05-03 13:25 AgentArch note
 
 - Sent FieldBill Google Play internal test link to shsehie@gmail.com via Gmail: https://play.google.com/apps/internaltest/4700383710080203480
+
+## 2026-05-17 status refresh
+
+- Checked Gmail for new FieldBill, Google Play, App Store Connect, Clyrolabs, TestMyApps, and `App update published` mail after the May 15 Clyrolabs reply. No newer FieldBill release/tester/app-review mail was found.
+- Current blocker remains authenticated store-console verification: confirm whether Android v10 is approved/live in Play Console and open App Store Connect review details for iOS submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`.
+- No FieldBill code changes were made in this pass.
+- Cost note: no direct cost incurred. A future EAS iOS rebuild may consume paid build credits if quota is exhausted.

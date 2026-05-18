@@ -2,7 +2,9 @@
 
 ## Last Action
 
-Updated: 2026-05-15T18:35:32
+Updated: 2026-05-17T19:45:00-05:00
+
+Current status check: Gmail was checked for FieldBill, Google Play, App Store Connect, Clyrolabs, TestMyApps, and `App update published` mail after the May 15 Clyrolabs reply. No new inbound FieldBill/TestMyApps/Play/App Store mail was found. This shell does not have authenticated Play Console or App Store Connect browser-control access, so the exact live Play v10 state and Apple review issue still require opening those logged-in pages.
 
 Exit checkpoint: TestMyApps/Clyrolabs Android feedback was patched, Android v10 was submitted to Google Play `Closed testing - Alpha`, and Play Console now shows the v10 change in review.
 
@@ -34,7 +36,7 @@ TestMyApps/Clyrolabs contract state:
 - FieldBill's submitted TestMyApps run is Android / Play Store delivery, so the correct tester path is Play Console `Closed testing - Alpha`; do not send the raw AAB as the tester-facing route unless Clyrolabs/TestMyApps explicitly asks for it.
 - Gmail check found no new inbound Clyrolabs/TestMyApps response after Steve's sent reply `19e2da0f494fe34c`.
 
-Next startup: check Play Console/Gmail for v10 approval or `App update published`. Do not tell Clyrolabs/TestMyApps testers can update until v10 is approved/available.
+Next startup: check Play Console directly for v10 approval or `App update published`, then check App Store Connect review details for submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`. Do not tell Clyrolabs/TestMyApps testers can update until v10 is approved/available.
 
 Paid/pro scaffold: RevenueCat/pro code exists, but monetization is off by default unless `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true` is set. No local `.env` exists, so this review/tester build fails open and should not block invoice creation behind an unfinished paid unlock.
 
