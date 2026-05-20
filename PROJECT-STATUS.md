@@ -1,5 +1,36 @@
 ﻿# Project Notes
 
+## 2026-05-19 Live Publishing Check
+
+- Used the signed-in PC Edge Play Console session to check FieldBill.
+- Google Play `Test and release` shows `You have no unpublished changes`.
+- Closed testing track `alpha` is serving `10 (1.0.0)`, dated `May 15 11:35 PM`.
+- Dashboard production-access checklist shows the first two gates complete: closed testing release published and at least 12 testers opted in.
+- Remaining Google Play production gate: run the closed test with at least 12 testers for 14 days. Current live dashboard text: `12 testers have currently been opted in for 10 days continuously`.
+- Gmail search for newer FieldBill/TestMyApps/App Review status found no newer FieldBill release or tester response beyond the already-handled May 14-15 Clyrolabs/TestMyApps thread.
+- `npm run check:tester-release` passed. Warnings remain expected: local EAS versioning, no local `.env`, and dirty working tree.
+- iOS/App Store Connect was not rechecked in this pass; prior blocker remains direct review-page inspection for the FieldBill iOS submission.
+- Cost: no direct cost.
+
+## 2026-05-18 FieldBill Terms URL Publish
+
+- Published the existing local Terms page from `docs\terms\index.html` to the active GitHub Pages branch at `https://ssehie.github.io/fieldbill/terms/`.
+- Pages commit: `b8c5700 Publish FieldBill terms page` on `gh-pages`.
+- Updated the published root index so it links to both Privacy Policy and Terms instead of redirecting only to Privacy Policy.
+- Live verification: Terms returns `200 OK` and contains `Terms and Conditions for FieldBill`; Privacy Policy still returns `200 OK`.
+- Cost: no direct cost.
+
+## 2026-05-18 FieldBill Review Pass
+
+- Ran `npm run check:tester-release`; it passed TypeScript, lint, Expo Doctor `17/17`, and tester preflight.
+- Remaining tester preflight warnings: local EAS versioning is active and no local `.env` exists, so monetization remains off for review/tester builds.
+- Live Google Play Console check in PC Edge: FieldBill closed testing `alpha` is serving release `10 (1.0.0)` since `May 15 11:35 PM`; Publishing overview says `You have no unpublished changes`.
+- Production-access progress: `12 testers have currently been opted in for 9 days continuously`; production still needs the 14-day continuous closed-test window.
+- Live legal URL check: Privacy Policy returns `200 OK`, but Terms returns `404 Not Found` at `https://ssehie.github.io/fieldbill/terms/`.
+- Root cause for Terms: remote `origin/gh-pages` currently contains `index.html` and `privacy-policy/`, but no `terms/` folder. Local `docs\terms\index.html` exists on the app branch and needs publishing to the GitHub Pages source before using the terms link in Play/App Store/TestMyApps.
+- `npm audit --omit=dev` reports 6 moderate findings through Expo/Metro tooling (`brace-expansion`, `postcss`, `ws`). The PostCSS force fix would downgrade Expo and was not run.
+- Cost: no direct cost.
+
 ## 2026-05-17 TestMyApps dashboard notification check
 
 - Checked the live TestMyApps dashboard after it showed `4` unread notifications. The notification summary tile did not open a separate drawer when clicked.

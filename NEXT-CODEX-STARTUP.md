@@ -2,11 +2,17 @@
 
 ## Last Action
 
-Updated: 2026-05-17T19:45:00-05:00
+Updated: 2026-05-19T22:05:00-05:00
 
-Current status check: Gmail was checked for FieldBill, Google Play, App Store Connect, Clyrolabs, TestMyApps, and `App update published` mail after the May 15 Clyrolabs reply. No new inbound FieldBill/TestMyApps/Play/App Store mail was found. This shell does not have authenticated Play Console or App Store Connect browser-control access, so the exact live Play v10 state and Apple review issue still require opening those logged-in pages.
+Live Google Play check from the signed-in PC Edge session: FieldBill has no unpublished changes. Closed testing `alpha` is serving `10 (1.0.0)`, dated `May 15 11:35 PM`. Dashboard production-access progress is `12 testers have currently been opted in for 10 days continuously`, so Android production access is time-gated until the 14-day requirement is met. Gmail found no newer FieldBill/TestMyApps/App Review status beyond the already-handled May 14-15 Clyrolabs thread. `npm run check:tester-release` passed with expected warnings.
 
-Exit checkpoint: TestMyApps/Clyrolabs Android feedback was patched, Android v10 was submitted to Google Play `Closed testing - Alpha`, and Play Console now shows the v10 change in review.
+Previous checkpoint:
+
+Updated: 2026-05-18T20:52:53-05:00
+
+Current status check: PC Edge has an authenticated Google Play Console session. FieldBill dashboard shows `12 testers have currently been opted in for 9 days continuously`; production access still needs the 14-day continuous closed-test window. Test and release shows closed testing `alpha`, release `10 (1.0.0)`, serving time `May 15 11:35 PM`, and `You have no unpublished changes`. Live legal URLs now return `200 OK` for both Privacy Policy and Terms.
+
+Exit checkpoint: TestMyApps/Clyrolabs Android feedback was patched, Android v10 is now serving on Google Play `Closed testing - Alpha`. Published the missing Terms page to the active `gh-pages` branch at commit `b8c5700`; `https://ssehie.github.io/fieldbill/terms/` now returns `200 OK` and serves `Terms and Conditions for FieldBill`. Privacy Policy still returns `200 OK` at `https://ssehie.github.io/fieldbill/privacy-policy/`.
 
 Changes implemented:
 - simplified onboarding/start-job address entry by removing the confusing manual/search toggle;
@@ -27,7 +33,7 @@ Play submission:
 - Uploaded/attached app bundle `10 (1.0.0)` to `Closed testing - Alpha`.
 - Corrected the first duplicate upload by using Play Console `Add from library` after Play had consumed versionCode `10`.
 - Saved the release, then sent `1` change for Google review from Publishing overview.
-- Final checked Play Console state: `Changes in review`; item `Closed testing - Alpha`, `10 (1.0.0)`, `Start full rollout`.
+- Final checked Play Console state from 2026-05-18: `You have no unpublished changes`; closed testing `alpha`, release `10 (1.0.0)`, serving since `May 15 11:35 PM`.
 - Managed publishing is off, so the Alpha update should publish automatically after Google approval.
 
 TestMyApps/Clyrolabs contract state:
@@ -36,7 +42,7 @@ TestMyApps/Clyrolabs contract state:
 - FieldBill's submitted TestMyApps run is Android / Play Store delivery, so the correct tester path is Play Console `Closed testing - Alpha`; do not send the raw AAB as the tester-facing route unless Clyrolabs/TestMyApps explicitly asks for it.
 - Gmail check found no new inbound Clyrolabs/TestMyApps response after Steve's sent reply `19e2da0f494fe34c`.
 
-Next startup: check Play Console directly for v10 approval or `App update published`, then check App Store Connect review details for submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`. Do not tell Clyrolabs/TestMyApps testers can update until v10 is approved/available.
+Next startup: legal URL blocker is resolved. Re-check Play Console/TestMyApps state before messaging Clyrolabs, then check App Store Connect review details for submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`.
 
 Paid/pro scaffold: RevenueCat/pro code exists, but monetization is off by default unless `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true` is set. No local `.env` exists, so this review/tester build fails open and should not block invoice creation behind an unfinished paid unlock.
 
