@@ -9,7 +9,8 @@
   - local EAS versioning is active, so commit bumped `app.json` after every EAS tester/store build;
   - no local `.env`, so monetization defaults off for free tester/review builds.
 - Local metadata remains `FieldBill` `1.0.0`, Android package `com.fieldbill.app`, Android versionCode `10`, iOS bundle `com.fieldbill.app`, iOS buildNumber `5`.
-- Google Play/App Store Connect live browser state was not rechecked in this pass; latest local handoff still says Android closed testing `alpha` serves `10 (1.0.0)` and production access is time-gated by the 14-day tester requirement.
+- Google Play live browser state was rechecked in Edge after this note: FieldBill is `Closed testing`, installed audience `13`, last updated `May 15, 2026`; Test and release shows no unpublished changes and closed testing `alpha` serving `10 (1.0.0)` since `May 15 11:35 PM`.
+- App Store Connect live check is blocked at Apple Account sign-in in Edge; iOS review status still needs authenticated Apple session before reporting as current.
 - Cost: no direct cost.
 
 ## 2026-05-19 Live Publishing Check
