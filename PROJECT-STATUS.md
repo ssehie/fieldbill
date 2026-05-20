@@ -1,4 +1,16 @@
-﻿# Project Notes
+# Project Notes
+
+## 2026-05-20 Morning app/tester pass
+
+- Gmail exact searches after 2026-05-15 found no new inbound FieldBill, TestMyApps, Clyrolabs, Google Play, or App Review Feedback messages.
+- Only post-May-15 matching FieldBill/TestMyApps mail found was Steve's sent reply to Clyrolabs/TestMyApps on 2026-05-15.
+- `npm run check:tester-release` passed.
+- Expected warnings remain:
+  - local EAS versioning is active, so commit bumped `app.json` after every EAS tester/store build;
+  - no local `.env`, so monetization defaults off for free tester/review builds.
+- Local metadata remains `FieldBill` `1.0.0`, Android package `com.fieldbill.app`, Android versionCode `10`, iOS bundle `com.fieldbill.app`, iOS buildNumber `5`.
+- Google Play/App Store Connect live browser state was not rechecked in this pass; latest local handoff still says Android closed testing `alpha` serves `10 (1.0.0)` and production access is time-gated by the 14-day tester requirement.
+- Cost: no direct cost.
 
 ## 2026-05-19 Live Publishing Check
 
@@ -364,3 +376,4 @@
 - Current blocker remains authenticated store-console verification: confirm whether Android v10 is approved/live in Play Console and open App Store Connect review details for iOS submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`.
 - No FieldBill code changes were made in this pass.
 - Cost note: no direct cost incurred. A future EAS iOS rebuild may consume paid build credits if quota is exhausted.
+
