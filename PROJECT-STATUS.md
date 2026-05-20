@@ -22,8 +22,9 @@
   - EAS submission ID: `b7ab4410-c4a2-47f0-bb2e-de5d4743d8da`.
   - App Store Connect app ID: `6762166246`.
   - Upload result: binary successfully uploaded; Apple processing started.
+- Live App Store Connect follow-up: TestFlight now shows build `6` under version `1.0.0` with status `Ready to Submit` and expires in 90 days.
 - Verification after build/submit: `npm run check:tester-release` passed with expected warnings for local EAS versioning, no local `.env`, and the current uncommitted status-note/app.json changes.
-- Next App Store action: after Apple finishes processing build `1.0.0 (6)`, attach it to iOS version `1.0` and resubmit to App Review.
+- Next App Store action: attach build `1.0.0 (6)` to rejected iOS version `1.0` and resubmit to App Review.
 - Cost: no direct cost for the check/source fix; a new EAS iOS build may consume build credits/minutes.
 
 ## 2026-05-20 Morning app/tester pass
