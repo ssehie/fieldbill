@@ -10,10 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "5",
+      "buildNumber": "6",
       "bundleIdentifier": "com.fieldbill.app",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSMicrophoneUsageDescription": "FieldBill uses the microphone only when you choose to record an optional talk note for an active job, such as a quick reminder about parts used or work still needed. Audio notes are saved with that job on your device."
       }
     },
     "android": {

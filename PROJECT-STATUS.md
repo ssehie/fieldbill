@@ -1,5 +1,31 @@
 # Project Notes
 
+## 2026-05-20 App Store Connect rejection check
+
+- User logged into Apple in Edge; live App Store Connect check is now current.
+- FieldBill iOS version `1.0` is `Rejected`.
+- Submission ID: `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`.
+- Review date: 2026-05-12.
+- Review devices: iPhone 17 Pro Max and iPad Air 11-inch (M3).
+- Version reviewed: `1.0 (5)`.
+- Rejection: Guideline `5.1.1(ii) - Legal - Privacy - Data Collection and Storage`.
+- Apple issue: the microphone purpose string did not sufficiently explain the protected-resource use.
+- Apple requested: update the microphone purpose string to explain how FieldBill uses microphone access and provide a specific example.
+- Source fix applied in `app.json`: added `ios.infoPlist.NSMicrophoneUsageDescription` explaining that microphone access is only used when the user chooses to record an optional job talk note, for example parts used or work still needed, and that notes are saved with the job on-device.
+- Built fresh iOS production binary with EAS.
+  - EAS build ID: `0226a1eb-d7cc-479a-b1c7-1f7133966f7f`.
+  - App version: `1.0.0`.
+  - iOS build number: `6`.
+  - IPA artifact: `https://expo.dev/artifacts/eas/gpuoSMQqW2KojGnGnaiBV.ipa`.
+  - EAS bumped `expo.ios.buildNumber` from `5` to `6` in `app.json`.
+- Submitted build `1.0.0 (6)` to App Store Connect with EAS Submit.
+  - EAS submission ID: `b7ab4410-c4a2-47f0-bb2e-de5d4743d8da`.
+  - App Store Connect app ID: `6762166246`.
+  - Upload result: binary successfully uploaded; Apple processing started.
+- Verification after build/submit: `npm run check:tester-release` passed with expected warnings for local EAS versioning, no local `.env`, and the current uncommitted status-note/app.json changes.
+- Next App Store action: after Apple finishes processing build `1.0.0 (6)`, attach it to iOS version `1.0` and resubmit to App Review.
+- Cost: no direct cost for the check/source fix; a new EAS iOS build may consume build credits/minutes.
+
 ## 2026-05-20 Morning app/tester pass
 
 - Gmail exact searches after 2026-05-15 found no new inbound FieldBill, TestMyApps, Clyrolabs, Google Play, or App Review Feedback messages.
