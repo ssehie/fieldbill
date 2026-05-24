@@ -2,6 +2,27 @@
 
 ## Last Action
 
+Updated: 2026-05-24T14:53:24-05:00
+
+Android closed-test Alpha v11 was sent to Google review.
+
+Completed this pass:
+- User confirmed `send`.
+- Clicked Play Console `Send 1 change for review`.
+- Confirmed the modal action `Send changes for review`.
+- Play Console Publishing overview now shows `Changes in review`.
+- Reviewed change: `Closed testing - Alpha`, version `11 (1.0.0)`, description `Start full rollout`.
+
+Known caveat:
+- Managed publishing is off, so approved changes may publish automatically after review.
+
+Next action:
+- Monitor Play Console/Gmail for the review result.
+- Once v11 is installable by testers, run Android sandbox purchase and restore against `fieldbill_pro_lifetime`.
+- Do not start any paid production rollout until sandbox purchase/restore passes and Google production access is approved.
+
+Previous checkpoint:
+
 Updated: 2026-05-24T12:57:13-05:00
 
 Android closed-test v11 upload is complete and queued in Play Console Publishing overview.

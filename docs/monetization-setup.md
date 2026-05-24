@@ -29,7 +29,7 @@
 - Play Console `Closed testing - Alpha` has version `11 (1.0.0)` uploaded and saved in Publishing overview as `1` change not yet sent for review.
 - Play Console preview warning is non-blocking: no deobfuscation file is associated with version code `11`.
 - Play Console quick checks completed and no blocking issue appeared.
-- The remaining Play Console action is `Send 1 change for review`; do not click it without explicit user confirmation.
+- User confirmed the final send. Play Console Publishing overview now shows `Changes in review` for `Closed testing - Alpha`, version `11 (1.0.0)`, description `Start full rollout`.
 
 FieldBill uses a simple purchase model:
 
@@ -70,7 +70,7 @@ RevenueCat Android setup completed:
 Remaining Android launch work:
 
 1. Wait for Google/RevenueCat propagation if RevenueCat store status is not green immediately.
-2. With explicit user confirmation, send the queued `Closed testing - Alpha` v11 change for Google review.
+2. Monitor Play Console/Gmail for the closed-test Alpha v11 review result.
 3. After v11 is installable through Play testing, run an Android sandbox purchase and restore test against `fieldbill_pro_lifetime`.
 4. Do not start a paid production rollout until sandbox purchase/restore passes and Google production access is approved.
 5. Complete iOS App Store Connect IAP setup separately after Apple sign-in/2FA.

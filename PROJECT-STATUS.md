@@ -15,6 +15,15 @@
 - Do not click `Send 1 change for review` without explicit user confirmation. Managed publishing is off, so approved closed-test changes can publish automatically after Google review.
 - Android sandbox purchase/restore for `fieldbill_pro_lifetime` still cannot be completed until this monetized build is installable through Play testing.
 
+## 2026-05-24 Android closed-test v11 sent for review
+
+- User confirmed `send`; clicked Play Console `Send 1 change for review`, then confirmed the modal action `Send changes for review`.
+- Play Console Publishing overview now shows `Changes in review`.
+- Reviewed change: `Closed testing - Alpha`, version `11 (1.0.0)`, description `Start full rollout`.
+- Play Console message: changes are now in review and Google may find additional issues while reviewing the app.
+- Because managed publishing is off, approved changes may publish automatically after review.
+- Next action: monitor Play Console/Gmail for review result; once v11 is installable by testers, run Android sandbox purchase and restore against `fieldbill_pro_lifetime`.
+
 ## 2026-05-24 Android production AAB build finished
 
 - Started EAS Android production app-bundle build for Play testing with `npx eas-cli build -p android --profile production --non-interactive --no-wait --json`.
