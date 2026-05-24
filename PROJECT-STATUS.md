@@ -1,5 +1,20 @@
 # Project Notes
 
+## 2026-05-24 Android closed-test v11 uploaded and queued
+
+- Downloaded the finished EAS Android production app bundle to `C:\fieldbill\builds\FieldBill-1.0.0-android-v11-play.aab`.
+- Local AAB details: `80,971,892` bytes; SHA256 `BEE42DE16A2C7C722ED4B9A0A74EACBC6AB18B791F0F3C876A043356D6518AE7`.
+- Tried direct EAS submit first with `npx eas-cli submit -p android --id 105dd818-2f05-4590-88d8-d814dddf07f4 --non-interactive --verbose`; it failed because EAS cannot set up Google Service Account keys in non-interactive mode.
+- Used the signed-in Edge Play Console session instead.
+- Uploaded `FieldBill-1.0.0-android-v11-play.aab` to Play Console `Closed testing - Alpha`.
+- Play Console accepted app bundle version `11 (1.0.0)`, API levels `24+`, target SDK `36`, screen layouts `4`, ABIs `4`, required features `4`.
+- Release notes were added for `en-US` and the closed-test release draft was saved.
+- Preview warning is non-blocking: no deobfuscation file is associated with the app bundle. No R8/ProGuard mapping upload is configured for this Expo/RN build.
+- Publishing overview now shows `1` unsent change: `Closed testing - Alpha`, version `11 (1.0.0)`, description `Start full rollout`.
+- Play Console quick checks completed and the page says the changes can now be sent for review; the final visible action is `Send 1 change for review`.
+- Do not click `Send 1 change for review` without explicit user confirmation. Managed publishing is off, so approved closed-test changes can publish automatically after Google review.
+- Android sandbox purchase/restore for `fieldbill_pro_lifetime` still cannot be completed until this monetized build is installable through Play testing.
+
 ## 2026-05-24 Android production AAB build finished
 
 - Started EAS Android production app-bundle build for Play testing with `npx eas-cli build -p android --profile production --non-interactive --no-wait --json`.

@@ -2,6 +2,32 @@
 
 ## Last Action
 
+Updated: 2026-05-24T12:57:13-05:00
+
+Android closed-test v11 upload is complete and queued in Play Console Publishing overview.
+
+Completed this pass:
+- Downloaded EAS Android production AAB `105dd818-2f05-4590-88d8-d814dddf07f4` to `C:\fieldbill\builds\FieldBill-1.0.0-android-v11-play.aab`.
+- Local AAB details: `80,971,892` bytes; SHA256 `BEE42DE16A2C7C722ED4B9A0A74EACBC6AB18B791F0F3C876A043356D6518AE7`.
+- Direct EAS submit was attempted and failed because Google Service Account Keys cannot be set up in `--non-interactive` mode.
+- Used signed-in Edge / Play Console computer control to create a new `Closed testing - Alpha` release.
+- Uploaded `FieldBill-1.0.0-android-v11-play.aab`.
+- Play Console accepted bundle version `11 (1.0.0)`, API `24+`, target SDK `36`.
+- Added `en-US` release notes and saved the release draft.
+- Preview showed only one non-blocking warning: no deobfuscation file for version code `11`.
+- Publishing overview now shows `1` change not yet sent for review: `Closed testing - Alpha`, version `11 (1.0.0)`, description `Start full rollout`.
+- Play Console quick checks completed and the page says the changes can now be sent for review; the final visible action is `Send 1 change for review`.
+
+Hard stop:
+- Do not click `Send 1 change for review` without explicit user confirmation. Managed publishing is off, so approved closed-test changes can publish automatically after Google review.
+
+Next action:
+- Re-open the existing Edge Play Console tab or `https://play.google.com/console/u/0/developers/8439387974199008185/app/4972649305430524285/publishing`.
+- If the user explicitly confirms, click `Send 1 change for review` for the queued closed-test Alpha v11 change.
+- After Google makes v11 installable to testers, run Android sandbox purchase and restore against `fieldbill_pro_lifetime`.
+
+Previous checkpoint:
+
 Updated: 2026-05-24T11:41:15-05:00
 
 Android production AAB build finished for monetized Play testing.

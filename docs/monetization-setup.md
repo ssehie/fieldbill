@@ -25,6 +25,11 @@
 - Android native purchase readiness was fixed: `com.android.vending.BILLING` is declared and `MainActivity` now uses `singleTop`, which is purchase-safe for payment-app handoffs.
 - `npm run check:tester-release` passes. Remaining expected warnings are local EAS versioning, no local `.env`, and the current dirty working tree.
 - EAS Android production AAB build `105dd818-2f05-4590-88d8-d814dddf07f4` finished with build profile `production`, app version `1.0.0`, and versionCode `11`. AAB artifact: `https://expo.dev/artifacts/eas/32dGg22nwp47cKEcovmWij.aab`. Logs: `https://expo.dev/accounts/ssehie/projects/fieldbill/builds/105dd818-2f05-4590-88d8-d814dddf07f4`.
+- Local AAB: `C:\fieldbill\builds\FieldBill-1.0.0-android-v11-play.aab`; SHA256 `BEE42DE16A2C7C722ED4B9A0A74EACBC6AB18B791F0F3C876A043356D6518AE7`.
+- Play Console `Closed testing - Alpha` has version `11 (1.0.0)` uploaded and saved in Publishing overview as `1` change not yet sent for review.
+- Play Console preview warning is non-blocking: no deobfuscation file is associated with version code `11`.
+- Play Console quick checks completed and no blocking issue appeared.
+- The remaining Play Console action is `Send 1 change for review`; do not click it without explicit user confirmation.
 
 FieldBill uses a simple purchase model:
 
@@ -65,8 +70,8 @@ RevenueCat Android setup completed:
 Remaining Android launch work:
 
 1. Wait for Google/RevenueCat propagation if RevenueCat store status is not green immediately.
-2. Upload AAB `https://expo.dev/artifacts/eas/32dGg22nwp47cKEcovmWij.aab` to Play Console internal or closed testing.
-3. Run an Android sandbox purchase and restore test against `fieldbill_pro_lifetime`.
+2. With explicit user confirmation, send the queued `Closed testing - Alpha` v11 change for Google review.
+3. After v11 is installable through Play testing, run an Android sandbox purchase and restore test against `fieldbill_pro_lifetime`.
 4. Do not start a paid production rollout until sandbox purchase/restore passes and Google production access is approved.
 5. Complete iOS App Store Connect IAP setup separately after Apple sign-in/2FA.
 
