@@ -1,19 +1,27 @@
 # FieldBill App Store Production Submission
 
-Last updated: 2026-05-10
+Last updated: 2026-05-21
 
 ## Current State
 
 - App Store Connect app id: `6762166246`
 - Bundle id: `com.fieldbill.app`
 - App version: `1.0.0`
-- iOS build: `1.0.0 (5)`
-- EAS build id: `17ee3fd2-41d0-402c-a54b-f897d3bd1cf4`
-- Local IPA: `C:\fieldbill\builds\FieldBill-1.0.0-ios-build5-store.ipa`
+- iOS build: `1.0.0 (6)`
+- EAS build id: `0226a1eb-d7cc-479a-b1c7-1f7133966f7f`
+- EAS submission id: `b7ab4410-c4a2-47f0-bb2e-de5d4743d8da`
+- App Store submission id: `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`
+- App Store review status: `Approved for distribution` / eligible for distribution as of Apple email received `2026-05-21T22:10:48Z`
+- App Store URL: `https://apps.apple.com/app/fieldbill/id6762166246`
+- Public URL check: HTTP `200`, resolved to `https://apps.apple.com/us/app/fieldbill/id6762166246`, title `FieldBill App - App Store`
+- IPA artifact: `https://expo.dev/artifacts/eas/gpuoSMQqW2KojGnGnaiBV.ipa`
 - TestFlight public link: `https://testflight.apple.com/join/dYdE2Gcw`
 - Privacy policy URL: `https://ssehie.github.io/fieldbill/privacy-policy/`
+- Terms URL: `https://ssehie.github.io/fieldbill/terms/`
 
-`npm run check:tester-release` passed on 2026-05-10. Current warnings are local EAS versioning, no local `.env`, and an untracked handoff file.
+`npm run check:tester-release` passed on 2026-05-20. Current warnings are local EAS versioning and no local `.env`.
+
+Production resubmission context: iOS version `1.0`, build `1.0.0 (5)` was rejected for Guideline `5.1.1(ii)` because the microphone purpose string was not specific enough. Build `1.0.0 (6)` includes the corrected `NSMicrophoneUsageDescription`. On 2026-05-20, build `1.0.0 (6)` was attached to the iOS version, App Review notes were updated with the explicit optional microphone/job talk-note explanation, and the app was resubmitted to App Review. Apple approval arrived by Gmail on 2026-05-21: submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570` is complete and eligible for distribution, and FieldBill iOS has been approved for distribution.
 
 ## Store Listing
 
@@ -76,7 +84,7 @@ Generated App Store-ready screenshots:
 
 ### Notes
 
-FieldBill does not require an account. Reviewers can start from a fresh install, complete setup with sample business details, start a job, add parts or labor, finish the job, review the invoice, and open the email handoff. Microphone, location, and calendar permissions are optional and are requested only when the related feature is used.
+FieldBill does not require an account. Reviewers can start from a fresh install, complete setup with sample business details, start a job, add parts or labor, finish the job, review the invoice, and open the email handoff. Microphone access is requested only when the reviewer chooses to record an optional job talk note for an active job, such as parts used or work still needed. Audio notes are saved with that job on the device. Location and calendar permissions are optional and are requested only when the related feature is used.
 
 ## App Privacy Answers
 
@@ -96,7 +104,7 @@ Data sale or third-party advertising: No.
 
 ## Pricing And Availability
 
-Production price choice needed before submission:
+Apple approved the current submission on 2026-05-21. Apple notes that public App Store availability can take up to 24 hours after release and depends on contracts being in effect. Revisit pricing and purchase behavior before public launch if monetization changes.
 
 - If FieldBill should launch free with optional Pro unlock, set app price to free and configure the non-consumable in-app purchase.
 - If Pro is not configured/tested yet, do not advertise or submit a broken paid unlock. Either configure/test RevenueCat and the Apple non-consumable first, or hide/defer the paid path in a new build.
@@ -129,16 +137,25 @@ Use standard encryption/no non-exempt encryption unless the app later adds custo
 
 ## Submission Steps
 
+Completed on 2026-05-20 for build `1.0.0 (6)`. Apple approved the submission on 2026-05-21.
+
 1. Open App Store Connect app `6762166246`.
-2. Open the iOS app version `1.0.0`.
+2. Open the iOS app version `1.0`.
 3. Upload screenshots from `assets\store\app-store`.
 4. Fill metadata from this file.
 5. Complete App Privacy from the privacy section above.
 6. Confirm pricing and availability.
 7. Resolve the in-app purchase decision.
-8. Select build `1.0.0 (5)`.
-9. Fill App Review information and notes.
+8. Select build `1.0.0 (6)`.
+9. Fill App Review information and notes. Explicitly mention that microphone access is optional and only used when the reviewer chooses to record a job talk note, such as parts used or work still needed.
 10. Click `Add for Review`, resolve any App Store Connect warnings, then submit to App Review.
+
+## Post-Approval Steps
+
+1. Smoke test install through the public App Store or TestFlight.
+2. If install, pricing, or availability does not behave as expected, verify App Store Connect Agreements, Tax, and Banking.
+3. Confirm App Store metadata, support/privacy/terms links, and screenshots still match the current release.
+4. Recheck the public TestFlight link before sending it to iOS testers.
 
 ## Cost
 

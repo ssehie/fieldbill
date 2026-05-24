@@ -66,6 +66,7 @@ function checkNativeVersions() {
 
 function checkBuildProfiles() {
   const versionSource = easConfig?.cli?.appVersionSource;
+  const development = easConfig?.build?.development;
   const internal = easConfig?.build?.internal;
   const releaseApk = easConfig?.build?.['release-apk'];
   const production = easConfig?.build?.production;
@@ -75,6 +76,11 @@ function checkBuildProfiles() {
   } else {
     push(PASS, `EAS appVersionSource is ${versionSource}.`);
   }
+
+  checkProfileEnvironment('development', development, 'development');
+  checkProfileEnvironment('internal', internal, 'preview');
+  checkProfileEnvironment('release-apk', releaseApk, 'preview');
+  checkProfileEnvironment('production', production, 'production');
 
   checkAndroidApkProfile('internal', internal);
   checkAndroidApkProfile('release-apk', releaseApk);
@@ -96,6 +102,23 @@ function checkBuildProfiles() {
       'After every EAS tester/store build, commit the bumped app.json so the next machine does not reuse stale native versions.'
     );
   }
+}
+
+function checkProfileEnvironment(name, profile, expectedEnvironment) {
+  if (!profile) {
+    return;
+  }
+
+  if (profile.environment !== expectedEnvironment) {
+    push(
+      FAIL,
+      `${name} profile uses the wrong EAS environment.`,
+      `Expected ${expectedEnvironment}; found ${String(profile.environment)}.`
+    );
+    return;
+  }
+
+  push(PASS, `${name} profile uses EAS ${expectedEnvironment} environment.`);
 }
 
 function checkAndroidApkProfile(name, profile) {
@@ -124,6 +147,46 @@ function checkDependencies() {
     push(FAIL, 'react-native-purchases is missing from dependencies.');
   } else {
     push(PASS, `react-native-purchases is installed (${purchasesVersion}).`);
+  }
+
+  checkAndroidBillingConfig();
+}
+
+function checkAndroidBillingConfig() {
+  const appPermissions = appConfig?.android?.permissions ?? [];
+  const manifestPath = path.join(projectRoot, 'android', 'app', 'src', 'main', 'AndroidManifest.xml');
+  const manifest = fs.existsSync(manifestPath) ? fs.readFileSync(manifestPath, 'utf8') : '';
+
+  if (!appPermissions.includes('com.android.vending.BILLING')) {
+    push(
+      FAIL,
+      'app.json is missing com.android.vending.BILLING.',
+      'Android purchase builds need the Google Play Billing permission.'
+    );
+  } else {
+    push(PASS, 'app.json includes com.android.vending.BILLING.');
+  }
+
+  if (!manifest.includes('android.permission.com.android.vending.BILLING') && !manifest.includes('com.android.vending.BILLING')) {
+    push(
+      FAIL,
+      'AndroidManifest.xml is missing com.android.vending.BILLING.',
+      'The checked-in native Android project must include the billing permission used by store builds.'
+    );
+  } else {
+    push(PASS, 'AndroidManifest.xml includes com.android.vending.BILLING.');
+  }
+
+  const launchModeMatch = manifest.match(/android:launchMode="([^"]+)"/);
+  const launchMode = launchModeMatch?.[1] ?? '';
+  if (!['standard', 'singleTop'].includes(launchMode)) {
+    push(
+      FAIL,
+      'MainActivity launchMode is not purchase-safe.',
+      `RevenueCat recommends standard or singleTop for Android purchases; found ${launchMode || 'none'}.`
+    );
+  } else {
+    push(PASS, `MainActivity launchMode is purchase-safe (${launchMode}).`);
   }
 }
 

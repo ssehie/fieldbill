@@ -1,6 +1,6 @@
 # iOS TestFlight Status
 
-Last updated: 2026-05-09
+Last updated: 2026-05-21
 
 ## Current Build
 
@@ -8,13 +8,17 @@ Last updated: 2026-05-09
 - App Store Connect app id: `6762166246`
 - Bundle identifier: `com.fieldbill.app`
 - Version: `1.0.0`
-- Latest iOS build number: `5`
-- EAS build id: `17ee3fd2-41d0-402c-a54b-f897d3bd1cf4`
-- EAS submission ids attempted: `6a740efc-905c-4b68-b033-e18d8ba88f43`, `d281b7ba-6d5e-4be8-96cc-abb7121e90bf`, `5489c26f-46e5-4bb8-bfb9-3eb11e9cea9a`
-- IPA artifact: https://expo.dev/artifacts/eas/3XoPFBKKCcTVzkcLeYKSeA.ipa
+- Latest iOS build number: `6`
+- EAS build id: `0226a1eb-d7cc-479a-b1c7-1f7133966f7f`
+- EAS submission id: `b7ab4410-c4a2-47f0-bb2e-de5d4743d8da`
+- IPA artifact: https://expo.dev/artifacts/eas/gpuoSMQqW2KojGnGnaiBV.ipa
 - App Store Connect TestFlight page: https://appstoreconnect.apple.com/apps/6762166246/testflight/ios
+- App Store submission id: `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`
+- Current App Store review status: `Approved for distribution` / eligible for distribution as of Apple email received `2026-05-21T22:10:48Z`
+- App Store URL: https://apps.apple.com/app/fieldbill/id6762166246
+- Public URL check: HTTP `200`, resolved to `https://apps.apple.com/us/app/fieldbill/id6762166246`, title `FieldBill App - App Store`
 
-The `1.0.0 (5)` binary is visible in App Store Connect TestFlight and attached to the external group `ReliableQA iOS`. As of 2026-05-09 03:52 America/Chicago, build `1.0.0 (5)` is still `Waiting for Review`, with 1 invite and no install/session data yet.
+The `1.0.0 (6)` binary was built after Apple's microphone-purpose-string rejection. Live App Store Connect work on 2026-05-20 attached build `1.0.0 (6)` to iOS version `1.0`, updated the App Review notes with the explicit optional microphone/job talk-note explanation, and resubmitted the app. Apple approval arrived by Gmail on 2026-05-21: FieldBill iOS has been approved for distribution, and submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570` is complete and eligible for distribution.
 
 The external group `ReliableQA iOS` currently shows `0 Testers` and `1 Build`. A public TestFlight link was created for the group:
 
@@ -22,7 +26,7 @@ The external group `ReliableQA iOS` currently shows `0 Testers` and `1 Build`. A
 https://testflight.apple.com/join/dYdE2Gcw
 ```
 
-App Store Connect warns that testers cannot join the public link until the group has an approved build, so Apple Beta App Review remains the blocking item before any iOS paid tester marketplace can start.
+App Store Connect previously warned that testers cannot join the public link until the group has an approved build. The Apple review blocker is now resolved, but recheck the link before sending paid iOS testers to it.
 
 ## Verification Done Before Build
 
@@ -41,7 +45,7 @@ Warnings:
 
 - EAS local versioning is active, so `app.json` must keep the bumped `ios.buildNumber`.
 - No local `.env` file was present. This is fine for functional TestFlight testing, but purchase testing needs RevenueCat Apple keys/products.
-- The working tree has uncommitted changes.
+- The current working tree was clean before this document refresh.
 
 ## Build Notes
 
@@ -66,19 +70,22 @@ npx eas-cli build -p ios --profile production --auto-submit-with-profile product
 
 EAS reported that the account had used `100%` of included build credits for the month. Additional iOS build attempts may be charged at pay-as-you-go rates by Expo.
 
+## Historical Build 5 Notes
+
+Build `1.0.0 (5)` was the original production/TestFlight submission and was rejected under Guideline `5.1.1(ii)` because the microphone purpose string was not specific enough. Build `1.0.0 (6)` is the replacement build with the corrected `NSMicrophoneUsageDescription`.
+
 ## Next Manual Steps
 
-1. Wait for Apple Beta App Review to finish for build `1.0.0 (5)`.
-2. Open App Store Connect TestFlight: https://appstoreconnect.apple.com/apps/6762166246/testflight/ios
-3. Confirm build `1.0.0 (5)` moves beyond `Waiting for Review`.
-4. Share public link `https://testflight.apple.com/join/dYdE2Gcw` or add tester emails to `ReliableQA iOS` once the build is approved.
-5. If Apple asks for export compliance, keep the declaration aligned with `ITSAppUsesNonExemptEncryption=false`.
-6. Smoke test on a real iPhone through TestFlight.
-7. If ReliableQA has not replied, use TestFi as the alternate iOS tester route. Live pricing checked 2026-05-09: `$1.99` per written-feedback tester or `$3.99` per video-feedback tester; campaigns say they fill in 24-48h and support iOS TestFlight.
+1. Run an iPhone smoke test from the public App Store page or TestFlight.
+2. Verify App Store Connect Agreements, Tax, and Banking if install, pricing, or availability does not behave as expected.
+3. Recheck public link `https://testflight.apple.com/join/dYdE2Gcw` before sending it to paid iOS testers.
+4. If Apple asks for export compliance, keep the declaration aligned with `ITSAppUsesNonExemptEncryption=false`.
+5. Smoke test on a real iPhone through TestFlight.
+6. If ReliableQA has not replied, use TestFi as the alternate iOS tester route. Live pricing checked 2026-05-09: `$1.99` per written-feedback tester or `$3.99` per video-feedback tester; campaigns say they fill in 24-48h and support iOS TestFlight.
 
 ## iPhone Smoke Checklist
 
-1. Install build `1.0.0 (4)` from TestFlight.
+1. Install build `1.0.0 (6)` from TestFlight.
 2. Fresh launch opens onboarding/setup.
 3. Complete setup.
 4. Start a job.

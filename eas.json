@@ -5,6 +5,7 @@
   },
   "build": {
     "development": {
+      "environment": "development",
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
@@ -15,6 +16,7 @@
       }
     },
     "internal": {
+      "environment": "preview",
       "distribution": "internal",
       "developmentClient": false,
       "autoIncrement": true,
@@ -23,6 +25,7 @@
       }
     },
     "release-apk": {
+      "environment": "preview",
       "distribution": "internal",
       "developmentClient": false,
       "autoIncrement": true,
@@ -31,6 +34,7 @@
       }
     },
     "production": {
+      "environment": "production",
       "distribution": "store",
       "developmentClient": false,
       "autoIncrement": true,

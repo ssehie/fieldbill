@@ -1,5 +1,178 @@
 # Project Notes
 
+## 2026-05-24 Android production AAB build finished
+
+- Started EAS Android production app-bundle build for Play testing with `npx eas-cli build -p android --profile production --non-interactive --no-wait --json`.
+- Build ID: `105dd818-2f05-4590-88d8-d814dddf07f4`.
+- EAS logs URL: `https://expo.dev/accounts/ssehie/projects/fieldbill/builds/105dd818-2f05-4590-88d8-d814dddf07f4`.
+- AAB artifact URL: `https://expo.dev/artifacts/eas/32dGg22nwp47cKEcovmWij.aab`.
+- Build profile: `production`; distribution: `STORE`; platform: `ANDROID`; app version: `1.0.0`; app build version/versionCode: `11`.
+- EAS loaded the production monetization variables for FieldBill before upload.
+- EAS auto-bumped `expo.android.versionCode` in `app.json` from `10` to `11`.
+- Final remote status at `2026-05-24T11:41:15-05:00`: `FINISHED`.
+- Local checks completed before starting the build:
+  - `npx tsc --noEmit`: passed.
+  - `npm run lint`: passed.
+  - `npx expo-doctor`: passed, `18/18 checks passed`.
+  - `npm run preflight:tester`: passed with expected warnings for local EAS versioning, no local `.env`, and dirty working tree.
+- RevenueCat direct browser/CDP status probe was attempted from the signed-in Edge session, but the internal endpoint fetch timed out. Prior verified state still stands: RevenueCat Google credentials are uploaded/protected and Pub/Sub developer notifications are connected.
+- Next action: upload the resulting `.aab` to Play Console internal or closed testing, then run Google Play sandbox purchase and restore against `fieldbill_pro_lifetime`.
+- Cost: this can consume EAS build quota/build minutes; no direct local cost.
+
+## 2026-05-24 Android RevenueCat Google service credentials completed
+
+- Google Cloud service account `RevenueCat Service Account` was created in project `api-project-294089098252`.
+- Play Console service-account user `revenuecat-service-account@api-project-294089098252.iam.gserviceaccount.com` is active for FieldBill with the scoped app permissions RevenueCat needs: view app info, view app quality info, view financial data, and manage orders/subscriptions.
+- Uploaded the service-account JSON to RevenueCat for Android app `FieldBill Android` (`app87ed3fec9b`); RevenueCat now stores credentials as `RC__PROTECTED` and shows service-account key details for project `api-project-294089098252`.
+- Enabled Google Cloud Pub/Sub API and Google Play Android Developer API.
+- RevenueCat Google developer notifications connected after adding Pub/Sub Admin; `pub_sub_enabled: true`, topic `projects/api-project-294089098252/topics/Play-Store-Notifications`, and `pub_sub_error_status: null`.
+- Deleted the local temporary JSON key after upload/connect; no private key content is kept in the repo.
+- Remaining Android paid-launch work: create/install a fresh native Android build with monetization env, run sandbox purchase/restore, wait for Google production-access decision, and do not start a paid rollout until those pass.
+- iOS IAP/App Store Connect setup remains separate and still needs Apple sign-in/2FA.
+- Cost: no direct local cost.
+
+## 2026-05-24 Android RevenueCat monetization configured
+
+- RevenueCat account `ssehie@gmail.com` is verified and project `fieldbill` (`3fe9596f`) is active.
+- Created RevenueCat Google Play app `FieldBill Android` (`app87ed3fec9b`) for package `com.fieldbill.app`.
+- RevenueCat public Google SDK key is now set in EAS `production` and `preview` as `EXPO_PUBLIC_REVENUECAT_GOOGLE_API_KEY`.
+- Created RevenueCat product `fieldbill_pro_lifetime` (`prodbc42966e33`) as a Play Store non-consumable and attached it to entitlement `pro` (`entlcf87fedd47`).
+- Created current offering `default` (`ofrngc5bc65c372`) with package `$rc_lifetime` (`pkgee66913e7a3`) containing `fieldbill_pro_lifetime`.
+- EAS `production` and `preview` environments now include:
+  - `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true`
+  - `EXPO_PUBLIC_REVENUECAT_GOOGLE_API_KEY`
+  - `EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro`
+  - `EXPO_PUBLIC_REVENUECAT_OFFERING_ID=default`
+- `eas.json` now explicitly maps `internal` and `release-apk` builds to EAS `preview`, and `production` builds to EAS `production`, so the RevenueCat env is deterministic for Android tester/store builds.
+- Verified with `npx eas-cli env:list --environment production`, `npx eas-cli env:list --environment preview`, `npx eas-cli config -p android -e production --json`, and `npx eas-cli config -p android -e internal --json`; EAS reports the RevenueCat variables are loaded from the expected environments.
+- Verification: `npm run check:tester-release` passed. Expected warnings remain local EAS versioning, no local `.env`, and dirty working tree.
+- Superseded by the entry above: RevenueCat Google Play credentials and Pub/Sub developer notifications are now connected.
+- Remaining Android gate is no longer service-account creation; it is a fresh monetized native build plus sandbox purchase/restore and Google production-access approval.
+- Do not start a paid Android production rollout until RevenueCat/Google propagation is green, Android sandbox purchase/restore passes, and production access is approved.
+- Cost: no direct cost.
+
+## 2026-05-24 Android production access application submitted
+
+- Play Console production-access application was submitted from the signed-in browser session.
+- Play Console confirmation: `Application submitted`; production panel now says Google is reviewing the application form, will email the account owner with an update, usually takes `7 days or less` but can take longer, and shows `Applied today, 7:29 AM`.
+- Submitted answers were compressed to the Play Console `300` character limits and aligned to verified FieldBill evidence: TestMyApps/Clyrolabs paid testing route, 16/16 engaged testers, full job-to-invoice workflow coverage, v10 tester-feedback fixes, live legal links, no account requirement, and Android closed-test gate completion.
+- Release readiness check initially failed because `expo-doctor` wanted an explicit Expo Metro config. Added `metro.config.js` using `getDefaultConfig(__dirname)` from `expo/metro-config`; `npm run check:tester-release` then passed.
+- Verification result: `npm run check:tester-release` passed. Expected warnings remain local EAS versioning, no local `.env` so monetization is off, and dirty working tree from current docs/config changes.
+- Next action: monitor Gmail/Play Console for the production-access decision. Do not create or start a production rollout until access is granted and the production release is reviewed.
+- Cost: no direct cost.
+
+## 2026-05-24 Monetization readiness pass
+
+- User shifted next target to monetization after Android production-access application submission.
+- Local audit found the RevenueCat purchase code already exists and uses entitlement `pro`, offering `default`, product/package selection, purchase, restore, and local pro-access caching.
+- EAS environment check: no variables exist for `production`, `preview`, or `development`, so RevenueCat cannot be enabled in EAS builds yet.
+- RevenueCat browser check: `https://app.revenuecat.com/` opens to login. Gmail search found no RevenueCat messages in the last year, so assume no accessible account/project yet.
+- Play Console check: `Monetize with Play > Products > One-time products` shows `1 - 1 of 1`; signed-in API data confirms one product ID `fieldbill_pro_lifetime`, display name `FieldBill Pro`, with one `lifetime` purchase option.
+- App Store Connect check: not authenticated; Apple redirects to login with `authResult=FAILED`. Need Apple sign-in/2FA before creating or verifying the iOS non-consumable.
+- App-side Android billing fixes applied:
+  - Added `com.android.vending.BILLING` to `app.json` Android permissions.
+  - Added `com.android.vending.BILLING` to `android/app/src/main/AndroidManifest.xml`.
+  - Changed `MainActivity` launch mode from `singleTask` to `singleTop` for purchase-safe payment verification handoffs.
+  - Extended `scripts/tester-release-preflight.cjs` to enforce billing permission and purchase-safe launch mode.
+- Verification: `npm run check:tester-release` passed after the fixes. Expected warnings remain local EAS versioning, no local `.env`, and dirty working tree.
+- Blockers to actual paid launch:
+  - Create/sign in to RevenueCat, create FieldBill project, attach Google/Apple products, entitlement `pro`, offering `default`, and copy public SDK keys.
+  - Complete App Store Connect sign-in/2FA and create/submit iOS non-consumable `fieldbill_pro_lifetime` with a new app version.
+  - Add EAS production env vars and build new Android/iOS binaries with monetization enabled.
+- Cost: no direct cost in this pass.
+
+## 2026-05-24 Clyrolabs production report and public link check
+
+- Gmail found a new unread/important Clyrolabs FieldBill message: `FieldBill - Production Report`, received `2026-05-23T03:14:21`.
+- Clyrolabs says they tested the new features/UI, attached a Google Play production-access questionnaire guide, will keep FieldBill installed for `16` days, and asked to be informed once production access is granted.
+- Read attachment `FieldBill_Google_Play_Production_Access_Guide_2026.docx`. It contains draft answers for all `10` Google Play production-access questions plus a checklist and feature/scenario reference.
+- Do not paste the guide blindly. Reconcile it with actual Play Console/tester records first, especially recruitment sources, feedback channels, `12` testers, full `14`-day continuity, and tester-confirmed fixes. Some guide tips still look generic/template-derived and should be cleaned before submission.
+- Public link checks:
+  - App Store `https://apps.apple.com/app/fieldbill/id6762166246`: HTTP `200`, resolved to `https://apps.apple.com/us/app/fieldbill/id6762166246`, title `FieldBill App - App Store`, shows FieldBill as a free Business app by Steve Sehie.
+  - TestFlight `https://testflight.apple.com/join/dYdE2Gcw`: HTTP `200`, title `Join the FieldBill beta - TestFlight - Apple`, contains `View in TestFlight`, no obvious full/not-accepting text.
+  - Privacy Policy `https://ssehie.github.io/fieldbill/privacy-policy/`: HTTP `200`, title `Privacy Policy for FieldBill`.
+  - Terms `https://ssehie.github.io/fieldbill/terms/`: HTTP `200`, title `Terms and Conditions for FieldBill`.
+  - TestMyApps public pages still describe managed Android/iOS testing, `12` testers / `14` days, Play Console link/APK/TestFlight handoff, feedback/reporting, and no guarantee of app-store approval.
+- Initial non-browser check could not verify private dashboard state; the follow-up computer-use check below did verify the signed-in TestMyApps dashboard. Play Console production-access state is still not live-verified in-browser.
+- Gmail did not show a newer official Google Play production-access/review status email. The only Google Play match after 2026-05-21 was a Google Play I/O recap marketing email.
+- Unrelated note: Gmail also has an unread Clyrolabs `PSIGRID - Production Report` from 2026-05-24.
+- Next action: open signed-in Play Console, verify the production-access checklist/timer, then submit the Google production-access questionnaire using the Clyrolabs guide only after aligning the wording to provable FieldBill evidence.
+- Cost: no direct cost.
+
+## 2026-05-24 TestMyApps dashboard computer-use check
+
+- Opened the signed-in TestMyApps dashboard with Edge/computer use. The current dashboard route is `https://testmyapps.app/dashboard`; the old `https://testmyapps.app/developer_dashboard` route now returns `404 Page not found`.
+- Account shown: Steve Sehie / `ssehie@gmail.com`.
+- Dashboard summary: `2` total apps, `2` in testing, `0` completed, wallet credits `0`, notifications `4`.
+- Recent apps: `PsiGrid` and `FieldBill`, both `IN TESTING`.
+- FieldBill run detail route: `https://testmyapps.app/test-runs/e6a8f16b-6409-4971-8c9d-a00e681f8019`.
+- FieldBill overview: `SUBMITTED`; submitted `May 8, 6:18 PM`; SLA due `May 25, 1:59 PM`; build type `Play Store`; latest update `Testing Clock Started`; app `FieldBill`; version `1.0.0`; platform `Android`; delivery `Play Store`.
+- FieldBill progress: `Day 15 of 16`; `1 day remaining before SLA`; active testers `16 / 16 ENGAGED`; tester submissions `0 NONE YET WAITING`; current stage `In Testing`.
+- Client progress updates remain the May 14 Praveen Kumar request for in-app/listing Privacy Policy and Terms links plus regular push releases, and the May 9 tester-assignment start note.
+- Reports tab: final report is `Not released yet`.
+- Instructions tab: no login required; testers are asked to create a job, select/add a customer, add labor/materials, save/reopen, and verify saved customer/job data while watching for duplicate customer entries or confusing customer selection. Build access remains `Play Store`.
+- Next action: wait for the final TestMyApps report or the May 25 SLA, and separately open Play Console to verify production-access eligibility before telling Clyrolabs production access is granted.
+- Cost: no direct cost.
+
+## 2026-05-24 Play Console production-access eligibility check
+
+- Opened signed-in Google Play Console under developer `8439387974199008185`.
+- Selected FieldBill app `4972649305430524285`, package `com.fieldbill.app`.
+- FieldBill dashboard shows `Production` is still `Inactive`.
+- Production-access panel is now available with `Apply for production`.
+- All displayed prerequisites are checked complete:
+  - `Publish a closed testing release`
+  - `Have at least 12 testers opted-in to your closed test`
+  - `Run your closed test with at least 12 testers, for at least 14 days`
+- This confirms the Play Console timer/gate is satisfied enough to start the production-access questionnaire.
+- Do not submit the questionnaire without explicit user approval. Use Clyrolabs' `FieldBill_Google_Play_Production_Access_Guide_2026.docx` only as draft source and clean answers against evidence first.
+- Cost: no direct cost.
+
+## 2026-05-21 Monetization hold after iOS launch
+
+- Decision: leave the current live App Store build free and observe real installs/usage before enabling a paywall.
+- Current intended paid model: one-time FieldBill Pro unlock at `$29.99`, likely after `7` free invoices if usage data supports that limit.
+- No production monetization code/config was enabled in this pass. Current live build still has RevenueCat/paywall disabled and fails open, so users can continue creating invoices.
+- Watch next: installs, first open, setup completion, invoice creation, and whether users naturally reach multiple invoices.
+- When ready: update the free-invoice limit constant/docs, create Apple/RevenueCat product `fieldbill_pro_lifetime`, sandbox-test purchase/restore, then ship a new build with monetization enabled.
+- Cost: no direct cost.
+
+## 2026-05-21 FieldBill iOS approved by Apple
+
+- Gmail check found two App Store Connect emails from 2026-05-21:
+  - `Welcome to the App Store`, received `2026-05-21T22:10:47Z`.
+  - `Review of your FieldBill (iOS) submission is complete.`, received `2026-05-21T22:10:48Z`.
+- Apple says FieldBill iOS has been approved for distribution and the reviewed submission is complete and eligible for distribution.
+- Accepted item: App Version `1.0` for iOS.
+- Submission ID: `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`.
+- Submitted: `May 20, 2026 at 02:45 PM Pacific Daylight Time`.
+- Submitted by: `Steven Sehie`.
+- App Store URL from Apple email: `https://apps.apple.com/app/fieldbill/id6762166246`.
+- Direct public App Store URL check returned HTTP `200`, resolved to `https://apps.apple.com/us/app/fieldbill/id6762166246`, page title `FieldBill App - App Store`, and the page content contains `FieldBill`.
+- Apple caveat: it can take up to 24 hours after release for the app to become publicly available, and distribution depends on App Store Connect contracts being in effect.
+- No newer Clyrolabs/TestMyApps FieldBill response was found in the same Gmail check; latest FieldBill tester response remains the handled May 14-15 thread.
+- Next action: run an iPhone smoke test from the public App Store or TestFlight, verify App Store Connect Agreements/Tax/Banking if any install/pricing issue appears, and recheck the public TestFlight link before sending it to paid iOS testers.
+- Cost: no direct cost.
+
+## 2026-05-20 iOS resubmitted to App Review
+
+- In authenticated App Store Connect, removed rejected build `1.0.0 (5)` from iOS version `1.0`, attached build `1.0.0 (6)`, and saved the version.
+- Updated App Review notes to explicitly state that microphone access is requested only when the reviewer chooses to record an optional job talk note for an active job, such as parts used or work still needed, and that audio notes are saved with that job on-device.
+- Clicked `Resubmit to App Review`.
+- App Store Connect confirmation: iOS Submission status is `Waiting for Review`; item is `iOS App 1.0` / `1.0.0 (6)`; date submitted is `May 20, 2026 at 4:45 PM`; submitted by `Steven Sehie`; submission ID is `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`.
+- Next action: monitor App Store Connect/Gmail for the next Apple review result. Do not send the public TestFlight link until Apple review state allows testers to install.
+- Cost: no direct cost.
+
+## 2026-05-20 iOS resubmission prep moved forward
+
+- Updated stale iOS release docs so the active resubmission target is build `1.0.0 (6)`, not rejected build `1.0.0 (5)`.
+- Updated `docs\ios-testflight-status.md` with EAS build `0226a1eb-d7cc-479a-b1c7-1f7133966f7f`, EAS submission `b7ab4410-c4a2-47f0-bb2e-de5d4743d8da`, and IPA artifact `https://expo.dev/artifacts/eas/gpuoSMQqW2KojGnGnaiBV.ipa`.
+- Updated `docs\app-store-production-submission.md` to select build `1.0.0 (6)` and include the microphone-purpose note for App Review.
+- EAS CLI build list confirms iOS build `1.0.0 (6)` is `FINISHED`; local `eas-cli` 18.12.3 does not expose `submit:list`, so App Store Connect remains the source of truth for attachment/resubmission state.
+- Opened App Store Connect app pages for app `6762166246` in the local browser; final build attach/resubmit was completed in the follow-up entry above.
+- Verification after doc sync: `npm run check:tester-release` passed. Warnings were local EAS versioning, no local `.env`, and dirty tree from the two doc edits.
+- Cost: no direct cost.
+
 ## 2026-05-20 App Store Connect rejection check
 
 - User logged into Apple in Edge; live App Store Connect check is now current.
