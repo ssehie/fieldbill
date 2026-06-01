@@ -1,5 +1,401 @@
 # Project Notes
 
+## 2026-06-01 Full Store Health Pass
+
+- Switched AgentArch active project to `fieldbill` and confirmed `C:\fieldbill` as the active path.
+- Public Apple lookup for app ID `6762166246` returns FieldBill `1.0.1` in the U.S. storefront and `0` results for sampled EU storefronts `de`, `fr`, `ie`, `nl`, `es`, `it`, `se`, and `pl`.
+- Public Google Play URL returns HTTP `200` and contains `FieldBill`: `https://play.google.com/store/apps/details?id=com.fieldbill.app&hl=en_US&gl=US`.
+- Signed-in App Store Connect read-only evidence:
+  - iOS page shows `iOS App Version 1.0.1` and `1.0.1 Ready for Distribution`.
+  - Pricing and Availability shows `175 Countries or Regions`, `148 Available`, and `27 Cannot Sell`.
+  - IAP page shows `Approved (1)` for `FieldBill Pro Lifetime` / `fieldbill_pro_lifetime` / `Non-Consumable` / `Approved`.
+  - Business page shows Free Apps Agreement active, Paid Apps Agreement active, bank account `chime (9177)` active, and U.S. Form W-9 active.
+  - Compliance still shows `Digital Services Act`, `27 Countries or Regions`, last updated `May 28, 2026`, status `In Review`.
+- Screenshot evidence: `C:\Projects\research\pc-control\captures\shot-20260601-173044557.png`, `C:\Projects\research\pc-control\captures\shot-20260601-173241317.png`, `C:\Projects\research\pc-control\captures\shot-20260601-173334287.png`, `C:\Projects\research\pc-control\captures\shot-20260601-173421490.png`, and `C:\Projects\research\pc-control\captures\shot-20260601-173504470.png`.
+- Local `npm run check:tester-release` failed only at Expo Doctor package-version validation: `expo` expected `~54.0.35` but found `54.0.34`; `expo-font` expected `~14.0.12` but found `14.0.11`; `expo-router` expected `~6.0.24` but found `6.0.23`.
+- Current conclusion: iOS `1.0.1`, IAP, and paid business setup are green outside the EU; EU remains blocked by Apple DSA review; Android listing is reachable; local release check needs Expo patch-level dependency alignment.
+- No app code, store settings, release actions, ads, or emails were changed in this pass.
+
+## 2026-05-31 Apple DSA Fix Attempt
+
+- User requested getting the EU/DSA issue done.
+- Restarted the token-protected PC Control helper and used the signed-in Edge/App Store Connect session.
+- Reopened FieldBill App Information / App Store Regulations & Permits / Digital Services Act.
+- The app-specific DSA modal already has `This is a trader app` selected; `Next` is disabled because there is no app-specific change to save.
+- Reopened App Store Connect Business / Agreements / Compliance.
+- Account-level `Digital Services Act` still shows `27 Countries or Regions`, last updated `May 28, 2026`, status `In Review`.
+- Clicking the country/region `View` link only opens the EU country list; clicking the row/status exposes no edit or submit action.
+- Current conclusion: the remaining EU block is Apple-controlled compliance review, not a local FieldBill code/build/store-metadata action available in the UI.
+- Escalation date: if Apple has not cleared the DSA review by `2026-06-17`, contact Apple Developer Support with the evidence that the app-specific trader status is selected but account compliance remains `In Review`.
+
+## 2026-05-31 Apple DSA / EU Availability Recheck
+
+- Restarted the token-protected PC Control helper and used the signed-in Edge/App Store Connect session for read-only inspection only.
+- App Store Connect App Information now shows the Digital Services Act section with: `This developer has identified itself as a trader for this app.`
+- App Store Connect Pricing and Availability shows FieldBill app availability as `148 Available` and `27 Cannot Sell`.
+- The `27 Cannot Sell` detail is the EU country set; visible rows include Austria, Belgium, Bulgaria, Croatia, Cyprus, Czech Republic, and Denmark.
+- The EU rows show status `Trader Status Not Provided`; the `View` tooltip says trader status is required for distribution on the App Store in the European Union.
+- Public Apple lookup confirms the split: `us` returns FieldBill `1.0.1`, while sampled EU stores `de`, `fr`, `ie`, `nl`, `es`, `it`, `se`, and `pl` return `0` results.
+- Screenshot evidence: `C:\Projects\research\pc-control\captures\shot-20260531-150200706.png`, `C:\Projects\research\pc-control\captures\shot-20260531-150417598.png`, `C:\Projects\research\pc-control\captures\shot-20260531-150537764.png`, and `C:\Projects\research\pc-control\captures\shot-20260531-150615645.png`.
+- Current conclusion: FieldBill iOS `1.0.1` and first IAP are production-ready outside the blocked EU set, but EU distribution is not production-green until Apple/App Store Connect has trader status provided for those 27 countries or regions.
+
+## 2026-05-30 Public GitHub Ad Page
+
+- Business Outreach created a clean public GitHub repo for FieldBill promotion: `https://github.com/ssehie/fieldbill-public-ad`.
+- Published public ad page: `https://ssehie.github.io/fieldbill-public-ad/`.
+- Improved the public ad page with share/index metadata plus `robots.txt` and `sitemap.xml`.
+- Published an owned GitHub Release announcement: `https://github.com/ssehie/fieldbill-public-ad/releases/tag/v2026.05.30-fieldbill-public-ad`.
+- The public ad page links to the verified App Store and Google Play listings.
+- The public repo contains only promotional page files and copied public store imagery; it does not include app source, customer data, contact lists, outreach logs, or private campaign notes.
+- Business Outreach added targeted field-tech paid/sponsor research for HVAC-Talk, LawnSite, PlumbingZone, PaintTalk, ElectricianU, and Reddit Ads community targeting.
+- No external email, paid ad, directory submission, Reddit post, LinkedIn post, Facebook post, or Product Hunt submission was sent from this action.
+
+## 2026-05-30 iOS 1.0.1 And IAP Green
+
+- Direct signed-in App Store Connect app list shows FieldBill `iOS 1.0.1 Ready for Distribution`.
+- Direct signed-in App Store Connect version page shows `iOS App Version 1.0.1` and `1.0.1 Ready for Distribution`.
+- Direct signed-in App Store Connect In-App Purchases page shows `Approved (1)`.
+- IAP `FieldBill Pro Lifetime` / product ID `fieldbill_pro_lifetime` / type `Non-Consumable` is `Approved`.
+- Screenshot evidence: `C:\Projects\research\pc-control\captures\shot-20260530-032837214.png`, `C:\Projects\research\pc-control\captures\shot-20260530-032941247.png`, and `C:\Projects\research\pc-control\captures\shot-20260530-033008869.png`.
+- Operator tested TestFlight and confirmed version `1.0.1` came in and the purchase unlock worked.
+- PC Control helper was stopped after the check; no App Store Connect state-changing action was taken.
+- Current conclusion: iOS `1.0.1`, first IAP approval, and TestFlight purchase unlock are green. Remaining check is public App Store propagation/release state and DSA status.
+
+## 2026-05-30 Apple Review Completed For iOS 1.0.1
+
+- Gmail found new App Store Connect mail from `2026-05-30T02:55:43Z`: `Review of your FieldBill (iOS) submission is complete.`
+- Apple states submission `612917e4-30f5-4240-a241-099bd6075046` is completed and eligible for distribution.
+- Accepted item: FieldBill App Version `1.0.1` for iOS.
+- Public Apple lookup still reports production app version `1.0`, so `1.0.1` is not publicly live yet.
+- Direct App Store Connect page check through PC Control redirected to Apple login; fresh sign-in is needed to inspect release/IAP/DSA page state.
+- PC Control helper was stopped after the check; no App Store Connect state-changing action was taken.
+- Current conclusion: App Review approval is achieved by email evidence. Next gates are direct release-state inspection, IAP propagation/status, DSA status, and TestFlight/sandbox purchase + restore retest.
+
+## 2026-05-29 Apple Business Info Recheck
+
+- Operator reported the remaining Apple business setup was completed and requested a fresh App Store Connect page check.
+- Restarted the token-protected PC Control helper from `C:\Projects\research\pc-control` and used the signed-in Edge/App Store Connect session for read-only inspection.
+- Business/Agreements page now shows the paid business side cleared: Paid Apps Agreement `Active`, bank account `chime (9177)` `Active`, and `U.S. Form W-9` submitted `May 29, 2026` with status `Active`.
+- DSA compliance still shows `In Review`, last updated `May 28, 2026`, for `27 Countries or Regions`.
+- App Store Connect app list/version page still shows iOS `1.0.1` as `Waiting for Review`; iOS `1.0` remains `Ready for Distribution`.
+- TestFlight still shows version `1.0.1`, build `8`, upload `Complete`, build status `Ready to Submit`, internal group `Team (Expo)`, `1` invite, `2` installs, `16` sessions, no crashes/feedback.
+- Authenticated App Store Connect API confirms IAP `FieldBill Pro Lifetime` / `fieldbill_pro_lifetime` / Apple ID `6773188154` remains `WAITING_FOR_REVIEW`, `isAppStoreReviewInProgress: true`, with no approved/ready/rejected IAP rows.
+- Authenticated App Store Connect API confirms review submission `612917e4-30f5-4240-a241-099bd6075046` for iOS `1.0.1` remains `WAITING_FOR_REVIEW`; submitted `2026-05-28T03:01:29.324Z`.
+- Stopped the PC Control helper after the recheck; port `8787` is no longer listening and `control\stop.flag` is present.
+- Current conclusion: the previous Paid Apps Agreement/bank/tax blocker is cleared. Remaining visible gates are Apple review for `1.0.1` and first IAP, DSA review, and then a fresh iPhone TestFlight/sandbox purchase plus restore retest after Apple state has propagated.
+
+## 2026-05-29 Paid Apps Agreement Signed
+
+- Operator completed Apple 2FA and explicitly requested completing the Paid Apps Agreement.
+- Used the token-protected PC Control helper from `C:\Projects\research\pc-control` against the logged-in Edge/App Store Connect session.
+- App Store Connect Business/Agreements page showed the legal entity update had cleared and exposed `View and Agree to Terms` for the Paid Apps Agreement.
+- Opened the Paid Apps Agreement terms, checked the agreement checkbox, and clicked `Agree`.
+- Apple accepted the agreement action; the Paid Apps Agreement now shows effective dates `May 29, 2026 - Mar 27, 2027` with status `Pending User Info`.
+- New visible blockers: Apple requires a bank account before paying proceeds and a U.S. Form W-9 tax form before the paid/IAP path can be considered production-ready.
+- Bank/tax details were not entered by Codex.
+- DSA compliance remains `In Review`, last updated `May 28, 2026`, for `27 Countries or Regions`.
+- Stopped the PC Control helper after the pass; port `8787` is no longer listening and `control\stop.flag` is present.
+- Current conclusion: the Paid Apps Agreement signing step is done, but iOS monetization is still blocked by Apple business user info, DSA review, App Review/IAP review completion, and a fresh TestFlight/sandbox purchase + restore retest.
+
+## 2026-05-29 PC Control App Store Connect Live Recheck
+
+- Operator logged back into App Store Connect and requested using PC Control.
+- Started the loopback PC Control helper from `C:\Projects\research\pc-control` after removing its local `control\stop.flag`.
+- Used the helper for read-only Edge/CDP inspection of the logged-in App Store Connect session; no Apple-side write action was taken.
+- Live iOS version page now confirms: `iOS App 1.0.1` is `Waiting for Review`; `1.0` remains `Ready for Distribution`.
+- Version `1.0.1` has build `8` / `1.0.1` attached and shows the version metadata/edit page while waiting for review.
+- Live In-App Purchases page confirms first IAP is included in review: `FieldBill Pro Lifetime`, product ID `fieldbill_pro_lifetime`, `Non-Consumable`, status `Waiting for Review`.
+- Live App Review submissions page shows the `1.0.1` submission from Wednesday at `10:01 PM`, submitted by `Steven Sehie`, `1 Item`, status `Waiting for Review`; the May 20 `1.0` submission is `Review Completed`.
+- Live TestFlight page shows version `1.0.1`, build `8`, upload status `Complete`, build status `Ready to Submit`, internal group `Team (Expo)`, `1` invite, `2` installs, `16` sessions, no crashes or feedback shown.
+- Live Business/Agreements page still shows the monetization contract blocker: legal entity information must be updated before signing the Paid Apps Agreement.
+- Agreements state remains: Free Apps Agreement `Active`; Paid Apps Agreement `New`.
+- DSA compliance remains `In Review`, last updated `May 28, 2026`, for `27 Countries or Regions`.
+- Current conclusion: `1.0.1` plus first IAP is correctly submitted and waiting for Apple review, but not production-ready yet. The remaining gates are Apple review completion, DSA approval, legal entity update, Paid Apps Agreement signing, then sandbox/TestFlight purchase and restore retest.
+
+## 2026-05-29 iOS Production Readiness Check
+
+- Checked current iOS/App Store state without starting any build, release, review, paid agreement signing, or IAP purchase action.
+- Live Edge/App Store Connect Business page still shows the monetization blocker: `To offer apps or other in-app purchases, you must update your legal entity information prior to signing the Paid Apps Agreement.`
+- App Store Connect Agreements state observed: Free Apps Agreement `Active`; Paid Apps Agreement `New`.
+- App Store Connect Compliance state observed: Digital Services Act last updated `May 28, 2026`, status `In Review`, for `27 Countries or Regions`.
+- Direct App Store Connect app pages for iOS version, TestFlight, In-App Purchases, and App Information redirected to Apple login with `authResult=FAILED`; a fresh Apple login/2FA is needed before direct App Review status can be trusted.
+- Gmail check found the latest App Store Connect mail after the 1.0.1 submission is only the DSA receipt email `We received your trader contact information` from `2026-05-28T19:43:35Z`; no newer `1.0.1` App Review completion email was found.
+- Public App Store listing is live, but Apple's public lookup still reports FieldBill production version `1.0`, bundle `com.fieldbill.app`, free, current version release date `2026-05-21T22:10:37Z`.
+- EAS confirms the latest iOS store build `41fe864d-a2c7-4d69-97a6-cfe338250277` finished as app version `1.0.1`, build `8`, production/store profile, but that only proves the binary exists; it does not prove App Store production release.
+- Public TestFlight link `https://testflight.apple.com/join/dYdE2Gcw` still returns HTTP `200` and shows the FieldBill beta join page.
+- Current conclusion: iOS production is live for the existing free `1.0` app, but the `1.0.1` monetized/IAP release is not production-green. Remaining gates are fresh App Store Connect login, direct `1.0.1` review status check, DSA approval, legal entity update/Paid Apps Agreement, then sandbox/TestFlight purchase and restore retest.
+
+## 2026-05-28 Apple DSA Trader Compliance
+
+- Completed the App Store Connect Digital Services Act trader flow for FieldBill using the signed-in developer account.
+- Declared Steve Sehie as a trader under DSA for EU distribution.
+- Entered public trader contact details: `419 W 5th Ave, El Dorado, KS 67042-1828, United States`, `+1 (316) 323-8649`, and `ssehiedeveloper@gmail.com`.
+- Verified the email and phone codes through the devphone/Gmail path.
+- Uploaded `C:\Projects\images\Apple_Verification_ID.pdf` for both name and address identification document steps.
+- Confirmed the public contact information. App Store Connect now shows `Digital Services Act` last updated `May 28, 2026` with status `In Review` for `27 Countries or Regions`.
+- Remaining visible Apple monetization blocker: update legal entity information before signing the Paid Apps Agreement.
+- Current stop point: wait for Apple DSA review, continue watching iOS `1.0.1` App Review, and handle the legal entity/Paid Apps Agreement path before relying on paid IAP availability.
+
+## 2026-05-27 iOS App Review submission
+
+- Resumed the signed-in Edge App Store Connect session through Ark PC Control.
+- Filled the required `What's New in This Version` field for iOS App Version `1.0.1`: `Adds App Store metadata and screenshot updates for the initial FieldBill release.`
+- Saved metadata, clicked `Add for Review`, and App Store Connect showed the draft submission item `iOS App 1.0.1` ready to submit.
+- Clicked `Submit for Review`.
+- Verified App Store Connect confirmation: `1 Item Submitted`; Apple notes review can take up to 48 hours.
+- No Android Play production state, EAS build, release action, paid tester order, or in-app purchase was started.
+- Current stop point: wait for Apple review/submission status and IAP propagation, then retest the iPhone TestFlight/sandbox purchase sheet and restore path.
+
+## 2026-05-27 iOS IAP version attachment
+
+- Inspected the signed-in Chrome App Store Connect session for FieldBill; no Android Play production state was changed.
+- iPhone screenshot `C:\Projects\images\error.jpg` confirmed the Pro route opens and RevenueCat reaches Apple product fetch, but StoreKit cannot fetch the App Store Connect product: `fieldbill_pro_lifetime`.
+- App Store Connect `In-App Purchases` showed Apple's first-IAP gate: the first in-app purchase must be submitted with a new app version and selected from that version's `In-App Purchases and Subscriptions` section before App Review.
+- Confirmed product `FieldBill Pro Lifetime` / `fieldbill_pro_lifetime` / Apple ID `6773188154` is `Ready to Submit`, non-consumable, available in all countries or regions, and has pricing configured.
+- Created iOS App Store version `1.0.1` in `Prepare for Submission`.
+- Attached build `8` / version `1.0.1` to the new App Store version.
+- Attached `FieldBill Pro Lifetime` / `fieldbill_pro_lifetime` to the new version's `In-App Purchases and Subscriptions` section and saved the version.
+- Did not click `Add for Review`, submit to App Review, release, start a new EAS build, start a paid tester order, or make a purchase.
+- Current stop point: the App Store version-side IAP attachment is fixed. The remaining Apple gate is submitting version `1.0.1` plus the first IAP for App Review when explicitly approved.
+
+## 2026-05-27 Android production Play Console check
+
+- Checked the signed-in PC Edge Play Console production track for FieldBill.
+- No release controls, rollout controls, App Review actions, paid ads, or store changes were clicked.
+- Production track is `Active`.
+- Latest production release is `11 (1.0.0)` for `Phones, Tablets, Chrome OS, Android XR`.
+- Track summary shows `177 countries / regions` and `11 installs`.
+- Release dashboard is scoped to `Release: Most recent (11 (1.0.0))`.
+- Play Console shows `2 actions recommended`: deprecated edge-to-edge APIs/parameters, and resizability/orientation restrictions for large-screen support. These are UX recommendations, not release blockers.
+- Gmail has IARC `Live Rating Notice: FieldBill` dated Wednesday, May 27, 2026 for storefront `Google Play`.
+- Public Play URL returned HTTP `200` with title `FieldBill - Apps on Google Play`: `https://play.google.com/store/apps/details?id=com.fieldbill.app&hl=en_US&gl=US`.
+- Current stop point: Android production is live enough to promote publicly; continue the free promotion lane and keep the iOS StoreKit/RevenueCat issue separate.
+
+## 2026-05-26 Android free advertising prep
+
+- Recovered after the lost adverts connection and resumed the no-build Android outreach path.
+- Sent 10 additional individual FieldBill Android advert/outreach emails from `ssehie@gmail.com` using the documented feedback-focused copy.
+- New recipients: `office@shawneeelectric.com`, `totalelectric@totalelectco.com`, `morriselectricalservice@gmail.com`, `operations@816SOLARPROS.COM`, `ADMIN@AAELECTRICALINC.COM`, `JStapleton@AidenMorrisElectric.com`, `office@arrowcircleelectric.com`, `permits@bearpawelectric.com`, `contact@bickimerelectric.com`, `caseyelectricinc@sbcglobal.net`.
+- Logged the new 10 sends in `docs/worldwide-outreach-log.csv` with Gmail SENT message IDs, bringing the logged Android advert/outreach send count to 30.
+- Created `docs/public-forum-advert-posting.md` with paste-ready public forum copy, allowed-advert Reddit targets, and a free directory queue.
+- Created `docs/public-forum-100-adverts.csv` with 100 public forum/directory advert placements: 78 ready, 13 needing rule checks, 5 needing current thread lookup, and 4 low-fit fallbacks.
+- Put the full Reddit comment on the Windows clipboard and opened the top Reddit targets in the default browser for logged-in posting.
+- Added the public forum / allowed advert thread lane to `docs/worldwide-android-campaign.md`.
+- User then asked for 100 more in different countries, interrupted once, then resumed with `proceed`; created `docs/public-forum-100-country-adverts.csv`.
+- The second queue has 100 country-targeted placements: 30 ready, 32 needing rule checks, and 38 needing current allowed-thread lookup.
+- Current stop point: first 100-placement public advert queue exists, but rows should not be marked posted until a real public post/listing URL is captured.
+- Sent 20 live FieldBill Android advert/outreach emails from connected Gmail account `ssehie@gmail.com` to targeted public contractor/trade contacts already present in `docs/tester-outreach-targets.csv`.
+- Verified Gmail sent-mail search for subject `FieldBill Android invoice app feedback` returned 20 message IDs from this pass.
+- Logged the 20 sent adverts in `docs/worldwide-outreach-log.csv` with message IDs.
+- Created `docs/free-advertising-kit.md` to promote the already-tested Android build without cutting another build.
+- After user approved a full-force worldwide Android promotion push, added `docs/worldwide-android-campaign.md`, `docs/worldwide-outreach-log.csv`, and `docs/android/index.html`.
+- Copied the Android screenshot contact sheet into `docs/assets/store/phone-screenshots/contact-sheet.png` so the GitHub Pages Android landing page has a locally served visual asset.
+- Android promotion target remains the known-good Play package `com.fieldbill.app`, URL `https://play.google.com/store/apps/details?id=com.fieldbill.app`.
+- Kit includes policy guardrails, direct outreach copy, Facebook/Reddit/Product Hunt/maker-community copy, target trades, and a launch-day checklist.
+- Looked up current public guidance for Google Play store-listing/promotion policy, Reddit self-promotion limits, and Product Hunt launch basics; the campaign docs record those references.
+- Public search currently surfaces `fieldbill.app`, which appears to be a different product; campaign docs warn not to use that domain for this app unless ownership is verified later.
+- Verified local references in `docs/android/index.html`; privacy, terms, Play URL, and screenshot asset paths resolve.
+- No Android build, Play rollout, paid ad buy, bulk SMS, App Review action, or release action was started. The only live promotion action was the 30 individual Gmail outreach sends.
+- Recommended next action: check Gmail for replies/bounces to the 30 outreach sends, then continue with at most another 10-20 individual contractor messages or one allowed Facebook group/Reddit post after checking rules.
+
+## 2026-05-26 FieldBill Context Switch To RF Watch
+
+- Logged the current FieldBill stop point before switching to RF Watch / Tricorder prep.
+- Current unresolved iOS purchase issue remains StoreKit/App Store Connect product fetch, not a missing RevenueCat offering or missing Pro route.
+- Latest FieldBill verification before switching: `npm run check:tester-release` passed; `git diff --check` only reported expected CRLF warnings.
+- No new EAS build, App Review action, release, paid tester order, or in-app purchase was started after the screenshot follow-up.
+- Return action: check App Store Connect product `fieldbill_pro_lifetime`, bundle `com.fieldbill.app`, Paid Apps Agreement, tax, banking, price, availability, IAP status, and sandbox propagation before any new iOS build.
+
+## 2026-05-26 iPhone upgrade path lost after free path
+
+- User reported that the upgrade path appeared after opening the upgrade screen, but after going back to the free/trial path the upgrade path disappeared again in the installed TestFlight build.
+- Researched the RevenueCat/App Store error shown in the screenshot. Primary docs support the current diagnosis: FieldBill is configured enough to call RevenueCat, but StoreKit is not returning the App Store Connect product in sandbox/TestFlight.
+- Called RevenueCat's public offerings API with the iOS SDK key. RevenueCat returned current offering `default`, package `$rc_lifetime`, and product identifier `fieldbill_pro_lifetime`, so the RevenueCat offering/product mapping is live.
+- Patched `app/(tabs)/index.tsx` again so the configured `FieldBill Pro` action appears immediately after the primary Home action, before draft/history actions, even when no purchasable package is returned.
+- Current installed TestFlight build `1.0.1 (8)` does not contain this Home action-order patch; a new iOS build is required after the live Apple/RevenueCat product-fetch issue is fixed.
+- Next live checks are now concentrated on App Store Connect / StoreKit: product `fieldbill_pro_lifetime`, bundle `com.fieldbill.app`, Paid Apps Agreement, tax, banking, product price, availability, status, and sandbox propagation.
+- No EAS build, App Review action, release, or in-app purchase was started for this follow-up.
+
+## 2026-05-26 iPhone RevenueCat product fetch error
+
+- User saved the iPhone error screenshot at `C:\Users\ssehie\OneDrive\Desktop\error.jpg`; SHA256 `01E7DF47F41085F7F9B89C8E77858D18114D4AE69CAB5F214DBBACACD39AA33E`.
+- Screenshot shows `FieldBill Pro`, so the deep link / Pro route works.
+- On-device RevenueCat error: `There is an issue with your configuration... None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect... https://rev.cat/why-are-offerings-empty`.
+- Verified again that EAS production has monetization `true`, Apple RevenueCat public SDK key `appl_MIVjCmUjykCdBmvVcYIKWyBeWxv`, entitlement `pro`, and offering `default`. The local IPA inspection already confirmed the Apple key is embedded in build `1.0.1 (8)`.
+- Diagnosis: this is not a missing RevenueCat API key and not a missing Pro screen. StoreKit/RevenueCat cannot fetch the App Store Connect product registered in the RevenueCat offering.
+- Patched `app/upgrade.tsx` so the next build shows `Store product is not available yet` when the app is configured but no App Store package loads, rather than saying to add the RevenueCat key.
+- `npm run check:tester-release` passed after the patch. TypeScript, lint, Expo Doctor, and FieldBill preflight are green; expected warnings remain local EAS versioning, no local `.env`, and dirty working tree.
+- Next checks should be live App Store Connect and RevenueCat, before any new EAS build: exact product ID `fieldbill_pro_lifetime`, app/bundle `6762166246` / `com.fieldbill.app`, IAP status/availability/price, Paid Apps Agreement/Agreements/Tax/Banking, and RevenueCat App Store app/offering/package attachment.
+
+## 2026-05-26 iPhone TestFlight purchase UI not visible
+
+- User installed iOS TestFlight build `1.0.1 (8)` on iPhone and reported that the purchase part was not visible.
+- Verified EAS production env still loads monetization for iOS: `EXPO_PUBLIC_FIELDBILL_MONETIZATION_ENABLED=true`, Apple RevenueCat public SDK key `appl_MIVjCmUjykCdBmvVcYIKWyBeWxv`, entitlement `pro`, and offering `default`.
+- Inspected the local IPA and confirmed the Apple RevenueCat public SDK key is present in `main.jsbundle`, so the installed build should be configured for RevenueCat.
+- Root app-side UX issue found: Home only showed the Pro card/button when `canGateInvoices` was true, which requires a purchasable package to already be returned. If StoreKit/RevenueCat did not return the package, Home hid the purchase entry instead of showing an unavailable/checking state.
+- Patched `app/(tabs)/index.tsx` so monetized builds show the FieldBill Pro card and action whenever monetization is configured. If the package is not loaded yet, Home now says `Pro purchase is not available yet` and shows a `FieldBill Pro` button that opens `/upgrade` for retry/restore status.
+- `npm run check:tester-release` passed after the patch. TypeScript, lint, Expo Doctor, and FieldBill preflight are green; expected warnings remain local EAS versioning, no local `.env`, and dirty working tree.
+- Current TestFlight build `1.0.1 (8)` does not include this patch. A new iOS build is required before this Home visibility fix appears on iPhone.
+- For immediate diagnosis on the installed build, use `fieldbill://upgrade` from Safari on the iPhone to open the existing Pro screen directly. If the product still does not load there, recheck live App Store Connect IAP availability/status and RevenueCat offering/product attachment before spending another iOS build.
+- Do not start another EAS iOS build without explicit user approval because previous notes flagged possible Expo pay-as-you-go cost.
+
+## 2026-05-26 unexpected stop recovery check
+
+- Reconstructed the FieldBill stop point from `NEXT-CODEX-STARTUP.md`, `PROJECT-STATUS.md`, the EAS build record, local artifact hash, git state, process listeners, and ADB state.
+- EAS build `41fe864d-a2c7-4d69-97a6-cfe338250277` is confirmed `FINISHED` for iOS `1.0.1 (8)`, distribution `STORE`, profile `production`, artifact `https://expo.dev/artifacts/eas/99E5pJMiiyS2uoreT31Nfk.ipa`.
+- Local IPA `C:\fieldbill\builds\FieldBill-1.0.1-ios-b8-monetization.ipa` still matches SHA256 `726320DE4A2D0EEDC0A9AEB89320FDE3AC979583B8BFC72D31CF16AA09EB0658`.
+- No FieldBill Metro/dev server is currently listening. The Expo listener on port `8084` is from `C:\Projects\musical-resonance`, not FieldBill.
+- Devphone `ZT4228M83L` is connected over ADB.
+- `npm run check:tester-release` passed after the recovery check. TypeScript, lint, Expo Doctor, and FieldBill preflight are green; expected warnings remain local EAS versioning, no local `.env`, and dirty working tree.
+- No app code was changed during this recovery check. The active next gate remains iOS internal TestFlight install, Sandbox Apple Account purchase against `fieldbill_pro_lifetime`, restore, and explicit approval before any App Review/IAP submit or release action.
+
+## 2026-05-26 iOS monetization build uploaded
+
+- User approved proceeding with the iOS monetization build even though EAS previously reported included build credits at `100%`.
+- Verified production EAS config before building: bundle `com.fieldbill.app`, monetization enabled, Apple RevenueCat key loaded, entitlement `pro`, offering `default`.
+- `npm run check:tester-release` passed before and after the build work.
+- First monetized iOS build `1.0.0 (7)` finished, but EAS submit failed with `SUBMISSION_SERVICE_IOS_OLD_APP_VERSION` because App Store Connect had already received app version `1.0.0`.
+- Bumped FieldBill to app version `1.0.1`.
+- Replacement EAS iOS build `41fe864d-a2c7-4d69-97a6-cfe338250277` finished as `1.0.1 (8)`.
+- EAS submit `aaa0fd4f-c0f7-4175-a049-e07bacedca99` finished successfully and uploaded build `1.0.1 (8)` to App Store Connect/TestFlight.
+- Created App Store Connect Sandbox Apple Account `ssehie+fieldbill-ios-sandbox-20260526-062600@gmail.com` under `Users and Access > Sandbox`. The generated password is intentionally not recorded in git-tracked docs.
+- App Store Connect TestFlight shows version `1.0.1`, build `8`, status `Ready to Submit Expires in 90 days`, and internal group `Team (Expo)` attached. External `Add Group` / beta review was not clicked.
+- IPA artifact: `https://expo.dev/artifacts/eas/99E5pJMiiyS2uoreT31Nfk.ipa`.
+- Local IPA: `C:\fieldbill\builds\FieldBill-1.0.1-ios-b8-monetization.ipa`; SHA256 `726320DE4A2D0EEDC0A9AEB89320FDE3AC979583B8BFC72D31CF16AA09EB0658`.
+- `app.json`, `package.json`, and `package-lock.json` now carry version `1.0.1`; `app.json` carries `ios.buildNumber` `8`.
+- Remaining iOS monetization gates: install build `1.0.1 (8)` through internal TestFlight on iPhone, sign into the Sandbox Apple Account for purchase testing, sandbox purchase, restore, and user-approved App Review/IAP submission path.
+- Cost: EAS iOS build(s) were started after user approval and may be billable by Expo. No App Review submission, release, paid tester order, or in-app purchase was started.
+
+## 2026-05-26 iOS RevenueCat Apple wiring complete
+
+- Created App Store Connect In-App Purchase API key `FieldBill RevenueCat` for RevenueCat.
+- Apple key ID: `RZ8H9ML2DQ`; issuer ID: `b37cafad-5d9a-45e0-b657-3184416b446a`.
+- Uploaded the `.p8` key to RevenueCat for the `fieldbill (App Store)` app and deleted the local downloaded key file afterward. Do not recreate/download another private key unless RevenueCat credentials need to be rotated.
+- RevenueCat App Store app `fieldbill (App Store)` is configured for bundle `com.fieldbill.app` and shows valid Apple credentials.
+- RevenueCat Apple public SDK key `appl_MIVjCmUjykCdBmvVcYIKWyBeWxv` is set in EAS `production` and `preview` as `EXPO_PUBLIC_REVENUECAT_APPLE_API_KEY`.
+- RevenueCat Apple product `fieldbill_pro_lifetime` is attached to entitlement `pro`.
+- RevenueCat offering `default` package `$rc_lifetime` now contains both Android and App Store `FieldBill Pro` products.
+- EAS env verification passed for `production` and `preview`; `eas config -p ios -e production --json` confirms production variables load for iOS config.
+- `npm run check:tester-release` passed with expected warnings: local EAS versioning, no local `.env`, and dirty docs/worktree.
+- Remaining iOS gates: approve any paid EAS iOS build cost, build/install a new iOS binary with the Apple RevenueCat key, run iOS sandbox purchase plus restore, and submit the first IAP through an app-version review path only after explicit user approval.
+- Cost: no new cost; no EAS build, paid tester order, app submission, release, or purchase was started.
+
+## 2026-05-25 iOS App Store Connect IAP created
+
+- App Store Connect is signed in and the FieldBill iOS non-consumable now exists.
+- Product type: non-consumable.
+- Reference name: `FieldBill Pro Lifetime`.
+- Product ID: `fieldbill_pro_lifetime`.
+- Apple ID: `6773188154`.
+- Localization: English (U.S.), display name `FieldBill Pro`, description `Unlock unlimited invoices in FieldBill.`
+- Availability: all countries or regions selected; `Remove from Sale` is off.
+- Price schedule: United States base price `$29.99`; App Store Connect generated regional prices.
+- Review screenshot uploaded from `assets\store\app-store\iap-review-fieldbill-pro-iphone-65.png` (`1242 x 2688`). The first cropped `720 x 1448` asset was rejected by App Store Connect for invalid screenshot dimensions.
+- IAP status changed from `Missing Metadata` to `Ready to Submit`.
+- Current iOS app version page shows `1.0 Ready for Distribution`; no app review submission/release action was clicked in this pass.
+- Remaining iOS monetization gates: attach/submit the IAP with the next iOS app-version review path, wire RevenueCat Apple to entitlement `pro` and offering `default`, then run iOS sandbox purchase and restore.
+- Cost: no new cost; no EAS build, paid tester order, app submission, or purchase was started.
+
+## 2026-05-25 Android production-ready harness rule; iOS next
+
+- Android monetization is now classified as production-ready from the app/billing harness side.
+- Evidence threshold met: Play-delivered FieldBill v11, Google `Test card, always approves`, no-charge test-order notice, RevenueCat entitlement `pro`, FieldBill UI `Pro Unlock` = `Active`, and restore success.
+- Harness rule: future Android billing tests must preserve the dev-account Play Store install path (`ssehiedeveloper@gmail.com`) and must verify a Google test instrument before pressing buy.
+- Harness rule: do not casually repurchase the same Android non-consumable; refund/revoke the test order in Play Console first or use a fresh tester account for a clean purchase pass.
+- Android can proceed from a billing-readiness standpoint. Remaining Android release gates, if any, are Play Console/business rollout gates rather than FieldBill purchase wiring.
+- iOS is now the active monetization lane. It is not green until App Store Connect has the non-consumable `fieldbill_pro_lifetime`, RevenueCat Apple wiring is complete, and TestFlight/sandbox purchase plus restore pass.
+- Cost: no new cost; this entry records the harness rule and milestone.
+
+## 2026-05-25 Android sandbox purchase and restore passed
+
+- Joined `testmyappscommunity@googlegroups.com` on the devphone as `ssehiedeveloper@gmail.com` with subscription set to `No email`.
+- Opened the FieldBill Play testing opt-in URL with `authuser=1`; the dev account enrolled and showed `You are a tester.`
+- Uninstalled FieldBill, cleared full Play Store app data only with `cmd package clear com.android.vending`, then switched Play Store back from the default `ssehie@gmail.com` state to `Ssehie Developer / ssehiedeveloper@gmail.com`.
+- Reinstalled FieldBill from Google Play and verified `versionCode=11`, `versionName=1.0.0`, `installerPackageName=com.android.vending`, installed at `2026-05-25 20:44:09`.
+- Opened `fieldbill://upgrade`; Google Play purchase sheet showed `Test card, always approves` and `This is a test order, you will not be charged.`
+- Completed the `1-tap buy` sandbox purchase. FieldBill returned to `Unlimited invoices are unlocked.` and `Pro Unlock` = `Active`.
+- Logcat evidence: `[FieldBill QA] billing.purchase.success` with `entitlementId:"pro"` and `packageId:"$rc_lifetime"`; customer info showed `hasProAccess:true`.
+- Ran `Restore Purchase`; logcat showed `[FieldBill QA] billing.restore.completed` with `restoredProAccess:true`.
+- Current Android monetization gate: passed for closed-test Alpha v11. Future retests should use the dev-account Play Store install path and verify a test instrument before pressing buy.
+- Cost: no real charge; Google Play displayed the no-charge test-order notice.
+
+## 2026-05-25 Play Billing Lab installed; test cards still absent
+
+- Installed `Play Billing Lab` (`com.google.android.apps.play.billingtestcompanion`) from Google Play.
+- Opened it as `Steve Sehie / ssehie@gmail.com`; dashboard is available.
+- Visible Play Billing Lab controls are configuration settings, subscription settings, and response simulator. Response simulator exposes response-code simulation, not a test-card picker.
+- Cleared Play Store cache only with `pm clear --cache-only com.android.vending`, force-stopped Play Store, and retried the FieldBill purchase sheet.
+- FieldBill temporarily reopened at first-run intro during the retry path; tapped `Skip intro` and restored the `FieldBill Pro` upgrade screen.
+- Final payment-method check still showed only real methods for `ssehie@gmail.com` and no visible Google `Test card`.
+- Backed out to FieldBill; no purchase completed.
+- Current gate: either use a funded real method for one live purchase/void/refund test, or investigate why Google test instruments are not surfacing for the already-listed license tester account. Do not clear full Play Store data without user confirmation.
+- Cost: Play Billing Lab install was free; no purchase completed and no Pro entitlement granted.
+
+## 2026-05-25 Play Console license tester list verified
+
+- Opened Play Console developer account `8439387974199008185` and navigated to `Settings > Monetization > License testing`.
+- License testers are set to email list `email tester` with `7` users.
+- The list includes both `ssehie@gmail.com` and `ssehiedeveloper@gmail.com`.
+- License response is `RESPOND_NORMALLY`.
+- Retried the Android purchase sheet and opened Google Play `Payment methods` for `ssehie@gmail.com`.
+- Payment selector still showed only real instruments (`Visa-8871`, `Amex-5972`, `Mastercard-7087`, PayPal, other cards, Google Pay balance) and no visible `Test card`.
+- Tapping `+ more` opened the add-card flow, so the phone was backed out to FieldBill.
+- Current gate: use Play Billing Lab or refresh Play Store billing/account state until test instruments appear, then retry with `Test card, always approves`.
+- Cost: no purchase completed and no Pro entitlement granted.
+
+## 2026-05-25 Android purchase declined / not allowed
+
+- Human completed the Google account verification prompt and Google Play returned to FieldBill after the payment was declined.
+- FieldBill upgrade screen now shows `The device or user is not allowed to make the purchase.`
+- Logcat shows `ProxyBillingActivity` finished with billing `responseCode: 3`.
+- RevenueCat emitted `PurchasesError(code=PurchaseNotAllowedError ... Billing Unavailable ... message='The device or user is not allowed to make the purchase.')`.
+- FieldBill emitted `[FieldBill QA] billing.purchase.failed` with the same message.
+- No `billing.purchase.success` event appeared and Pro remains locked.
+- Current gate: verify the active Play account/license-tester/payment setup or select an approving test instrument, then retry purchase and restore.
+- Cost: no successful purchase recorded by FieldBill/RevenueCat; no Pro entitlement granted.
+
+## 2026-05-25 Android purchase flow blocked at Google account verification
+
+- User confirmed `Visa-8871` is a test/payment-safe card and authorized continuing the purchase flow.
+- Relaunched `fieldbill://upgrade`, opened the Play purchase sheet, and pressed `Buy`.
+- Google Play moved to an account verification sheet for `ssehie@gmail.com`.
+- Checked `Remember me on this device`; Play displayed the warning that disabling authentication may allow unauthorized purchases.
+- UI automation shows the account field is a password-type field and `Verify` remains disabled until the password is entered, so automation stopped.
+- No RevenueCat `billing.purchase.success` or `billing.purchase.failed` app result was emitted because the flow did not return to FieldBill.
+- Current gate: human must enter the Google account password on-device once, then resume entitlement/restore verification. If Google remembers the device, future sandbox passes should get past this screen without waiting.
+- Cost: no confirmed charge and no successful purchase recorded; stopped at Google verification.
+
+## 2026-05-25 Android Play install verified; sandbox purchase blocked on license-test state
+
+- User approved replacing the sideloaded app; uninstalled `com.fieldbill.app` v7 from device `ZT4228M83L`.
+- Installed FieldBill from the Google Play closed-test listing and verified `versionCode=11`, `versionName=1.0.0`, `installerPackageName=com.android.vending`, installed at `2026-05-25 17:55:31`.
+- Opened `fieldbill://upgrade`; the RevenueCat package loaded and the app showed `FieldBill Pro`, `$29.99`, `0` invoices created, and `3` free invoices left.
+- Tapped `Unlock Pro $29.99` only far enough to display the Google Play purchase sheet.
+- Purchase sheet showed real payment method `Visa-8871`, `$29.99 + tax`, and no visible sandbox/test-card wording, so the `Buy` action was not pressed.
+- Current gate: verify Play Console `Settings > License testing` and test-payment setup for the active phone account, then retry sandbox purchase and restore only when the sheet shows test-purchase signals instead of a real card/tax flow.
+- Cost: no direct cost; stopped before any purchase/charge.
+
+## 2026-05-25 Android closed-test Alpha v11 published
+
+- Reused the existing Chrome window and closed five old RF/route-map tabs before inspecting Play Console.
+- Publishing overview shows `You have no unpublished changes`.
+- Play Console notification dated May 24 says `App update published. Users should see changes immediately but may take longer.`
+- Test and release shows Closed testing `alpha` with release `11 (1.0.0)`.
+- Closed testing - Alpha detail shows the track is `Active`, latest release is `11 (1.0.0)`, available to selected testers, `177` countries / regions, released on May 24 at 3:02 PM.
+- Current gate is no longer Google review for v11; next gate is Android sandbox purchase/restore against `fieldbill_pro_lifetime`, then RevenueCat entitlement `pro` verification.
+- Do not start any paid production rollout until sandbox purchase/restore passes and Google production access is approved.
+- Cost: no direct cost; no EAS build or paid service was started.
+
+## 2026-05-25 Waiting on Google review; local readiness still green
+
+- Ran `npm run check:tester-release`; TypeScript, lint, Expo doctor, and tester preflight passed.
+- Expo doctor reported `18/18 checks passed`.
+- Tester preflight passed with only expected warnings: local EAS versioning and no local `.env`; Git working tree is clean.
+- Gmail search found no official Google/FieldBill approval or rejection email newer than the v11 send-for-review checkpoint.
+- No Edge/Play Console browser session is currently running on this machine.
+- Current gate remains Play Console review for closed-test Alpha v11, then Android sandbox purchase/restore against `fieldbill_pro_lifetime`.
+- Cost: no direct cost; no EAS build or paid service was started.
+
 ## 2026-05-24 Android closed-test v11 uploaded and queued
 
 - Downloaded the finished EAS Android production app bundle to `C:\fieldbill\builds\FieldBill-1.0.0-android-v11-play.aab`.

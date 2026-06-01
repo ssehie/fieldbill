@@ -75,6 +75,7 @@ export default function UpgradeScreen() {
   const invoiceLimitReached = canGateInvoices && needsProToCreateInvoice(invoiceCount, hasProAccess);
   const purchaseUnavailable = !hasProAccess && (!isBillingEnabled || !packageToPurchase);
   const monetizationUnavailable = !hasProAccess && !isConfigured;
+  const storeProductUnavailable = !hasProAccess && isBillingEnabled && !packageToPurchase;
 
   const handlePurchase = async () => {
     const unlocked = await purchasePro();
@@ -145,9 +146,13 @@ export default function UpgradeScreen() {
 
         {purchaseUnavailable && !monetizationUnavailable ? (
           <View style={styles.noteCard}>
-            <Text style={styles.noteTitle}>Purchases are not ready yet.</Text>
+            <Text style={styles.noteTitle}>
+              {storeProductUnavailable ? 'Store product is not available yet.' : 'Purchases are not ready yet.'}
+            </Text>
             <Text style={styles.noteText}>
-              You can keep creating invoices in this test build. Add the RevenueCat key and product before testing payment.
+              {storeProductUnavailable
+                ? 'FieldBill reached the billing setup, but the App Store product did not load. Check the App Store Connect product, agreements, and RevenueCat offering before another purchase test.'
+                : 'You can keep creating invoices in this test build. Add the RevenueCat key and product before testing payment.'}
             </Text>
           </View>
         ) : null}

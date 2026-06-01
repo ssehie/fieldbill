@@ -2,7 +2,7 @@
   "expo": {
     "name": "FieldBill",
     "slug": "fieldbill",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "fieldbill",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "6",
+      "buildNumber": "8",
       "bundleIdentifier": "com.fieldbill.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
@@ -65,7 +65,8 @@
       "expo-mail-composer",
       "expo-audio",
       "expo-asset",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,

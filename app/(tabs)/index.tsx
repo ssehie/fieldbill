@@ -35,7 +35,8 @@ type HomeSnapshot = {
 export default function HomeScreen() {
   const db = useFieldBillDb();
   const router = useRouter();
-  const { canGateInvoices, hasProAccess, priceLabel } = useFieldBillBilling();
+  const { isReady, isConfigured, canGateInvoices, hasProAccess, packageToPurchase, priceLabel } =
+    useFieldBillBilling();
   const [activeJob, setActiveJob] = React.useState<JobRecord | null>(null);
   const [latestUnsentInvoice, setLatestUnsentInvoice] = React.useState<InvoiceSummary | null>(null);
   const [snapshot, setSnapshot] = React.useState<HomeSnapshot>({
@@ -150,7 +151,8 @@ export default function HomeScreen() {
 
   const freeInvoicesRemaining = getFreeInvoicesRemaining(invoiceCount);
   const invoiceLimitReached = canGateInvoices && needsProToCreateInvoice(invoiceCount, hasProAccess);
-  const showProStatus = hasProAccess || canGateInvoices;
+  const showProStatus = hasProAccess || isConfigured;
+  const purchasePackageReady = Boolean(packageToPurchase);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -219,6 +221,10 @@ export default function HomeScreen() {
                 <Text style={styles.sectionTitle}>
                   {hasProAccess
                     ? 'Unlimited invoices are active'
+                    : !isReady
+                      ? 'Checking Pro unlock'
+                    : !purchasePackageReady
+                      ? 'Pro purchase is not available yet'
                     : freeInvoicesRemaining > 0
                       ? `${freeInvoicesRemaining} of ${FIELD_BILL_FREE_INVOICE_LIMIT} free invoices left`
                       : 'Free trial used up'}
@@ -226,6 +232,10 @@ export default function HomeScreen() {
                 <Text style={styles.sectionBody}>
                   {hasProAccess
                     ? 'This device can keep invoicing without limits.'
+                    : !isReady
+                      ? 'FieldBill is checking the store purchase setup.'
+                    : !purchasePackageReady
+                      ? 'Open FieldBill Pro to retry the store check and see restore status.'
                     : freeInvoicesRemaining > 0
                       ? 'Use the free trial while you test the app, then unlock once when you are ready.'
                       : `Unlock unlimited invoices for ${priceLabel} one time.`}
@@ -256,6 +266,18 @@ export default function HomeScreen() {
                 />
               )}
 
+              {isConfigured && !hasProAccess ? (
+                <FieldBillButton
+                  label={purchasePackageReady ? `Unlock Pro ${priceLabel}` : 'FieldBill Pro'}
+                  detail={
+                    purchasePackageReady
+                      ? 'One-time purchase for unlimited invoices.'
+                      : 'Check store purchase status and restore.'
+                  }
+                  onPress={() => router.push('/upgrade' as never)}
+                />
+              ) : null}
+
               {latestUnsentInvoice ? (
                 <FieldBillButton
                   label="Open Draft Invoice"
@@ -269,14 +291,6 @@ export default function HomeScreen() {
                 detail="Past jobs, sent invoices, and paid work."
                 onPress={() => router.push('/history')}
               />
-
-              {canGateInvoices && !hasProAccess ? (
-                <FieldBillButton
-                  label={`Unlock Pro ${priceLabel}`}
-                  detail="One-time purchase for unlimited invoices."
-                  onPress={() => router.push('/upgrade' as never)}
-                />
-              ) : null}
             </View>
 
             <View style={styles.schedulePanel}>

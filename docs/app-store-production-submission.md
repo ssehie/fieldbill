@@ -1,20 +1,26 @@
 # FieldBill App Store Production Submission
 
-Last updated: 2026-05-21
+Last updated: 2026-05-26
 
 ## Current State
 
 - App Store Connect app id: `6762166246`
 - Bundle id: `com.fieldbill.app`
-- App version: `1.0.0`
-- iOS build: `1.0.0 (6)`
-- EAS build id: `0226a1eb-d7cc-479a-b1c7-1f7133966f7f`
-- EAS submission id: `b7ab4410-c4a2-47f0-bb2e-de5d4743d8da`
+- App version: `1.0.1`
+- iOS build: `1.0.1 (8)`
+- EAS build id: `41fe864d-a2c7-4d69-97a6-cfe338250277`
+- EAS submission id: `aaa0fd4f-c0f7-4175-a049-e07bacedca99`
 - App Store submission id: `cf9b172e-3c31-4d83-ad77-1b67d8f9e570`
 - App Store review status: `Approved for distribution` / eligible for distribution as of Apple email received `2026-05-21T22:10:48Z`
 - App Store URL: `https://apps.apple.com/app/fieldbill/id6762166246`
 - Public URL check: HTTP `200`, resolved to `https://apps.apple.com/us/app/fieldbill/id6762166246`, title `FieldBill App - App Store`
-- IPA artifact: `https://expo.dev/artifacts/eas/gpuoSMQqW2KojGnGnaiBV.ipa`
+- App Store Connect IAP: `fieldbill_pro_lifetime`, Apple ID `6773188154`, status `Ready to Submit` as of 2026-05-25.
+- RevenueCat iOS wiring: App Store app credentials valid, EAS Apple public SDK key set, product attached to entitlement `pro`, and offering `default` package `$rc_lifetime` includes the App Store product as of 2026-05-26.
+- IPA artifact: `https://expo.dev/artifacts/eas/99E5pJMiiyS2uoreT31Nfk.ipa`
+- Local IPA: `C:\fieldbill\builds\FieldBill-1.0.1-ios-b8-monetization.ipa`
+- Local IPA SHA256: `726320DE4A2D0EEDC0A9AEB89320FDE3AC979583B8BFC72D31CF16AA09EB0658`
+- Sandbox Apple Account for purchase testing: `ssehie+fieldbill-ios-sandbox-20260526-062600@gmail.com`
+- TestFlight status: version `1.0.1`, build `8`, status `Ready to Submit Expires in 90 days`, internal group `Team (Expo)` attached.
 - TestFlight public link: `https://testflight.apple.com/join/dYdE2Gcw`
 - Privacy policy URL: `https://ssehie.github.io/fieldbill/privacy-policy/`
 - Terms URL: `https://ssehie.github.io/fieldbill/terms/`
@@ -22,6 +28,8 @@ Last updated: 2026-05-21
 `npm run check:tester-release` passed on 2026-05-20. Current warnings are local EAS versioning and no local `.env`.
 
 Production resubmission context: iOS version `1.0`, build `1.0.0 (5)` was rejected for Guideline `5.1.1(ii)` because the microphone purpose string was not specific enough. Build `1.0.0 (6)` includes the corrected `NSMicrophoneUsageDescription`. On 2026-05-20, build `1.0.0 (6)` was attached to the iOS version, App Review notes were updated with the explicit optional microphone/job talk-note explanation, and the app was resubmitted to App Review. Apple approval arrived by Gmail on 2026-05-21: submission `cf9b172e-3c31-4d83-ad77-1b67d8f9e570` is complete and eligible for distribution, and FieldBill iOS has been approved for distribution.
+
+Monetization build context: On 2026-05-26, build `1.0.0 (7)` completed but App Store Connect upload failed because app version `1.0.0` had already been submitted. FieldBill was bumped to `1.0.1`; build `1.0.1 (8)` completed and EAS Submit finished successfully. Sandbox Apple Account `ssehie+fieldbill-ios-sandbox-20260526-062600@gmail.com` was created for purchase testing. App Store Connect TestFlight shows internal group `Team (Expo)` attached; external `Add Group` / beta review was not clicked. Do not submit the new app version or the first IAP to App Review without explicit approval.
 
 ## Store Listing
 
@@ -115,15 +123,28 @@ Current intended product:
 
 - Product type: non-consumable
 - Product id: `fieldbill_pro_lifetime`
+- Reference name: `FieldBill Pro Lifetime`
+- Apple ID: `6773188154`
+- Price: `$29.99` United States base price
+- Availability: all countries or regions selected
+- Review screenshot: `assets\store\app-store\iap-review-fieldbill-pro-iphone-65.png`
+- App Store Connect status: `Ready to Submit`
 - RevenueCat entitlement: `pro`
 - RevenueCat offering: `default`
+- RevenueCat App Store app: `fieldbill (App Store)` / bundle `com.fieldbill.app`
+- RevenueCat Apple public SDK key in EAS: `appl_MIVjCmUjykCdBmvVcYIKWyBeWxv`
+
+Android parity status:
+
+- Android billing harness passed on 2026-05-25 for Play-delivered FieldBill v11.
+- Keep iOS product ID and RevenueCat entitlement aligned with the Android-passed `fieldbill_pro_lifetime` / `pro` setup.
+- iOS monetization is the next harness lane and must pass sandbox purchase plus restore before being called production-ready.
 
 Production blocker to verify:
 
-- Apple non-consumable exists in App Store Connect.
-- RevenueCat Apple app/API key is set for EAS production.
-- Product is attached to the RevenueCat `pro` entitlement and default offering.
-- Sandbox purchase and restore have been tested on iOS.
+- Submit the first Apple IAP through the required app-version review path. Current iOS version `1.0` shows `Ready for Distribution`, so this likely means the next iOS version/review path rather than clicking release on the already-approved version.
+- Install build `1.0.1 (8)` through internal TestFlight and verify it includes the Apple RevenueCat public SDK key.
+- Run sandbox purchase and restore on iOS using the Sandbox Apple Account.
 
 ## Export Compliance
 
@@ -145,7 +166,7 @@ Completed on 2026-05-20 for build `1.0.0 (6)`. Apple approved the submission on 
 4. Fill metadata from this file.
 5. Complete App Privacy from the privacy section above.
 6. Confirm pricing and availability.
-7. Resolve the in-app purchase decision.
+7. Resolve the in-app purchase decision. The Apple IAP exists and is `Ready to Submit`; do not submit/release without explicit approval.
 8. Select build `1.0.0 (6)`.
 9. Fill App Review information and notes. Explicitly mention that microphone access is optional and only used when the reviewer chooses to record a job talk note, such as parts used or work still needed.
 10. Click `Add for Review`, resolve any App Store Connect warnings, then submit to App Review.
