@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FieldBill for Android</title>
+    <meta
+      name="description"
+      content="FieldBill is a simple Android invoice app for independent contractors and field-service workers."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f3ea;
+        --panel: #fffdf8;
+        --text: #1f1a14;
+        --muted: #5e554c;
+        --line: #ddd0be;
+        --green: #2f6f55;
+        --blue: #244a73;
+        --amber: #9a6a24;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+      }
+
+      a {
+        color: var(--blue);
+      }
+
+      .hero {
+        min-height: 74vh;
+        display: grid;
+        align-items: center;
+        padding: 48px 20px 32px;
+        border-bottom: 1px solid var(--line);
+        background:
+          linear-gradient(90deg, rgba(247, 243, 234, 0.97) 0%, rgba(247, 243, 234, 0.82) 58%, rgba(247, 243, 234, 0.72) 100%),
+          url("../assets/store/phone-screenshots/contact-sheet.png");
+        background-size: cover;
+        background-position: center right;
+      }
+
+      .wrap {
+        width: min(1080px, 100%);
+        margin: 0 auto;
+      }
+
+      .hero-copy {
+        max-width: 620px;
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--green);
+        font-size: 0.9rem;
+        font-weight: 750;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 7vw, 5.2rem);
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 560px;
+        margin: 20px 0 0;
+        color: var(--muted);
+        font-size: clamp(1.05rem, 2vw, 1.32rem);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        color: var(--text);
+        font-weight: 750;
+        text-decoration: none;
+      }
+
+      .button.primary {
+        border-color: #1f1a14;
+        background: #1f1a14;
+        color: #fffdf8;
+      }
+
+      section {
+        padding: 42px 20px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .tile {
+        min-height: 156px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .tile h2 {
+        margin: 0 0 10px;
+        font-size: 1.05rem;
+      }
+
+      .tile p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .strip {
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: #eef3ef;
+      }
+
+      .strip .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .strip p {
+        max-width: 640px;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      footer {
+        padding: 24px 20px 40px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 760px) {
+        .hero {
+          min-height: 78vh;
+          background:
+            linear-gradient(180deg, rgba(247, 243, 234, 0.98) 0%, rgba(247, 243, 234, 0.93) 62%, rgba(247, 243, 234, 0.84) 100%),
+            url("../assets/store/phone-screenshots/contact-sheet.png");
+          background-size: cover;
+          background-position: center bottom;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <div class="wrap">
+          <div class="hero-copy">
+            <p class="eyebrow">Android invoice app</p>
+            <h1>FieldBill</h1>
+            <p class="lead">
+              Simple invoices for independent contractors and field-service workers.
+              Start a job, add labor and parts, review totals, and send billing
+              details from your phone.
+            </p>
+            <div class="actions">
+              <a
+                class="button primary"
+                href="https://play.google.com/store/apps/details?id=com.fieldbill.app"
+                >Get it on Google Play</a
+              >
+              <a class="button" href="../privacy-policy/">Privacy Policy</a>
+              <a class="button" href="../terms/">Terms</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap grid">
+          <article class="tile">
+            <h2>Built For Field Work</h2>
+            <p>
+              Keep the workflow focused on jobs, labor, parts, invoice review,
+              sent status, and paid status.
+            </p>
+          </article>
+          <article class="tile">
+            <h2>No Account Required</h2>
+            <p>
+              FieldBill is designed for a simple phone-first workflow without a
+              full back-office system.
+            </p>
+          </article>
+          <article class="tile">
+            <h2>Free To Try</h2>
+            <p>
+              Create your first 3 invoices free. Pro is a one-time unlock for
+              unlimited invoices.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="strip">
+        <div class="wrap">
+          <p>
+            FieldBill is looking for practical feedback from contractors who
+            invoice from the job site: what is confusing, what is missing, and
+            what would stop you from trusting it on a real job?
+          </p>
+          <a
+            class="button primary"
+            href="https://play.google.com/store/apps/details?id=com.fieldbill.app"
+            >Open Play Listing</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        FieldBill by Steve Sehie. Android package:
+        <code>com.fieldbill.app</code>.
+      </div>
+    </footer>
+  </body>
+</html>

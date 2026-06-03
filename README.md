@@ -60,3 +60,5 @@ Tester build checklist:
 - [docs/tester-release-checklist.md](/C:/fieldbill/docs/tester-release-checklist.md)
 - [docs/android-internal-build.md](/C:/fieldbill/docs/android-internal-build.md)
 - [docs/ios-testflight-status.md](/C:/fieldbill/docs/ios-testflight-status.md)
+- [docs/free-advertising-kit.md](/C:/fieldbill/docs/free-advertising-kit.md)
+- [docs/worldwide-android-campaign.md](/C:/fieldbill/docs/worldwide-android-campaign.md)

@@ -1,5 +1,13 @@
 # Project Notes
 
+## 2026-06-02 Apple DSA Document Upload
+
+- Apple Developer Support case `102902060003` requested a verification document for the Digital Services Act review.
+- Created a redacted SSA benefit verification PDF outside the repo and uploaded it through the signed-in Apple file upload page for the same case.
+- Sent the confirmation reply to Apple Developer Support in the Gmail thread after upload: `The requested verification document has been uploaded for case 102902060003.`
+- Redacted PDF remains outside git on OneDrive Desktop; no personal verification documents should be committed.
+- No app build or package identifiers changed: FieldBill remains version `1.0.1`, iOS build `8`, Android `versionCode` `11`, package `com.fieldbill.app`.
+
 ## 2026-06-01 Full Store Health Pass
 
 - Switched AgentArch active project to `fieldbill` and confirmed `C:\fieldbill` as the active path.
