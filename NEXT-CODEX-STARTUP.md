@@ -2,6 +2,264 @@
 
 ## Last Action
 
+Updated: 2026-06-28T19:29:52-05:00
+
+User asked to use PC Control on the signed-in Apple session, review the agreement, and clear whatever was still blocking the EU/App Store state.
+
+Completed this pass:
+- Used PC Control to inspect the live signed-in Edge App Store Connect session and the linked Apple Developer account page.
+- Confirmed the App Store Connect `Apps` page still showed the Apple Developer Program License Agreement update banner before acceptance.
+- Opened `Business -> Agreements`, followed the banner `account` link, opened the Apple Developer Program License Agreement modal, and accepted it after explicit operator confirmation.
+- Verified the Apple Developer account page no longer shows the agreement update card after acceptance.
+- Verified App Store Connect `Business -> Agreements` no longer shows the update banner and now lists:
+  - `Free Apps Agreement` as `Active`, effective `Jun 28, 2026 - Mar 27, 2027`;
+  - `Paid Apps Agreement` as `Active`.
+- Verified App Store Connect `Business -> Compliance` now shows:
+  - regulation `Digital Services Act`;
+  - `27 Countries or Regions`;
+  - last updated `May 28, 2026`;
+  - status `Active`.
+- Reran the Apple public storefront lookup across the full saved `175`-territory list and wrote:
+  - `C:\fieldbill\reports\apple-public-storefront-availability-20260628.json`
+  - summary result: `175/175` storefronts return FieldBill `1.0.1`; `0` storefronts returned no result.
+- Evidence files:
+  - `C:\Projects\research\pc-control\captures\shot-20260628-192022602.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260628-192138404.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260628-192248390.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260628-192325663.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260628-192626518.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260628-192659873.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260628-192742187.png`
+
+Current conclusion:
+- FieldBill iOS is now publicly available in all `175` checked territories.
+- The prior EU DSA/trader block is effectively cleared in current App Store Connect Business compliance and public storefront evidence.
+- The Apple Developer Program License Agreement gate is cleared for future app updates/submissions.
+
+Next action when returning to FieldBill:
+- No immediate Apple support escalation is required while App Store Connect stays `Active` and public storefront availability remains `175/175`.
+- If exact signed-in territory-level app availability evidence is needed again, rerun the App Store Connect availability export/report to refresh the internal artifact set.
+- Keep Android production promotion separate from the iOS/App Store path.
+
+Previous checkpoint:
+
+Updated: 2026-06-20T07:56:31-05:00
+
+User authorized doing the needed Apple DSA support follow-up and logging the action.
+
+Completed this pass:
+- Searched Gmail for Apple Developer Support case `102902060003`.
+- Found the usable Apple support thread from `devprograms@apple.com`; Apple's separate file-upload email from `AppleSupport@email.apple.com` was no-reply.
+- Sent a follow-up reply to `devprograms@apple.com` in the existing thread.
+- Gmail sent message ID: `19ee51a7d07f57d3`; thread ID: `19e89bf69063f4ff`.
+- Reply summarized:
+  - FieldBill app ID `6762166246`, bundle `com.fieldbill.app`;
+  - verification document was uploaded and confirmed on June 2;
+  - App Store Connect Business -> Compliance still shows DSA `In Review`, last updated `May 28, 2026`, for `27 Countries or Regions`;
+  - Pricing and Availability still shows `148 Available` and `27 Cannot Sell`;
+  - EU availability detail still shows `Trader Status Not Provided`;
+  - public lookup still returns FieldBill in the U.S. and `0` results in sampled EU storefronts.
+- Attached current non-sensitive screenshots:
+  - `C:\Projects\research\pc-control\captures\shot-20260620-071735658.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260620-071754294.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260620-073844905.png`
+- Did not attach `C:\Projects\images\Apple_Verification_ID.pdf` or any private identity document.
+
+Current conclusion:
+- FieldBill's local/app-level DSA trader setup remains complete.
+- The unresolved gate is now Apple Developer Support response/escalation for account-level DSA compliance.
+- Continue to treat the 27 EU territories as blocked until Business -> Compliance clears and public EU storefront lookups return the app.
+
+Next action when returning to FieldBill:
+- Watch Gmail/App Store Connect for Apple Developer Support response on case `102902060003`.
+- If Apple requests additional information, satisfy the request through the secure Apple path only.
+- After Apple clears DSA, rerun public Apple lookup across all 175 territories and refresh the App Store Connect availability API report.
+- Keep Android production promotion separate from the iOS/EU availability path.
+
+Previous checkpoint:
+
+Updated: 2026-06-20T07:19:42-05:00
+
+User asked to switch to FieldBill and use the signed-in App Store session to check status.
+
+Completed this pass:
+- Switched AgentArch active focus to `fieldbill`.
+- Used the existing signed-in Edge/App Store Connect window through PC Control for read-only inspection.
+- Confirmed FieldBill App Information still shows iOS `1.0.1 Ready for Distribution`.
+- Confirmed Pricing and Availability still shows `148 Available` and `27 Cannot Sell`.
+- Confirmed App Availability detail still shows EU countries blocked with `Trader Status Not Provided`; visible rows included Austria, Belgium, Bulgaria, Croatia, Cyprus, and Czech Republic.
+- Confirmed Business -> Agreements shows Paid Apps Agreement active, bank account active, and U.S. Form W-9 active.
+- Found a current Apple Developer Program License Agreement update banner on Business requiring Account Holder review before app updates or new submissions.
+- Confirmed Business -> Compliance still shows:
+  - regulation `Digital Services Act`;
+  - `27 Countries or Regions`;
+  - last updated `May 28, 2026`;
+  - status `In Review`.
+- Public Apple lookup sample remains unchanged: `us` returns FieldBill `1.0.1`; `de`, `fr`, `ie`, `nl`, `es`, `it`, `se`, and `pl` return `0` results.
+- Evidence files:
+  - `C:\Projects\research\pc-control\captures\shot-20260620-071647756.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260620-071735658.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260620-071754294.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260620-071859782.png`
+
+Current conclusion:
+- FieldBill iOS remains production-ready outside the EU.
+- FieldBill iOS is still not publicly available in all countries because 27 EU territories remain blocked by Apple trader/DSA status.
+- The local FieldBill/App Store Connect app-level trader setup remains complete; the unresolved gate is Apple account-level DSA review plus the visible account-holder license-agreement review banner.
+
+Next action when returning to FieldBill:
+- Have the account holder review the Apple Developer Program License Agreement banner.
+- Contact Apple Developer Support case `102902060003` because Business -> Compliance still shows DSA `In Review` after the June 17 escalation date.
+- After Apple clears DSA, rerun public Apple lookup across all 175 territories and refresh the App Store Connect availability API report.
+- Keep Android production promotion separate from the iOS/EU availability path.
+
+Previous checkpoint:
+
+Updated: 2026-06-11T15:56:00-05:00
+
+User requested lookup and resolution of the DSA trader issue.
+
+Completed this pass:
+- Looked up current Apple guidance for EU Digital Services Act trader requirements and compliance review.
+- Confirmed the account-level path is App Store Connect `Business` -> `Agreements` -> `Compliance` -> `Digital Services Act`.
+- Confirmed the app-level path is FieldBill `App Information` -> `App Store Regulations and Permits` -> `Digital Services Act`.
+- Live App Store Connect Business -> Compliance still shows:
+  - regulation `Digital Services Act`;
+  - `27 Countries or Regions`;
+  - last updated `May 28, 2026`;
+  - status `In Review`.
+- No `Complete Compliance Requirements`, submit, edit, or missing-information action was visible in the Business compliance row.
+- FieldBill App Information still shows: `This developer has identified itself as a trader for this app.`
+- Immediate public Apple lookup remains unchanged: `us` returns FieldBill `1.0.1`; `de`, `fr`, `ie`, `nl`, `es`, `it`, `se`, and `pl` return `0` results.
+- Calculated the 14th business day after the Apple Business Compliance last-updated date `2026-05-28` as `2026-06-17`.
+- Evidence files:
+  - `C:\Projects\research\pc-control\captures\shot-20260611-154622474.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260611-155104112.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260611-155204502.png`
+
+Current conclusion:
+- The local FieldBill/App Store Connect DSA trader setup is complete.
+- The remaining EU storefront block is not locally resolvable while Apple account-level DSA compliance remains `In Review`.
+- FieldBill iOS is still not publicly available in all countries: public Apple storefront checks remain green outside the EU and blocked in the 27 EU DSA/trader-status territories.
+
+Next action when returning to FieldBill:
+- Recheck App Store Connect Business -> Compliance and public EU storefronts daily.
+- If Business -> Compliance still shows DSA `In Review` on `2026-06-17`, contact Apple Developer Support case `102902060003` with the June 2 document-upload confirmation and the June 11 screenshots.
+- After EU statuses clear, rerun public Apple lookup across all 175 territories and refresh the App Store Connect availability API report.
+- Keep Android production promotion separate from the iOS/EU availability path.
+
+Previous checkpoint:
+
+Updated: 2026-06-11T15:27:00-05:00
+
+User authorized accepting the Apple Developer Program License Agreement after the agreement review modal was opened.
+
+Completed this pass:
+- Used PC Control in the signed-in Edge session to click `Agree` on the Apple Developer Program License Agreement modal.
+- Verified the Apple Developer account page no longer shows the program license agreement update card.
+- Verified App Store Connect Apps page no longer shows the `Apple Developer Program License Agreement Updated` banner.
+- FieldBill still shows `iOS 1.0.1 Ready for Distribution` on the App Store Connect Apps page.
+- Immediate post-acceptance public Apple sample was unchanged: `us` returns FieldBill `1.0.1`; `de`, `fr`, `ie`, `nl`, `es`, `it`, `se`, and `pl` still return `0` results.
+- Evidence files:
+  - `C:\Projects\research\pc-control\captures\shot-20260611-151918597.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260611-152157792.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260611-152336220.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260611-152628096.png`
+
+Current conclusion:
+- The Apple Developer Program License Agreement update gate is cleared.
+- FieldBill iOS is still not publicly available in all countries: the latest public Apple storefront check remains `148/175`, with 27 EU storefronts blocked by `TRADER_STATUS_NOT_PROVIDED`.
+- Android public listing samples remain green from the latest check.
+
+Next action when returning to FieldBill:
+- Keep checking App Store Connect Business / Compliance and app availability until the 27 EU territory content statuses become `AVAILABLE`.
+- After EU statuses clear, rerun public Apple lookup across all 175 territories.
+- If Apple has not cleared the DSA/trader-status block by `2026-06-17`, contact Apple Developer Support case `102902060003` with the June 2 document-upload confirmation and current availability evidence.
+- Keep Android production promotion separate from the iOS/EU availability path.
+
+Previous checkpoint:
+
+Updated: 2026-06-11T15:10:00-05:00
+
+User had an open signed-in Edge window with App Store Connect and requested a PC Control check to see whether FieldBill is available in all countries.
+
+Completed this pass:
+- Used PC Control read-only through the authenticated Edge/App Store Connect session; no App Store Connect setting, store metadata, release action, Play Console setting, payment, ad, email, or app code changed.
+- App Store Connect app list still shows FieldBill `iOS 1.0.1 Ready for Distribution`.
+- App Store Connect displayed an `Apple Developer Program License Agreement Updated` banner. The account holder needs to review/accept it before future updates or new submissions; this pass did not change the agreement state.
+- Authenticated App Store Connect availability API results:
+  - Base endpoint `iris/v2/appAvailabilities/6762166246` shows `availableInNewTerritories=true`.
+  - Territory endpoint `iris/v2/appAvailabilities/6762166246/territoryAvailabilities?limit=200` returned `175` territory rows.
+  - All `175` rows have `available=true`.
+  - Content status remains split: `148` rows have `AVAILABLE`; `27` EU rows still have `TRADER_STATUS_NOT_PROVIDED`.
+  - The `27` EU rows are `AUT`, `BEL`, `BGR`, `CYP`, `CZE`, `DEU`, `DNK`, `ESP`, `EST`, `FIN`, `FRA`, `GRC`, `HRV`, `HUN`, `IRL`, `ITA`, `LTU`, `LUX`, `LVA`, `MLT`, `NLD`, `POL`, `PRT`, `ROU`, `SVK`, `SVN`, and `SWE`.
+- Public Apple storefront lookup checked all `175` App Store Connect territories:
+  - `148` storefronts return FieldBill `1.0.1`.
+  - `27` storefronts return `0` results, matching the EU `TRADER_STATUS_NOT_PROVIDED` territory set.
+- Public Google Play samples for `US`, `CA`, `GB`, `AU`, `DE`, `FR`, `IE`, `NL`, `ES`, `IT`, `SE`, `PL`, `BR`, `IN`, `JP`, and `ZA` all returned the FieldBill listing for `com.fieldbill.app`.
+- Evidence files:
+  - `C:\Projects\research\pc-control\captures\shot-20260611-145725120.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260611-145900057.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260611-150135936.png`
+  - `C:\fieldbill\reports\appstoreconnect-territory-availabilities-20260611.json`
+  - `C:\fieldbill\reports\apple-public-storefront-availability-20260611.json`
+  - `C:\fieldbill\reports\google-play-public-sample-availability-20260611.json`
+
+Current conclusion:
+- FieldBill iOS is not publicly available in all countries yet.
+- App Store Connect now marks all `175` territories `available=true`, but public Apple storefront lookup still exposes only `148/175`.
+- The remaining `27` EU storefronts are still blocked by `TRADER_STATUS_NOT_PROVIDED`.
+- Android public listing samples are green.
+
+Next action when returning to FieldBill:
+- Have the account holder review/accept the updated Apple Developer Program License Agreement.
+- Keep checking App Store Connect Business / Compliance and app availability until the 27 EU territory content statuses become `AVAILABLE`.
+- After EU statuses clear, rerun public Apple lookup across all 175 territories.
+- If Apple has not cleared the DSA/trader-status block by `2026-06-17`, contact Apple Developer Support case `102902060003` with the June 2 document-upload confirmation and current availability evidence.
+- Keep Android production promotion separate from the iOS/EU availability path.
+
+Previous checkpoint:
+
+Updated: 2026-06-04T06:23:04-05:00
+
+Ran a read-only FieldBill DSA/EU availability refresh after Ark focus switched back to `fieldbill`.
+
+Completed this pass:
+- Public Apple lookup for app ID `6762166246`:
+  - `us`: FieldBill `1.0.1`, seller `Steve Sehie`, currency `USD`.
+  - `de`, `fr`, `ie`, `nl`, `es`, `it`, `se`, `pl`: `0` results.
+- Public Google Play URL returned HTTP `200` and page content contains `FieldBill`: `https://play.google.com/store/apps/details?id=com.fieldbill.app&hl=en_US&gl=US`.
+- Signed-in App Store Connect read-only check through existing Edge session and PC Control:
+  - Apps page shows FieldBill `iOS 1.0.1 Ready for Distribution`.
+  - Pricing and Availability shows `175 Countries or Regions`, App Availability `148 Available`, `27 Cannot Sell`.
+  - `27 Cannot Sell` detail is still the EU country set; the availability manage table shows EU rows such as Austria, Belgium, Bulgaria, Croatia, Cyprus, Czech Republic, and Denmark with `Trader Status Not Provided`.
+  - Business page shows Free Apps Agreement active, Paid Apps Agreement active, bank account active, and U.S. Form W-9 active.
+  - Business Compliance still shows `Digital Services Act`, `27 Countries or Regions`, last updated `May 28, 2026`, status `In Review`.
+- Local dependency/check refresh:
+  - Installed package versions now match Expo Doctor expectations: `expo@54.0.35`, `expo-font@14.0.12`, `expo-router@6.0.24`.
+  - Split verification passed: `npx tsc --noEmit`, `npm run lint`, `npx expo-doctor` (`18/18`), and `npm run preflight:tester`.
+  - Combined `npm run check:tester-release` timed out in this shell, but the underlying steps completed cleanly when run separately.
+- Screenshot evidence:
+  - `C:\Projects\research\pc-control\captures\shot-20260604-061736187.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260604-061927852.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260604-062118600.png`
+  - `C:\Projects\research\pc-control\captures\shot-20260604-062213721.png`
+- No app code, store metadata, App Store Connect settings, Play Console settings, release actions, ads, payments, or emails were changed.
+
+Current conclusion:
+- FieldBill iOS `1.0.1`, first IAP, paid agreements, bank, tax, and U.S. public listing remain green.
+- EU distribution is still not production-green: public EU storefronts still return `0` results, App Availability still shows `27 Cannot Sell`, EU rows still show `Trader Status Not Provided`, and Business Compliance DSA remains `In Review`.
+- Android public Play listing remains reachable.
+- The previous Expo patch-level local release-check blocker appears resolved; keep the combined script timeout as a shell/runtime caveat, not a failing subcheck.
+
+Next action when returning to FieldBill:
+- Continue checking App Store Connect Business / Compliance until Digital Services Act clears from `In Review`.
+- After DSA clears, recheck Pricing and Availability for zero EU `Cannot Sell` rows and rerun public Apple lookups for `de`, `fr`, `ie`, `nl`, `es`, `it`, `se`, and `pl`.
+- If Apple has not cleared the DSA review by `2026-06-17`, contact Apple Developer Support for case `102902060003` with the June 2 upload confirmation and current screenshots.
+- Keep Android production promotion separate from the iOS/EU availability path.
+
+Previous checkpoint:
+
 Updated: 2026-06-01T17:35:00-05:00
 
 Ran a full FieldBill store-health pass after switching Ark focus to `fieldbill`.
